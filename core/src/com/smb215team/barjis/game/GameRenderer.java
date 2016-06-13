@@ -38,10 +38,17 @@ public class GameRenderer implements Disposable {
     private void renderTestObjects() {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
+        // <editor-fold desc="Dino: This is my trial to layout the board">
         gameController.middleBlockSprite.draw(batch);
         for (Sprite sprite : gameController.branch1Cells) {
             sprite.draw(batch);
         }
+        // </editor-fold>
+        // <editor-fold desc="Dino: Showing the dices on the board">
+        for (Sprite sprite : gameController.dices) {
+            sprite.draw(batch);
+        }
+        // </editor-fold>
         batch.end();
     }
     

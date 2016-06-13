@@ -29,15 +29,27 @@ public class GameController {
     public int selectedSprite;
     
     public Sprite middleBlockSprite;
+
+    public Sprite[] dices;
+    public float dummyTimerForThrowingDices = 0.0f;
     
     public GameController () {
         init();
     }
     private void init () {
         initTestObjects();
+        throwDices();
     }
     public void update (float deltaTime) {
         handleDebugInput(deltaTime);
+
+        // <editor-fold desc="Dino: Dummy timer to throw dices">
+        dummyTimerForThrowingDices += deltaTime;
+        if(dummyTimerForThrowingDices >= 2) {
+            throwDices();
+            dummyTimerForThrowingDices = 0.0f;
+        }
+        // </editor-fold>
     }
     
     private void initTestObjects() {
@@ -115,10 +127,29 @@ public class GameController {
                     -sprMoveSpeed);
         }
     }
+    
+    private void throwDices(){
+        Texture diceUp = new Texture("dummyDiceUp.jpg");
+        Texture diceDown = new Texture("dummyDiceDown.jpg");
+        
+        dices = new Sprite[6];
+        for(int i = 0; i < dices.length; i++){
+            if(Math.random() < 0.5){
+                dices[i] = new Sprite(diceUp);
+            } else {
+                dices[i] = new Sprite(diceDown);
+            }
+            float randomX = MathUtils.random(-2.0f, 2.0f);
+            float randomY = MathUtils.random(-2.0f, 2.0f);
+            dices[i].setPosition(randomX, randomY);
+            dices[i].setSize(0.75f, 0.75f);
+        }
+    }
 
     private void moveSelectedSprite(float x, float y) {
         testSprites[selectedSprite].translate(x, y);
     }
+    
     private Pixmap createProceduralPixmap(int width, int height, boolean isChire) {
         Pixmap pixmap = new Pixmap(width, height, Format.RGBA8888);
 // Fill square with red color at 50% opacity
