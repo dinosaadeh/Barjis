@@ -38,7 +38,8 @@ public class GameRenderer implements Disposable {
     private void renderTestObjects() {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        for (Sprite sprite : gameController.testSprites) {
+        gameController.middleBlockSprite.draw(batch);
+        for (Sprite sprite : gameController.branch1Cells) {
             sprite.draw(batch);
         }
         batch.end();
