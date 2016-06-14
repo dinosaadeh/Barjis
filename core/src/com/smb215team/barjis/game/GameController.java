@@ -47,7 +47,7 @@ public class GameController {
         dummyTimerForThrowingDices += deltaTime;
         if(dummyTimerForThrowingDices >= 2) {
             throwDices();
-            dummyTimerForThrowingDices = 0.0f;
+            dummyTimerForThrowingDices -= 2.0f; // If you reset it to 0 you will loose a few milliseconds every 2 seconds.
         }
         // </editor-fold>
     }
