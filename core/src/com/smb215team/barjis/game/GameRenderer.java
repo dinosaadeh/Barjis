@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Disposable;
 import com.smb215team.barjis.util.Constants;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.smb215team.barjis.game.objects.*;
 /**
  *
  * @author dinosaadeh
@@ -45,7 +46,7 @@ public class GameRenderer implements Disposable {
         }
         // </editor-fold>
         // <editor-fold desc="Dino: Showing the dices on the board">
-        for (Sprite sprite : gameController.dices) {
+        for (Sprite sprite : Dices.instance.dices) {
             sprite.draw(batch);
         }
         // </editor-fold>

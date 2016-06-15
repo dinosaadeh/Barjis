@@ -6,9 +6,12 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.assets.AssetManager;
 
 import com.smb215team.barjis.game.GameController;
 import com.smb215team.barjis.game.GameRenderer;
+import com.smb215team.barjis.game.Assets;
+import com.smb215team.barjis.game.objects.*;
 
 public class Barjis extends ApplicationAdapter {
     private static final String TAG = Barjis.class.getName();
@@ -26,20 +29,16 @@ public class Barjis extends ApplicationAdapter {
     public void create () {
         // Set Libgdx log level to DEBUG
         Gdx.app.setLogLevel(com.badlogic.gdx.Application.LOG_DEBUG);
-        
+        // Load assets
+        Assets.instance.init(new AssetManager());
+        // Dino: initiate the dices
+        Dices.instance.init();
         // Initialize controller and renderer
         gameController = new GameController();
         gameRenderer = new GameRenderer(gameController);
         
         // Game world is active on start
         paused = false;
-        
-        /// PLAYING AROUND
-            batch = new SpriteBatch();
-            img = new Texture("badlogic.jpg");
-            shapeRendererTest = new ShapeRenderer();
-            //shapeRendererTest.rect(0, 0, 20, 50);
-        /// END PLAYING AROUND
     }
 
     @Override
@@ -79,10 +78,12 @@ public class Barjis extends ApplicationAdapter {
     }
     
     @Override public void resume () {
+        Assets.instance.init(new AssetManager());
         paused = false;
     }
     
     @Override public void dispose () {
         gameRenderer.dispose();
+        Assets.instance.dispose();
     }
 }

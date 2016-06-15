@@ -5,6 +5,9 @@
  */
 package com.smb215team.barjis.game;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Array;
+
 // Dino: TEST SPRITES
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
@@ -14,6 +17,7 @@ import com.badlogic.gdx.math.MathUtils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;//for testing
+import com.smb215team.barjis.game.objects.Dices;
 import com.sun.media.jfxmedia.logging.Logger;
 // END Dino: TEST SPRITES
 
@@ -38,7 +42,9 @@ public class GameController {
     }
     private void init () {
         initTestObjects();
-        throwDices();
+        Dices.instance.throwDices();
+        dices = Dices.instance.dices;
+        //throwDices();
     }
     public void update (float deltaTime) {
         handleDebugInput(deltaTime);
@@ -46,7 +52,8 @@ public class GameController {
         // <editor-fold desc="Dino: Dummy timer to throw dices">
         dummyTimerForThrowingDices += deltaTime;
         if(dummyTimerForThrowingDices >= 2) {
-            throwDices();
+            //throwDices();
+            Dices.instance.throwDices();
             dummyTimerForThrowingDices -= 2.0f; // If you reset it to 0 you will loose a few milliseconds every 2 seconds.
         }
         // </editor-fold>
@@ -125,24 +132,6 @@ public class GameController {
         if (Gdx.input.isKeyPressed(Keys.S)) {
             moveSelectedSprite(0,
                     -sprMoveSpeed);
-        }
-    }
-    
-    private void throwDices(){
-        Texture diceUp = new Texture("dummyDiceUp.jpg");
-        Texture diceDown = new Texture("dummyDiceDown.jpg");
-        
-        dices = new Sprite[6];
-        for(int i = 0; i < dices.length; i++){
-            if(Math.random() < 0.5){
-                dices[i] = new Sprite(diceUp);
-            } else {
-                dices[i] = new Sprite(diceDown);
-            }
-            float randomX = MathUtils.random(-2.0f, 2.0f);
-            float randomY = MathUtils.random(-2.0f, 2.0f);
-            dices[i].setPosition(randomX, randomY);
-            dices[i].setSize(0.75f, 0.75f);
         }
     }
 

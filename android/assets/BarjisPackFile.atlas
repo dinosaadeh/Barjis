@@ -1,0 +1,20 @@
+
+BarjisPackFile.png
+size: 256,128
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+dummyDiceDown
+  rotate: false
+  xy: 2, 2
+  size: 73, 88
+  orig: 73, 88
+  offset: 0, 0
+  index: -1
+dummyDiceUp
+  rotate: false
+  xy: 77, 6
+  size: 75, 84
+  orig: 75, 84
+  offset: 0, 0
+  index: -1
