@@ -21,10 +21,6 @@ public class Barjis extends ApplicationAdapter {
     
     private boolean paused;
 
-    SpriteBatch batch;
-    Texture img;
-    ShapeRenderer shapeRendererTest;
-
     @Override
     public void create () {
         // Set Libgdx log level to DEBUG
@@ -55,18 +51,6 @@ public class Barjis extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         // Render game world to screen
         gameRenderer.render();
-        
-            //Gdx.gl.glClearColor(0, 0, 0, 1);
-            //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-            //batch.begin();
-            //batch.draw(img, 0, 0);
-            //batch.end();
-            /*
-            shapeRendererTest.setColor(1, 1, 1, (float)0.5);
-            shapeRendererTest.begin(ShapeRenderer.ShapeType.Filled);
-            shapeRendererTest.rect(10, 50, 50, 100);
-            shapeRendererTest.end();
-            */
     }
     
     @Override public void resize (int width, int height) {

@@ -47,7 +47,8 @@ public class GameRenderer implements Disposable {
         // </editor-fold>
         // <editor-fold desc="Dino: Showing the dices on the board">
         for (Sprite sprite : Dices.instance.dices) {
-            sprite.draw(batch);
+            if(null != sprite)
+                sprite.draw(batch);
         }
         // </editor-fold>
         batch.end();

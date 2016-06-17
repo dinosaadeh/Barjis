@@ -42,19 +42,17 @@ public class GameController {
     }
     private void init () {
         initTestObjects();
-        Dices.instance.throwDices();
-        dices = Dices.instance.dices;
-        //throwDices();
     }
     public void update (float deltaTime) {
         handleDebugInput(deltaTime);
 
         // <editor-fold desc="Dino: Dummy timer to throw dices">
         dummyTimerForThrowingDices += deltaTime;
-        if(dummyTimerForThrowingDices >= 2) {
+        if(dummyTimerForThrowingDices >= 5) {
             //throwDices();
-            Dices.instance.throwDices();
-            dummyTimerForThrowingDices -= 2.0f; // If you reset it to 0 you will loose a few milliseconds every 2 seconds.
+            Dices.instance.throwDicesForOneTurn();
+            dummyTimerForThrowingDices -= 5.0f; // If you reset it to 0 you will loose a few milliseconds every 2 seconds.
+            Gdx.app.log(TAG, Dices.instance.getValue());
         }
         // </editor-fold>
     }
@@ -66,7 +64,7 @@ public class GameController {
         middleBlockSprite = new Sprite(middleBlockTexture);
         middleBlockSprite.setSize(1.5f, 1.5f);
         middleBlockSprite.setOrigin(middleBlockSprite.getWidth() / 2.0f, middleBlockSprite.getHeight() / 2.0f);
-        Gdx.app.log("MyTag", "width: " + middleBlockSprite.getWidth() + " informative message");
+        //Gdx.app.log("MyTag", "width: " + middleBlockSprite.getWidth() + " informative message");
         middleBlockSprite.setPosition(-0.5f, -0.5f);
         
         // branch1Cells
