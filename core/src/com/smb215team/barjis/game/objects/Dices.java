@@ -24,8 +24,6 @@ public class Dices extends AbstractGameObject {
     public Sprite[] dices;
     public Integer[] currentHandMoves;
 
-    int debuggingCounter = 0;
-
     private Dices () {
         init();
     }
@@ -64,7 +62,6 @@ public class Dices extends AbstractGameObject {
     }
     
     private void throwDices(){
-        debuggingCounter++;
         int currentThrowValue = 0;        
         for(int i = 0; i < dices.length; i++){
             if(Math.random() < 0.5){
@@ -86,7 +83,7 @@ public class Dices extends AbstractGameObject {
         if (1 == currentThrowValue || 5 == currentThrowValue) // if dest or banj, add the bonus move
             currentHandMoves[7]++;
         // If a special combination, throw dices again
-        if (debuggingCounter < 5 && 0 == currentThrowValue || 1 == currentThrowValue || 5 == currentThrowValue || 6 == currentThrowValue)
+        if (0 == currentThrowValue || 1 == currentThrowValue || 5 == currentThrowValue || 6 == currentThrowValue)
             throwDices();
     }
     

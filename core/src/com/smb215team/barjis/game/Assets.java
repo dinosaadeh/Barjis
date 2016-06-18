@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.smb215team.barjis.util.Constants;
 
 /**
@@ -27,6 +28,7 @@ public class Assets implements Disposable, AssetErrorListener {
     private AssetManager assetManager;
     
     public AssetDice dice;
+    public AssetFonts fonts;
 
     // singleton: prevent instantiation from other classes
     private Assets () {}
@@ -39,10 +41,7 @@ public class Assets implements Disposable, AssetErrorListener {
         assetManager.load(Constants.TEXTURE_ATLAS_OBJECTS, TextureAtlas.class);
         // start loading assets and wait until finished
         assetManager.finishLoading();
-        Gdx.app.debug(TAG, "# of assets loaded: " + assetManager.getAssetNames().size);
-
-        //for (String a : assetManager.getAssetNames())
-        //    Gdx.app.debug(TAG, "asset: " + a);
+        //Gdx.app.debug(TAG, "# of assets loaded: " + assetManager.getAssetNames().size);
 
         TextureAtlas atlas = assetManager.get(Constants.TEXTURE_ATLAS_OBJECTS);
         // enable texture filtering for pixel smoothing
@@ -50,12 +49,14 @@ public class Assets implements Disposable, AssetErrorListener {
             t.setFilter(TextureFilter.Linear, TextureFilter.Linear);
         }
         // create game resource objects
+        fonts = new AssetFonts();
         dice = new AssetDice(atlas);
     }
 
     @Override
     public void dispose () {
         assetManager.dispose();
+        fonts.defaultNormal.dispose();
     }
     
     @Override
@@ -71,5 +72,15 @@ public class Assets implements Disposable, AssetErrorListener {
             diceDown = atlas.findRegion("dummyDiceDown");
             diceUp = atlas.findRegion("dummyDiceUp");
         }
-    }    
+    }
+    
+    public class AssetFonts {
+        public final BitmapFont defaultNormal;
+        public AssetFonts () {
+        // create three fonts using Libgdx's 15px bitmap font
+        defaultNormal = new BitmapFont(Gdx.files.internal("arial-15.fnt"), true);
+        // enable linear texture filtering for smooth fonts
+        defaultNormal.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+        }
+    }
 }

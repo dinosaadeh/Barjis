@@ -15,6 +15,10 @@ public class Constants {
     // Visible game world is 5 meters tall
     public static final float VIEWPORT_HEIGHT = 9.5f;
     // Location of description file for texture atlas
-    public static final String TEXTURE_ATLAS_OBJECTS =
-    "BarjisPackFile.atlas";
+    public static final String TEXTURE_ATLAS_OBJECTS = "BarjisPackFile.atlas";
+    
+    // GUI Width
+    public static final float VIEWPORT_GUI_WIDTH = 800.0f;
+    // GUI Height
+    public static final float VIEWPORT_GUI_HEIGHT = 480.0f;
 }
