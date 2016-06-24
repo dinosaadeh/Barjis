@@ -69,8 +69,8 @@ public class Assets implements Disposable, AssetErrorListener {
         public final AtlasRegion diceUp;
         
         public AssetDice (TextureAtlas atlas) {
-            diceDown = atlas.findRegion("dummyDiceDown");
-            diceUp = atlas.findRegion("dummyDiceUp");
+            diceDown = atlas.findRegion("dice-down");
+            diceUp = atlas.findRegion("dice-up");
         }
     }
     

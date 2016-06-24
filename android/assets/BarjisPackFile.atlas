@@ -1,20 +1,111 @@
 
 BarjisPackFile.png
-size: 256,128
+size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-dummyDiceDown
+board
   rotate: false
-  xy: 2, 2
-  size: 73, 88
-  orig: 73, 88
+  xy: 2, 220
+  size: 661, 600
+  orig: 661, 600
   offset: 0, 0
   index: -1
-dummyDiceUp
+dice-down
   rotate: false
-  xy: 77, 6
-  size: 75, 84
-  orig: 75, 84
+  xy: 665, 667
+  size: 30, 42
+  orig: 30, 42
+  offset: 0, 0
+  index: -1
+dice-up
+  rotate: false
+  xy: 745, 712
+  size: 37, 30
+  orig: 37, 30
+  offset: 0, 0
+  index: -1
+disabled-text-overlay
+  rotate: false
+  xy: 78, 34
+  size: 4, 30
+  orig: 4, 30
+  offset: 0, 0
+  index: -1
+lbl-player-01-off
+  rotate: false
+  xy: 2, 33
+  size: 74, 31
+  orig: 74, 31
+  offset: 0, 0
+  index: -1
+lbl-player-01-on
+  rotate: false
+  xy: 379, 187
+  size: 74, 31
+  orig: 74, 31
+  offset: 0, 0
+  index: -1
+lbl-player-02-off
+  rotate: false
+  xy: 665, 711
+  size: 78, 31
+  orig: 78, 31
+  offset: 0, 0
+  index: -1
+lbl-player-02-on
+  rotate: false
+  xy: 854, 789
+  size: 78, 31
+  orig: 78, 31
+  offset: 0, 0
+  index: -1
+lblph-horse-player-off
+  rotate: false
+  xy: 2, 142
+  size: 187, 76
+  orig: 187, 76
+  offset: 0, 0
+  index: -1
+lblph-horse-player-on
+  rotate: false
+  xy: 665, 744
+  size: 187, 76
+  orig: 187, 76
+  offset: 0, 0
+  index: -1
+lblph-jockey-player-off
+  rotate: false
+  xy: 2, 66
+  size: 186, 74
+  orig: 186, 74
+  offset: 0, 0
+  index: -1
+lblph-jockey-player-on
+  rotate: false
+  xy: 191, 144
+  size: 186, 74
+  orig: 186, 74
+  offset: 0, 0
+  index: -1
+pawn-horse
+  rotate: false
+  xy: 934, 791
+  size: 29, 29
+  orig: 29, 29
+  offset: 0, 0
+  index: -1
+pawn-jockey
+  rotate: false
+  xy: 2, 2
+  size: 29, 29
+  orig: 29, 29
+  offset: 0, 0
+  index: -1
+ph-dead-pawn
+  rotate: false
+  xy: 854, 751
+  size: 36, 36
+  orig: 36, 36
   offset: 0, 0
   index: -1
