@@ -82,7 +82,7 @@ public class Dices extends AbstractGameObject {
             float randomX = MathUtils.random(-2.0f, 2.0f);
             float randomY = MathUtils.random(-2.0f, 2.0f);
             dices[i].setPosition(randomX, randomY);
-            dices[i].setSize(0.75f, 0.75f);
+            dices[i].setSize(0.45f, 0.45f);
         }
 
         // Setting the value of the current throw
