@@ -5,6 +5,7 @@
  */
 package com.smb215team.barjis.game.objects;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Rectangle;
@@ -15,6 +16,7 @@ import com.badlogic.gdx.math.MathUtils;
  * @author dinosaadeh
  */
 public abstract class AbstractGameObject {
+    private static final String TAG = Dices.class.getName();
 
     public Vector2 position;
     public Vector2 dimension;

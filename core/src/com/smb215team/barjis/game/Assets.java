@@ -29,6 +29,7 @@ public class Assets implements Disposable, AssetErrorListener {
     
     public AssetDice dice;
     public AssetBoard board;
+    public AssetPawn pawn;//Dino: this is temporary until we create the player class (delete this comment when we do)
     public AssetFonts fonts;
 
     // singleton: prevent instantiation from other classes
@@ -53,6 +54,7 @@ public class Assets implements Disposable, AssetErrorListener {
         fonts = new AssetFonts();
         dice = new AssetDice(atlas);
         board = new AssetBoard(atlas);
+        pawn = new AssetPawn(atlas);
     }
 
     @Override
@@ -81,6 +83,14 @@ public class Assets implements Disposable, AssetErrorListener {
         
         public AssetBoard (TextureAtlas atlas){
             board = atlas.findRegion("board");
+        }
+    }
+
+    public class AssetPawn {
+        public final AtlasRegion pawn;
+        
+        public AssetPawn (TextureAtlas atlas){
+            pawn = atlas.findRegion("pawn-horse");
         }
     }
     

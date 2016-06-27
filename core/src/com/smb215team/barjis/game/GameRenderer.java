@@ -64,19 +64,20 @@ public class GameRenderer implements Disposable {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         // <editor-fold desc="Dino: might lose this. I want to put the board on the screen to see how it looks in terms of dimensions and to throw my dices in a transparently delimited region">
-        //batch.draw(Assets.instance.board.board.getTexture(), 0f, 0f);
         Sprite boardSprite = new Sprite(Assets.instance.board.board);
         boardSprite.setSize(9, 9);
         boardSprite.setCenter(0, 0);
-        //boardSprite.setCenter(-boardSprite.getWidth()/2, -boardSprite.getWidth()/2);
         boardSprite.draw(batch);
         // </editor-fold>
         
+        gameController.dummyPawn.render(batch);
+        Dices.instance.render(batch);
+        
         // <editor-fold desc="Dino: Showing the dices on the board">
-        for (Sprite sprite : Dices.instance.dices) {
-            if(null != sprite)
-                sprite.draw(batch);
-        }
+//        for (Sprite sprite : Dices.instance.dices) {
+//            if(null != sprite)
+//                sprite.draw(batch);
+//        }
         // </editor-fold>
         batch.end();
     }
