@@ -7,6 +7,7 @@ package com.smb215team.barjis.game.objects;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.smb215team.barjis.game.Assets;
 
 /**
@@ -30,8 +31,12 @@ public class Dice extends AbstractGameObject {
         diceTexureRegion = isDiceUp ? Assets.instance.dice.diceUp : Assets.instance.dice.diceDown;
         dimension.set(0.5f, 0.5f);
         // Set physics values
-        velocity.set(0f, 1f);
-        terminalVelocity.set(3.0f, 4.0f);
+        //velocity.set(0f, 1f);
+        float randomVelocityX = MathUtils.random(-1f,1f);
+        float randomVelocityY = MathUtils.random(-1f,1f);
+        velocity.set(randomVelocityX, randomVelocityY);
+        //terminalVelocity.set(3.0f, 4.0f);
+        terminalVelocity.set(randomVelocityX + 3.0f, randomVelocityY + 4.0f);
         friction.set(12.0f, 0.0f);
         acceleration.set(0.0f, 25.0f);
         

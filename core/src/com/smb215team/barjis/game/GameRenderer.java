@@ -11,6 +11,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Rectangle;
 import com.smb215team.barjis.util.Constants;
 import com.smb215team.barjis.game.objects.*;
 /**
@@ -22,6 +25,8 @@ public class GameRenderer implements Disposable {
     private OrthographicCamera cameraGUI;
     private SpriteBatch batch;
     private GameController gameController;
+    
+    ShapeRenderer dummyShapeRenderer = new ShapeRenderer();
     
     public GameRenderer (GameController gameController) {
         this.gameController = gameController;
@@ -63,23 +68,43 @@ public class GameRenderer implements Disposable {
     private void renderTestObjects() {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
+        
         // <editor-fold desc="Dino: might lose this. I want to put the board on the screen to see how it looks in terms of dimensions and to throw my dices in a transparently delimited region">
         Sprite boardSprite = new Sprite(Assets.instance.board.board);
         boardSprite.setSize(9, 9);
         boardSprite.setCenter(0, 0);
         boardSprite.draw(batch);
         // </editor-fold>
-        
+                
+        Rectangle raindrop = new Rectangle();
+      raindrop.x = 4;
+      raindrop.y = 4;
+      raindrop.width = 64;
+      raindrop.height = 64;
         gameController.dummyPawn.render(batch);
         Dices.instance.render(batch);
-        
-        // <editor-fold desc="Dino: Showing the dices on the board">
-//        for (Sprite sprite : Dices.instance.dices) {
-//            if(null != sprite)
-//                sprite.draw(batch);
-//        }
-        // </editor-fold>
         batch.end();
+        
+                
+        // <editor-fold desc="drawing borders of dices to test collision">
+        dummyShapeRenderer.setProjectionMatrix(camera.combined);
+        dummyShapeRenderer.begin(ShapeType.Line);
+        dummyShapeRenderer.setColor(1, 1, 0, 1);
+        dummyShapeRenderer.rect(-7.65f, 0f, 3.5f, 0.1f);//top border
+        dummyShapeRenderer.rect(-7.65f, -4.5f, 3.5f, 0.1f);//bottom border
+        dummyShapeRenderer.rect(-7.65f, -4.5f, 0.1f, 4.5f);//left border
+        dummyShapeRenderer.rect(-4.2f, -4.5f, 0.1f, 4.5f);//right border
+        dummyShapeRenderer.end();
+
+        for(Dice dice : Dices.instance.dices){
+            if(null == dice)
+                continue;
+            dummyShapeRenderer.begin(com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType.Line);
+            dummyShapeRenderer.setColor(1, 1, 0, 1);
+            dummyShapeRenderer.rect(dice.position.x, dice.position.y, dice.bounds.width, dice.bounds.height);
+            dummyShapeRenderer.end();
+        }
+        // </editor-fold>
     }
     
     private void renderGui (SpriteBatch batch) {
