@@ -5,25 +5,15 @@
  */
 package com.smb215team.barjis.game;
 
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.utils.Array;
-
-// Dino: TEST SPRITES
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Pixmap.Format;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;//for testing
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.audio.Sound;
 import com.smb215team.barjis.game.objects.Dice;
+import com.smb215team.barjis.game.objects.DiceContainer;
 import com.smb215team.barjis.game.objects.Dices;
 import com.smb215team.barjis.game.objects.Pawn;
-import com.sun.media.jfxmedia.logging.Logger;
-// END Dino: TEST SPRITES
 
 /**
  *
@@ -34,12 +24,10 @@ public class GameController {
     
     public float dummyTimerForThrowingDices = 0.0f;
     Pawn dummyPawn;
+    Dice dummyDice;
     
-    Rectangle dicesContainerBorderTop;
-    Rectangle dicesContainerBorderBottom;
-    Rectangle dicesContainerBorderLeft;
-    Rectangle dicesContainerBorderRight;
-    Rectangle r2 = new Rectangle();
+    DiceContainer diceContainer;
+    Sound diceSound = Gdx.audio.newSound(Gdx.files.internal("diceSound.mp3"));
 
     
     public GameController () {
@@ -51,30 +39,40 @@ public class GameController {
     }
     
     private void initTestObjects() {
+        // <editor-fold desc="Dino: TO DELETE Dummy pawn/dice">
         dummyPawn = new Pawn();
-        Gdx.app.log("MyTag", "width: informative message");
-        dicesContainerBorderTop = new Rectangle();
-        dicesContainerBorderBottom = new Rectangle();
-        dicesContainerBorderLeft = new Rectangle();
-        dicesContainerBorderRight = new Rectangle();
-    }  
+        dummyDice = new Dice();
+        float randomX = MathUtils.random(-7.0f, -5.0f);
+        float randomY = MathUtils.random(-4.0f, 0f);
+        dummyDice.position.set(randomX, randomY);
+        dummyDice.bounds.set(randomX, randomY, 0.45f, 0.45f);
+        dummyDice.dimension.set(0.45f, 0.45f);
+        // </editor-fold>
+
+        diceContainer = new DiceContainer();  
+    }
     
     public void update (float deltaTime) {
         handleDebugInput(deltaTime);
         dummyPawn.update(deltaTime);
+        dummyDice.update(deltaTime);
         Dices.instance.update(deltaTime); //commentToDelete: later on this will be called only when needed
         
         testCollisions ();
 
         // <editor-fold desc="Dino: Dummy timer to throw dices">
         dummyTimerForThrowingDices += deltaTime;
-        if(dummyTimerForThrowingDices >= 5) {
-            //throwDices();
-            Dices.instance.throwDicesForOneTurn();
+        if(dummyTimerForThrowingDices >= 5 && Dices.instance.canPlayerThrowDices) {
+            Dices.instance.throwDices(diceContainer.diceMarginFromX, diceContainer.diceMarginToX, diceContainer.diceMarginFromY, diceContainer.diceMarginToY);
+            diceSound.play();
             dummyTimerForThrowingDices -= 5.0f; // If you reset it to 0 you will loose a few milliseconds every 2 seconds.
             Gdx.app.log(TAG, Dices.instance.getValue());
         }
         // </editor-fold>
+    }
+
+    public void dispose() {
+        diceSound.dispose();
     }
     
     private void handleDebugInput(float deltaTime) {
@@ -105,36 +103,51 @@ public class GameController {
     }
     
     private void testCollisions () {
-        dicesContainerBorderTop.set(-7.65f, 0f, 3.5f, 5);//top border
-        dicesContainerBorderBottom.set(-7.65f, -4.5f, 3.5f, 0.1f);//bottom border
-        dicesContainerBorderLeft.set(-7.65f, -4.5f, 0.1f, 4.5f);//left border
-        dicesContainerBorderRight.set(-4.2f, -4.5f, 0.1f, 4.5f);//right border
-        
-        // Test collision: Dice <-> Dice border(s)
-        int counter = 0;
+        // <editor-fold desc="TO DELETE: Test collision dummy dice with borders">
+//        if (!diceContainer.borderTop.overlaps(dummyDice.bounds) && !diceContainer.borderBottom.overlaps(dummyDice.bounds) && !diceContainer.borderLeft.overlaps(dummyDice.bounds) && !diceContainer.borderRight.overlaps(dummyDice.bounds)) {
+//            dummyDice.canCollideBorderTop = true;
+//            dummyDice.canCollideBorderBottom = true;
+//            dummyDice.canCollideBorderLeft = true;
+//            dummyDice.canCollideBorderRight = true;
+//            return;
+//        }
+//            if (diceContainer.borderTop.overlaps(dummyDice.bounds) && dummyDice.canCollideBorderTop){
+//                dummyDice.collideWithWall(false, 't');
+//            }
+//            if (diceContainer.borderBottom.overlaps(dummyDice.bounds) && dummyDice.canCollideBorderBottom){
+//                dummyDice.collideWithWall(false, 'b');
+//            }
+//            if (diceContainer.borderLeft.overlaps(dummyDice.bounds) && dummyDice.canCollideBorderLeft){
+//                dummyDice.collideWithWall(true, 'l');
+//            }
+//            if (diceContainer.borderRight.overlaps(dummyDice.bounds) && dummyDice.canCollideBorderRight){
+//                dummyDice.collideWithWall(true, 'r');
+//            }
+        // </editor-fold>
+        // <editor-fold desc="Test collision: Dice <-> Dice borders">
         for (Dice dice : Dices.instance.dices) {
-            counter++;
             if(null == dice)
                 return;
-            r2.set(dice.position.x, dice.position.y, dice.bounds.width, dice.bounds.height);
-
-            if (!dicesContainerBorderTop.overlaps(r2) && !dicesContainerBorderBottom.overlaps(r2) && !dicesContainerBorderLeft.overlaps(r2) && !dicesContainerBorderRight.overlaps(r2)) continue;
-            if (dicesContainerBorderTop.overlaps(r2)){
-                dice.velocity.set(0, -1f);
-                dice.acceleration.set(0, 0);
+            if (!diceContainer.borderTop.overlaps(dice.bounds) && !diceContainer.borderBottom.overlaps(dice.bounds) && !diceContainer.borderLeft.overlaps(dice.bounds) && !diceContainer.borderRight.overlaps(dice.bounds)) {
+                dice.canCollideBorderTop = true;
+                dice.canCollideBorderBottom = true;
+                dice.canCollideBorderLeft = true;
+                dice.canCollideBorderRight = true;
+                continue;
             }
-            if (dicesContainerBorderBottom.overlaps(r2)){
-                dice.velocity.set(0, 1f);
-                dice.acceleration.set(0, 0);
+            if (diceContainer.borderTop.overlaps(dice.bounds) && dice.canCollideBorderTop){
+                dice.collideWithWall(false, 't');
             }
-            if (dicesContainerBorderLeft.overlaps(r2)){
-                dice.velocity.set(0, -1f);
-                dice.acceleration.set(0, 0);
+            if (diceContainer.borderBottom.overlaps(dice.bounds) && dice.canCollideBorderBottom){
+                dice.collideWithWall(false, 'b');
             }
-            if (dicesContainerBorderRight.overlaps(r2)){
-                dice.velocity.set(0, -1f);
-                dice.acceleration.set(0, 0);
+            if (diceContainer.borderLeft.overlaps(dice.bounds) && dice.canCollideBorderLeft){
+                dice.collideWithWall(true, 'l');
+            }
+            if (diceContainer.borderRight.overlaps(dice.bounds) && dice.canCollideBorderRight){
+                dice.collideWithWall(true, 'r');
             }
         }
+        // </editor-fold>
     }
 }

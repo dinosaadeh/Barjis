@@ -1,10 +1,8 @@
 package com.smb215team.barjis.game.objects;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
-import com.smb215team.barjis.game.Assets;
 
 /**
  * This is a singleton class that takes care of throwing the dice over and over
@@ -19,6 +17,7 @@ public class Dices {
     public static final Dices instance = new Dices();
     public Dice[] dices;
     public Integer[] currentHandMoves;
+    public boolean canPlayerThrowDices;
 
     private Dices() {
         init();
@@ -40,6 +39,17 @@ public class Dices {
         currentHandMoves[5] = 0; // banj
         currentHandMoves[6] = 0; // bara
         currentHandMoves[7] = 0; // khal
+        
+        canPlayerThrowDices = true;
+    }
+    
+    public void reset() {
+        //Reset the currentHandNumberOfMoves
+        for (int i = 0; i < 8; i++) {
+            currentHandMoves[i] = 0;
+        }
+        
+        canPlayerThrowDices = true;
     }
 
     public void render(SpriteBatch batch) {
@@ -58,15 +68,7 @@ public class Dices {
         }
     }
 
-    public void throwDicesForOneTurn() {
-        //Reset the currentHandNumberOfMoves
-        for (int i = 0; i < 8; i++) {
-            currentHandMoves[i] = 0;
-        }
-        throwDices();
-    }
-
-    private void throwDices() {
+    public void throwDices(float diceMarginFromX, float diceMarginToX, float diceMarginFromY, float diceMarginToY) {
         int currentThrowValue = 0;
         for (int i = 0; i < dices.length; i++) {
             if (Math.random() < 0.5) {
@@ -77,10 +79,12 @@ public class Dices {
             }
 
             // Position on the screen
-            float randomX = MathUtils.random(-7.0f, -5.0f);
-            float randomY = MathUtils.random(-4.0f, 0f);
+            float randomX = MathUtils.random(diceMarginFromX, diceMarginToX);//(-7.0f, -5.0f);
+            float randomY = MathUtils.random(diceMarginFromY, diceMarginToY);//(-4.0f, 0f);
             dices[i].position.set(randomX, randomY);
+            dices[i].bounds.set(randomX, randomY, 0.45f, 0.45f);
             dices[i].dimension.set(0.45f, 0.45f);
+            Gdx.app.log(TAG, "Position: " + randomX + ", " + randomY);
         }
 
         // Setting the value of the current throw
@@ -89,9 +93,9 @@ public class Dices {
         {
             currentHandMoves[7]++;
         }
-        // If a special combination, throw dices again
-        if (0 == currentThrowValue || 1 == currentThrowValue || 5 == currentThrowValue || 6 == currentThrowValue) {
-            throwDices();
+        // If a stopper combination (2, 3 or 4), do not allow the player to throw dices again
+        if (2 == currentThrowValue || 3 == currentThrowValue || 4 == currentThrowValue) {
+            //canPlayerThrowDices = false;
         }
     }
 

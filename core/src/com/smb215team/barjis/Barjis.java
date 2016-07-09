@@ -68,6 +68,7 @@ public class Barjis extends ApplicationAdapter {
     
     @Override public void dispose () {
         gameRenderer.dispose();
+        gameController.dispose();
         Assets.instance.dispose();
     }
 }

@@ -75,35 +75,35 @@ public class GameRenderer implements Disposable {
         boardSprite.setCenter(0, 0);
         boardSprite.draw(batch);
         // </editor-fold>
-                
-        Rectangle raindrop = new Rectangle();
-      raindrop.x = 4;
-      raindrop.y = 4;
-      raindrop.width = 64;
-      raindrop.height = 64;
+
         gameController.dummyPawn.render(batch);
+        gameController.dummyDice.render(batch);
         Dices.instance.render(batch);
         batch.end();
+       
+        // <editor-fold desc="FOR DEBUGGING: drawing borders of dices to test collision">
+//        dummyShapeRenderer.setProjectionMatrix(camera.combined);
+//        dummyShapeRenderer.begin(ShapeType.Line);
+//        dummyShapeRenderer.setColor(1, 1, 0, 1);
+//        dummyShapeRenderer.rect(-7.65f, 0f, 3.5f, 0.1f);//top border
+//        dummyShapeRenderer.rect(-7.65f, -4.5f, 3.5f, 0.1f);//bottom border
+//        dummyShapeRenderer.rect(-7.65f, -4.5f, 0.1f, 4.5f);//left border
+//        dummyShapeRenderer.rect(-4.2f, -4.5f, 0.1f, 4.5f);//right border
         
-                
-        // <editor-fold desc="drawing borders of dices to test collision">
-        dummyShapeRenderer.setProjectionMatrix(camera.combined);
-        dummyShapeRenderer.begin(ShapeType.Line);
-        dummyShapeRenderer.setColor(1, 1, 0, 1);
-        dummyShapeRenderer.rect(-7.65f, 0f, 3.5f, 0.1f);//top border
-        dummyShapeRenderer.rect(-7.65f, -4.5f, 3.5f, 0.1f);//bottom border
-        dummyShapeRenderer.rect(-7.65f, -4.5f, 0.1f, 4.5f);//left border
-        dummyShapeRenderer.rect(-4.2f, -4.5f, 0.1f, 4.5f);//right border
-        dummyShapeRenderer.end();
+//        dummyShapeRenderer.rect(4.1f, 0f, 3.6f, 0.1f);//top border
+//        dummyShapeRenderer.rect(4.1f, -4.5f, 3.6f, 0.1f);//bottom border
+//        dummyShapeRenderer.rect(4.1f, -4.5f, 0.1f, 4.5f);//left border
+//        dummyShapeRenderer.rect(7.6f, -4.5f, 0.1f, 4.5f);//right border
+//        dummyShapeRenderer.end();
 
-        for(Dice dice : Dices.instance.dices){
-            if(null == dice)
-                continue;
-            dummyShapeRenderer.begin(com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType.Line);
-            dummyShapeRenderer.setColor(1, 1, 0, 1);
-            dummyShapeRenderer.rect(dice.position.x, dice.position.y, dice.bounds.width, dice.bounds.height);
-            dummyShapeRenderer.end();
-        }
+//        for(Dice dice : Dices.instance.dices){
+//            if(null == dice)
+//                continue;
+//            dummyShapeRenderer.begin(com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType.Line);
+//            dummyShapeRenderer.setColor(1, 1, 0, 1);
+//            dummyShapeRenderer.rect(dice.bounds.x, dice.bounds.y, dice.bounds.width, dice.bounds.height);
+//            dummyShapeRenderer.end();
+//        }
         // </editor-fold>
     }
     

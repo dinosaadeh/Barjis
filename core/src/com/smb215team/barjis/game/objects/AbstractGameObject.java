@@ -23,10 +23,30 @@ public abstract class AbstractGameObject {
     public Vector2 origin;
     public Vector2 scale;
     public float rotation;
+    /**
+     * This is the object's current speed in m/s
+     */
     public Vector2 velocity;
+    /**
+     * This is the object's positive and negative maximum speed in m/s.
+     */
     public Vector2 terminalVelocity;
+    /**
+     * This is an opposing force that slows down the object until 
+     * its velocity equals zero. This value is given as a coefficient that is dimensionless. 
+     * A value of zero means no friction, and thus the object's velocity will not decrease.
+     */
     public Vector2 friction;
+    /**
+     * This is the object's constant acceleration in m/s².
+     */
     public Vector2 acceleration;
+    /**
+     * The object's bounding box describes the physical body that will be
+     * used for collision detection with other objects. The bounding box can be set
+     * to any size and is completely independent of the actual dimension of the
+     * object in the game world.
+     */
     public Rectangle bounds;
 
     public AbstractGameObject() {
@@ -66,6 +86,9 @@ public abstract class AbstractGameObject {
         // Make sure the object's velocity does not exceed the
         // positive or negative terminal velocity
         velocity.x = MathUtils.clamp(velocity.x, -terminalVelocity.x, terminalVelocity.x);
+        
+        //Dino: updating the bounds of the sprite
+        this.bounds.set(this.position.x, this.position.y, this.dimension.x, this.dimension.y);
     }
 
     protected void updateMotionY(float deltaTime) {
@@ -84,5 +107,8 @@ public abstract class AbstractGameObject {
         // Make sure the object's velocity does not exceed the
         // positive or negative terminal velocity
         velocity.y = MathUtils.clamp(velocity.y, -terminalVelocity.y, terminalVelocity.y);
+        
+        //Dino: updating the bounds of the sprite
+        this.bounds.set(this.position.x, this.position.y, this.dimension.x, this.dimension.y);
     }
 }
