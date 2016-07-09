@@ -95,7 +95,7 @@ public class Dices {
         }
         // If a stopper combination (2, 3 or 4), do not allow the player to throw dices again
         if (2 == currentThrowValue || 3 == currentThrowValue || 4 == currentThrowValue) {
-            //canPlayerThrowDices = false;
+            canPlayerThrowDices = false;
         }
     }
 
