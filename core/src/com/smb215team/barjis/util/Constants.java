@@ -6,6 +6,7 @@
 package com.smb215team.barjis.util;
 
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 
 /**
  *
@@ -18,6 +19,13 @@ public class Constants {
     public static final float VIEWPORT_HEIGHT = 9f;
     // Location of description file for texture atlas
     public static final String TEXTURE_ATLAS_OBJECTS = "BarjisPackFile.atlas";
+
+    public static final Vector2[] boardMap = new Vector2[] {
+        new Vector2(5, 0),
+        new Vector2(6, 3),
+        new Vector2(0, 4)
+        //etc.
+    };
     
     // GUI Width
     public static final float VIEWPORT_GUI_WIDTH = 800.0f;

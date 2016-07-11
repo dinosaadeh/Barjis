@@ -77,6 +77,9 @@ public class GameRenderer implements Disposable {
         // </editor-fold>
 
         gameController.dummyPawn.render(batch);
+        for(int i = 0; i < gameController.dummyPawnToFillMap.length; i++) {
+            gameController.dummyPawnToFillMap[i].render(batch);
+        }
         gameController.dummyDice.render(batch);
         Dices.instance.render(batch);
         batch.end();

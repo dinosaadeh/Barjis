@@ -1,11 +1,8 @@
 package com.smb215team.barjis;
 
-import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.assets.AssetManager;
 
 import com.smb215team.barjis.game.GameController;
@@ -13,7 +10,7 @@ import com.smb215team.barjis.game.GameRenderer;
 import com.smb215team.barjis.game.Assets;
 import com.smb215team.barjis.game.objects.*;
 
-public class Barjis extends ApplicationAdapter {
+public class Barjis extends Game {
     private static final String TAG = Barjis.class.getName();
 
     private GameController gameController;
