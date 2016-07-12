@@ -15,6 +15,8 @@ import com.smb215team.barjis.game.objects.DiceContainer;
 import com.smb215team.barjis.game.objects.Dices;
 import com.smb215team.barjis.game.objects.Pawn;
 import com.smb215team.barjis.util.Constants;
+import com.badlogic.gdx.Game;
+import com.smb215team.barjis.screens.MenuScreen;
 
 /**
  *
@@ -22,6 +24,7 @@ import com.smb215team.barjis.util.Constants;
  */
 public class GameController {
     private static final String TAG = GameController.class.getName();
+    private Game game;
     
     public float dummyTimerForThrowingDices = 0.0f;
     Pawn dummyPawn;
@@ -32,7 +35,8 @@ public class GameController {
     Sound diceSound = Gdx.audio.newSound(Gdx.files.internal("diceSound.mp3"));
 
     
-    public GameController () {
+    public GameController (Game game) {
+        this.game = game;
         init();
     }
     
@@ -106,6 +110,10 @@ public class GameController {
         }
     }
 
+    private void backToMenu () {
+        // switch to menu screen
+        game.setScreen(new MenuScreen(game));
+    }
     private void moveSelectedSprite(float x, float y) {
         //testSprites[selectedSprite].translate(x, y);
     }
