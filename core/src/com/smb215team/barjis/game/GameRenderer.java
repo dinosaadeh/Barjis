@@ -32,7 +32,8 @@ public class GameRenderer implements Disposable {
         this.gameController = gameController;
         init();
     }
-    
+
+
     private void init () {
         batch = new SpriteBatch();
         
@@ -64,7 +65,7 @@ public class GameRenderer implements Disposable {
     @Override public void dispose () {
         batch.dispose();
     }
-   
+
     private void renderTestObjects() {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();

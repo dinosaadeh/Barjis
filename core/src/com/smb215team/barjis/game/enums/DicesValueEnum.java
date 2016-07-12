@@ -1,4 +1,4 @@
-package com.smb215team.barjis.util;
+package com.smb215team.barjis.game.enums;
 
 /**
  * Created by ammar on 7/10/16.
