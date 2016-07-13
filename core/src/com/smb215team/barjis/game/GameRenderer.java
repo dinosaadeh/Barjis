@@ -33,7 +33,6 @@ public class GameRenderer implements Disposable {
         init();
     }
 
-
     private void init () {
         batch = new SpriteBatch();
         

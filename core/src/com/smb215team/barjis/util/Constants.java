@@ -7,8 +7,6 @@ package com.smb215team.barjis.util;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.smb215team.barjis.game.enums.CellNameEnum;
-import com.smb215team.barjis.game.objects.Cell;
 
 /**
  * @author dinosaadeh
@@ -22,10 +20,47 @@ public class Constants {
     public static final String TEXTURE_ATLAS_OBJECTS = "BarjisPackFile.atlas";
 
     public static final Vector2[] boardMap = new Vector2[]{
-            new Vector2(5, 0),
-            new Vector2(6, 3),
-            new Vector2(0, 4)
-            //etc.
+            //Bottom Branch
+            //Bottom Branch - middle
+            new Vector2(-0.2f, -1.4f),
+            new Vector2(-0.2f, -1.8f),
+            new Vector2(-0.2f, -2.2f),
+            new Vector2(-0.2f, -2.6f),
+            new Vector2(-0.2f, -3f),
+            new Vector2(-0.2f, -3.4f),
+            new Vector2(-0.2f, -3.8f),
+            new Vector2(-0.2f, -4.2f),
+            //Bottom Branch - right
+            new Vector2(0.6f, -4.2f),
+            new Vector2(0.6f, -3.8f),
+            new Vector2(0.6f, -3.4f),
+            new Vector2(0.6f, -3f),
+            new Vector2(0.6f, -2.6f),
+            new Vector2(0.6f, -2.2f),
+            new Vector2(0.6f, -1.8f),
+            new Vector2(0.6f, -1.4f),
+            //Bottom Branch - left
+            new Vector2(-1f, -1.4f),
+            new Vector2(-1f, -1.8f),
+            new Vector2(-1f, -2.2f),
+            new Vector2(-1f, -2.6f),
+            new Vector2(-1f, -3f),
+            new Vector2(-1f, -3.4f),
+            new Vector2(-1f, -3.8f),
+            new Vector2(-1f, -4.2f)
+            //Right Branch
+            //Right Branch - middle
+            //Right Branch - right
+            //Right Branch - left
+            //Top Branch
+            //Top Branch - middle
+            //Top Branch - right
+            //Top Branch - left
+            //Left Branch
+            //Left Branch - middle
+            //Left Branch - right
+            //Left Branch - left
+
     };
 
     // GUI Width
@@ -50,17 +85,4 @@ public class Constants {
     public static final Rectangle DICES_CONTAINER_BORDER_LEFT_SIDE02 = new Rectangle(4.1f, -4.5f, 0.1f, 4.5f);
     public static final Rectangle DICES_CONTAINER_BORDER_RIGHT_SIDE02 = new Rectangle(7.6f, -4.5f, 0.1f, 4.5f);
     // </editor-fold>
-
-    public static final Cell[] CELLS = {new Cell(CellNameEnum.A21, -0.2f, -1.4f), new Cell(CellNameEnum.A22, -0.2f, -1.8f),
-            new Cell(CellNameEnum.A23, -0.2f, -2.2f), new Cell(CellNameEnum.A24, -0.2f, -2.6f),
-            new Cell(CellNameEnum.A25, -0.2f, -3f), new Cell(CellNameEnum.A26, -0.2f, -3.4f),
-            new Cell(CellNameEnum.A27, -0.2f, -3.8f), new Cell(CellNameEnum.A28, -0.2f, -4.2f),
-            new Cell(CellNameEnum.A38, 0.6f, -4.2f), new Cell(CellNameEnum.A37, 0.6f, -3.8f),
-            new Cell(CellNameEnum.A36, 0.6f, -3.4f, true), new Cell(CellNameEnum.A35, 0.6f, -3f),
-            new Cell(CellNameEnum.A34, 0.6f, -2.6f), new Cell(CellNameEnum.A33, 0.6f, -2.2f),
-            new Cell(CellNameEnum.A32, 0.6f, -1.8f), new Cell(CellNameEnum.A31, 0.6f, -1.4f),
-            new Cell(CellNameEnum.A11, -1f, -1.4f), new Cell(CellNameEnum.A12, -1f, -1.8f),
-            new Cell(CellNameEnum.A13, -1f, -2.2f), new Cell(CellNameEnum.A14, -1f, -2.6f),
-            new Cell(CellNameEnum.A15, -1f, -3f), new Cell(CellNameEnum.A16, -1f, -3.4f, true),
-            new Cell(CellNameEnum.A17, -1f, -3.8f), new Cell(CellNameEnum.A18, -1f, -4.2f)};
 }
