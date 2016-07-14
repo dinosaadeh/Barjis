@@ -8,6 +8,7 @@ package com.smb215team.barjis.game.objects;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.smb215team.barjis.game.Assets;
+import com.smb215team.barjis.game.enums.PawnState;
 
 /**
  * @author dinosaadeh
@@ -16,6 +17,7 @@ public class Pawn extends AbstractGameObject {
 
     private static final String TAG = Dices.class.getName();
     private TextureRegion pawnImage;
+    PawnState state;
     //TODO remove the path after creating it with enum
     private String[] path;
     private int currentLocation;
@@ -25,7 +27,7 @@ public class Pawn extends AbstractGameObject {
     }
 
     public void init() {
-//        dimension.set(0.45f, 0.45f);
+        //dimension.set(0.45f, 0.45f);
         dimension.set(0.35f, 0.35f);
         pawnImage = Assets.instance.pawn.pawn;
         // Set physics values

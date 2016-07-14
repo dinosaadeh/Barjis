@@ -16,8 +16,6 @@ public class Barjis extends Game {
         Gdx.app.setLogLevel(com.badlogic.gdx.Application.LOG_DEBUG);
         // Load assets
         Assets.instance.init(new AssetManager());
-        // Dino TODO (check if the below should be moved to GameScreen): initiate the dices
-        Dices.instance.init();
         // Start game at menu screen
         setScreen(new MenuScreen(this));
     }

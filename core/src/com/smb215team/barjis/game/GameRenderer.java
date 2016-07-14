@@ -12,8 +12,6 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.math.Rectangle;
 import com.smb215team.barjis.util.Constants;
 import com.smb215team.barjis.game.objects.*;
 /**
@@ -76,38 +74,11 @@ public class GameRenderer implements Disposable {
         boardSprite.draw(batch);
         // </editor-fold>
 
-        gameController.dummyPawn.render(batch);
         for(int i = 0; i < gameController.dummyPawnToFillMap.length; i++) {
             gameController.dummyPawnToFillMap[i].render(batch);
         }
-        gameController.dummyDice.render(batch);
         Dices.instance.render(batch);
         batch.end();
-       
-        // <editor-fold desc="FOR DEBUGGING: drawing borders of dices to test collision">
-//        dummyShapeRenderer.setProjectionMatrix(camera.combined);
-//        dummyShapeRenderer.begin(ShapeType.Line);
-//        dummyShapeRenderer.setColor(1, 1, 0, 1);
-//        dummyShapeRenderer.rect(-7.65f, 0f, 3.5f, 0.1f);//top border
-//        dummyShapeRenderer.rect(-7.65f, -4.5f, 3.5f, 0.1f);//bottom border
-//        dummyShapeRenderer.rect(-7.65f, -4.5f, 0.1f, 4.5f);//left border
-//        dummyShapeRenderer.rect(-4.2f, -4.5f, 0.1f, 4.5f);//right border
-        
-//        dummyShapeRenderer.rect(4.1f, 0f, 3.6f, 0.1f);//top border
-//        dummyShapeRenderer.rect(4.1f, -4.5f, 3.6f, 0.1f);//bottom border
-//        dummyShapeRenderer.rect(4.1f, -4.5f, 0.1f, 4.5f);//left border
-//        dummyShapeRenderer.rect(7.6f, -4.5f, 0.1f, 4.5f);//right border
-//        dummyShapeRenderer.end();
-
-//        for(Dice dice : Dices.instance.dices){
-//            if(null == dice)
-//                continue;
-//            dummyShapeRenderer.begin(com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType.Line);
-//            dummyShapeRenderer.setColor(1, 1, 0, 1);
-//            dummyShapeRenderer.rect(dice.bounds.x, dice.bounds.y, dice.bounds.width, dice.bounds.height);
-//            dummyShapeRenderer.end();
-//        }
-        // </editor-fold>
     }
     
     private void renderGui (SpriteBatch batch) {

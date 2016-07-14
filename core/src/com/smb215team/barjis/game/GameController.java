@@ -5,8 +5,6 @@
  */
 package com.smb215team.barjis.game;
 
-import com.badlogic.gdx.math.MathUtils;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;//for testing
 import com.badlogic.gdx.audio.Sound;
@@ -16,6 +14,7 @@ import com.smb215team.barjis.game.objects.Dices;
 import com.smb215team.barjis.game.objects.Pawn;
 import com.smb215team.barjis.util.Constants;
 import com.badlogic.gdx.Game;
+import com.smb215team.barjis.game.objects.Player;
 import com.smb215team.barjis.screens.MenuScreen;
 
 /**
@@ -26,14 +25,14 @@ public class GameController {
     private static final String TAG = GameController.class.getName();
     private Game game;
     
+    // <editor-fold desc="Dino: TO DELETE Dummy stuff">
     public float dummyTimerForThrowingDices = 0.0f;
-    Pawn dummyPawn;
     Pawn[] dummyPawnToFillMap;
-    Dice dummyDice;
+    // </editor-fold>
     
+    Player[] players;
     DiceContainer diceContainer;
     Sound diceSound = Gdx.audio.newSound(Gdx.files.internal("diceSound.mp3"));
-
     
     public GameController (Game game) {
         this.game = game;
@@ -41,24 +40,18 @@ public class GameController {
     }
     
     private void init () {
+        Dices.instance.init();
         initTestObjects();
     }
     
     private void initTestObjects() {
         // <editor-fold desc="Dino: TO DELETE Dummy pawn/dice">
-        dummyPawn = new Pawn();
         dummyPawnToFillMap = new Pawn[Constants.boardMap.length];
         for(int i = 0; i < dummyPawnToFillMap.length; i++) {
             dummyPawnToFillMap[i] = new Pawn();
             dummyPawnToFillMap[i].position.set(Constants.boardMap[i].x, Constants.boardMap[i].y);
 
         }
-        dummyDice = new Dice();
-        float randomX = MathUtils.random(-7.0f, -5.0f);
-        float randomY = MathUtils.random(-4.0f, 0f);
-        dummyDice.position.set(randomX, randomY);
-        dummyDice.bounds.set(randomX, randomY, 0.45f, 0.45f);
-        dummyDice.dimension.set(0.45f, 0.45f);
         // </editor-fold>
 
         diceContainer = new DiceContainer();  
@@ -66,8 +59,6 @@ public class GameController {
     
     public void update (float deltaTime) {
         handleDebugInput(deltaTime);
-        dummyPawn.update(deltaTime);
-        dummyDice.update(deltaTime);
         Dices.instance.update(deltaTime); //commentToDelete: later on this will be called only when needed
         
         testCollisions ();
