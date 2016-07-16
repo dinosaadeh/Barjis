@@ -47,19 +47,93 @@ public class Constants {
             new Vector2(-1f, -3f),
             new Vector2(-1f, -3.4f),
             new Vector2(-1f, -3.8f),
-            new Vector2(-1f, -4.2f)
+            new Vector2(-1f, -4.2f),
             //Right Branch
             //Right Branch - middle
+            new Vector2(0.9f, -0.2f),
+            new Vector2(1.25f, -0.2f),
+            new Vector2(1.6f, -0.2f),
+            new Vector2(1.98f, -0.2f),
+            new Vector2(2.35f, -0.2f),
+            new Vector2(2.72f, -0.2f),
+            new Vector2(3.08f, -0.2f),
+            new Vector2(3.45f, -0.2f),
+
             //Right Branch - right
+            new Vector2(0.9f, 0.6f),
+            new Vector2(1.25f, 0.7f),
+            new Vector2(1.6f, 0.7f),
+            new Vector2(1.98f, 0.7f),
+            new Vector2(2.35f, 0.7f),
+            new Vector2(2.72f, 0.7f),
+            new Vector2(3.08f, 0.7f),
+            new Vector2(3.45f, 0.7f),
             //Right Branch - left
+            new Vector2(0.9f, -1f),
+            new Vector2(1.25f, -1.1f),
+            new Vector2(1.6f, -1.1f),
+            new Vector2(1.98f, -1.1f),
+            new Vector2(2.35f, -1.1f),
+            new Vector2(2.72f, -1.1f),
+            new Vector2(3.08f, -1.1f),
+            new Vector2(3.45f, -1.1f),
+
             //Top Branch
             //Top Branch - middle
+            new Vector2(-0.18f, 0.98f),
+            new Vector2(-0.18f, 1.38f),
+            new Vector2(-0.18f, 1.78f),
+            new Vector2(-0.18f, 2.2f),
+            new Vector2(-0.18f, 2.6f),
+            new Vector2(-0.18f, 3f),
+            new Vector2(-0.18f, 3.4f),
+            new Vector2(-0.18f, 3.8f),
             //Top Branch - right
+            new Vector2(-0.84f, 0.98f),
+            new Vector2(-0.9f, 1.38f),
+            new Vector2(-0.9f, 1.78f),
+            new Vector2(-0.9f, 2.2f),
+            new Vector2(-0.9f, 2.6f),
+            new Vector2(-0.9f, 3f),
+            new Vector2(-0.9f, 3.4f),
+            new Vector2(-0.9f, 3.8f),
             //Top Branch - left
+            new Vector2(0.6f, 0.98f),
+            new Vector2(0.65f, 1.38f),
+            new Vector2(0.65f, 1.78f),
+            new Vector2(0.65f, 2.2f),
+            new Vector2(0.65f, 2.6f),
+            new Vector2(0.65f, 3f),
+            new Vector2(0.65f, 3.4f),
+            new Vector2(0.65f, 3.8f),
             //Left Branch
             //Left Branch - middle
+            new Vector2(-1.2f, -0.2f),
+            new Vector2(-1.58f, -0.2f),
+            new Vector2(-1.94f, -0.2f),
+            new Vector2(-2.3f, -0.2f),
+            new Vector2(-2.66f, -0.2f),
+            new Vector2(-3.03f, -0.2f),
+            new Vector2(-3.4f, -0.2f),
+            new Vector2(-3.76f, -0.2f),
             //Left Branch - right
+            new Vector2(-1.2f, -1f),
+            new Vector2(-1.58f, -1.1f),
+            new Vector2(-1.94f, -1.1f),
+            new Vector2(-2.3f, -1.1f),
+            new Vector2(-2.66f, -1.1f),
+            new Vector2(-3.03f, -1.1f),
+            new Vector2(-3.4f, -1.1f),
+            new Vector2(-3.76f, -1.1f),
             //Left Branch - left
+            new Vector2(-1.2f, 0.6f),
+            new Vector2(-1.58f, 0.7f),
+            new Vector2(-1.94f, 0.7f),
+            new Vector2(-2.3f, 0.7f),
+            new Vector2(-2.66f, 0.7f),
+            new Vector2(-3.03f, 0.7f),
+            new Vector2(-3.4f, 0.7f),
+            new Vector2(-3.76f, 0.7f)
 
     };
 
