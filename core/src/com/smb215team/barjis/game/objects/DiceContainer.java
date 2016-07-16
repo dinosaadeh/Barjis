@@ -38,7 +38,7 @@ public class DiceContainer {
         init(side);
     }
 
-    private void init(String side) {
+    public void init(String side) {
         if(side.equals("SIDE01")){
             borderTop = DICES_CONTAINER_BORDER_TOP_SIDE01;
             borderBottom = DICES_CONTAINER_BORDER_BOTTOM_SIDE01;

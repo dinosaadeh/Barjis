@@ -3,18 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.smb215team.barjis.util;
-
+package com.smb215team.barjis.game.enums;
 /**
  *
  * @author dinosaadeh
  */
 public enum GameState {
-    mainMenu,
-    settingsMenu,
-    inGamePlayer01RollingDice,
-    inGamePlayer02RollingDice,
-    inGamePlayer01Playing,
-    inGamePlayer02Playing,
+    gameStart,
+    playerTurn,
     gameOver
 }

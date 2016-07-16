@@ -7,13 +7,13 @@ package com.smb215team.barjis.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;//for testing
-import com.badlogic.gdx.audio.Sound;
 import com.smb215team.barjis.game.objects.Dice;
 import com.smb215team.barjis.game.objects.DiceContainer;
 import com.smb215team.barjis.game.objects.Dices;
 import com.smb215team.barjis.game.objects.Pawn;
 import com.smb215team.barjis.util.Constants;
 import com.badlogic.gdx.Game;
+import com.smb215team.barjis.game.enums.GameState;
 import com.smb215team.barjis.game.objects.Player;
 import com.smb215team.barjis.screens.MenuScreen;
 
@@ -23,24 +23,35 @@ import com.smb215team.barjis.screens.MenuScreen;
  */
 public class GameController {
     private static final String TAG = GameController.class.getName();
+    
     private Game game;
+    GameState state;
+    Player[] players;
+    int currentPlayerIndex;
+    DiceContainer diceContainer;
+    public float timerForThrowingDices = 0.0f;
     
     // <editor-fold desc="Dino: TO DELETE Dummy stuff">
-    public float dummyTimerForThrowingDices = 0.0f;
     Pawn[] dummyPawnToFillMap;
     // </editor-fold>
-    
-    Player[] players;
-    DiceContainer diceContainer;
-    Sound diceSound = Gdx.audio.newSound(Gdx.files.internal("diceSound.mp3"));
-    
+        
     public GameController (Game game) {
         this.game = game;
         init();
     }
     
     private void init () {
+        state = GameState.gameStart;
         Dices.instance.init();
+        diceContainer = new DiceContainer();
+        timerForThrowingDices = 0.0f;
+        
+        players = new Player[2]; //TODO: account for variable number of players (1, 2, 3, 4)
+        currentPlayerIndex = 0;
+        for(int i = 0; i < players.length; i++) {
+            players[i] = new Player();
+        }
+        
         initTestObjects();
     }
     
@@ -53,84 +64,77 @@ public class GameController {
 
         }
         // </editor-fold>
-
-        diceContainer = new DiceContainer();  
     }
     
     public void update (float deltaTime) {
-        handleDebugInput(deltaTime);
-        Dices.instance.update(deltaTime); //commentToDelete: later on this will be called only when needed
-        
-        testCollisions ();
-
-        // <editor-fold desc="Dino: Dummy timer to throw dices">
-        dummyTimerForThrowingDices += deltaTime;
-        if(dummyTimerForThrowingDices >= 5 && Dices.instance.canPlayerThrowDices) {
-            Dices.instance.throwDices(diceContainer.diceMarginFromX, diceContainer.diceMarginToX, diceContainer.diceMarginFromY, diceContainer.diceMarginToY);
-            diceSound.play();
-            dummyTimerForThrowingDices -= 5.0f; // If you reset it to 0 you will loose a few milliseconds every 2 seconds.
-            Gdx.app.log(TAG, Dices.instance.getValue());
+        switch (state) {
+            case gameStart:
+                gameStart();
+                break;
+            case playerTurn:
+                playOneHand(deltaTime);
+                break;
+            case gameOver:
+                break;
+            default:
+                throw new AssertionError(state.name());
         }
-        // </editor-fold>
     }
 
     public void dispose() {
-        diceSound.dispose();
-    }
-    
-    private void handleDebugInput(float deltaTime) {
-        if (Gdx.app.getType() != com.badlogic.gdx.Application.ApplicationType.Desktop) {
-            return;
-        }
-// Selected Sprite Controls
-        float sprMoveSpeed = 5 * deltaTime;
-        if (Gdx.input.isKeyPressed(Keys.A)) {
-            moveSelectedSprite(
-                    -sprMoveSpeed, 0);
-        }
-        if (Gdx.input.isKeyPressed(Keys.D)) {
-            moveSelectedSprite(sprMoveSpeed, 0);
-        }
-        if (Gdx.input.isKeyPressed(Keys.W)) {
-            moveSelectedSprite(0,
-                    sprMoveSpeed);
-        }
-        if (Gdx.input.isKeyPressed(Keys.S)) {
-            moveSelectedSprite(0,
-                    -sprMoveSpeed);
-        }
+        Dices.instance.dispose();
     }
 
     private void backToMenu () {
         // switch to menu screen
         game.setScreen(new MenuScreen(game));
     }
+    
+    /**
+     * TODO
+     * play three dices on each side to decide who goes first
+     */
+    public void gameStart() {
+        //Once done knowing and setting who goes first, set the game state to playerTurn
+        this.state = GameState.playerTurn;
+    }
+    
+    public void playOneHand(float deltaTime) {
+        //Based on which player index I know where to play the dice
+        switch(currentPlayerIndex) {
+            case 0: diceContainer.init("SIDE01");
+                break;
+            case 1: diceContainer.init("SIDE02");
+                break;
+            default: diceContainer.init("SIDE01");
+        }
+        
+        // Play the dice
+        playDices(deltaTime);
+        
+//        if(!Dices.instance.canPlayerThrowDices)
+//            switchToNextPlayer();
+        // Once player is finished, switch to the next player
+    }
+    
+    private void playDices(float deltaTime) {
+        Dices.instance.update(deltaTime); //commentToDelete: later on this will be called only when needed
+        
+        testDicesCollisions ();
+
+        timerForThrowingDices += deltaTime;
+        if(timerForThrowingDices >= 5 && Dices.instance.canPlayerThrowDices) {
+            Dices.instance.throwDices(diceContainer.diceMarginFromX, diceContainer.diceMarginToX, diceContainer.diceMarginFromY, diceContainer.diceMarginToY);
+            timerForThrowingDices -= 5.0f; // If you reset it to 0 you will loose a few milliseconds every 2 seconds.
+            Gdx.app.log(TAG, Dices.instance.getValue());
+        }
+    }
+    
     private void moveSelectedSprite(float x, float y) {
         //testSprites[selectedSprite].translate(x, y);
     }
     
-    private void testCollisions () {
-        // <editor-fold desc="TO DELETE: Test collision dummy dice with borders">
-//        if (!diceContainer.borderTop.overlaps(dummyDice.bounds) && !diceContainer.borderBottom.overlaps(dummyDice.bounds) && !diceContainer.borderLeft.overlaps(dummyDice.bounds) && !diceContainer.borderRight.overlaps(dummyDice.bounds)) {
-//            dummyDice.canCollideBorderTop = true;
-//            dummyDice.canCollideBorderBottom = true;
-//            dummyDice.canCollideBorderLeft = true;
-//            dummyDice.canCollideBorderRight = true;
-//            return;
-//        }
-//            if (diceContainer.borderTop.overlaps(dummyDice.bounds) && dummyDice.canCollideBorderTop){
-//                dummyDice.collideWithWall(false, 't');
-//            }
-//            if (diceContainer.borderBottom.overlaps(dummyDice.bounds) && dummyDice.canCollideBorderBottom){
-//                dummyDice.collideWithWall(false, 'b');
-//            }
-//            if (diceContainer.borderLeft.overlaps(dummyDice.bounds) && dummyDice.canCollideBorderLeft){
-//                dummyDice.collideWithWall(true, 'l');
-//            }
-//            if (diceContainer.borderRight.overlaps(dummyDice.bounds) && dummyDice.canCollideBorderRight){
-//                dummyDice.collideWithWall(true, 'r');
-//            }
-        // </editor-fold>
+    private void testDicesCollisions () {
         // <editor-fold desc="Test collision: Dice <-> Dice borders">
         for (Dice dice : Dices.instance.dices) {
             if(null == dice)
@@ -156,5 +160,13 @@ public class GameController {
             }
         }
         // </editor-fold>
+    }
+    
+    private void switchToNextPlayer() {
+        if(currentPlayerIndex == players.length-1)
+            currentPlayerIndex = 0;
+        else
+            currentPlayerIndex++;
+        Dices.instance.canPlayerThrowDices = true;
     }
 }

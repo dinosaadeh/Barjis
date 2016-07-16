@@ -1,6 +1,7 @@
 package com.smb215team.barjis.game.objects;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 
@@ -18,6 +19,7 @@ public class Dices {
     public Dice[] dices;
     public Integer[] currentHandMoves;
     public boolean canPlayerThrowDices;
+    Sound diceSound = Gdx.audio.newSound(Gdx.files.internal("diceSound.mp3"));
 
     private Dices() {
         init();
@@ -50,6 +52,10 @@ public class Dices {
         }
         
         canPlayerThrowDices = true;
+    }
+    
+    public void dispose() {
+        diceSound.dispose();
     }
 
     public void render(SpriteBatch batch) {
@@ -86,6 +92,8 @@ public class Dices {
             dices[i].dimension.set(0.45f, 0.45f);
             Gdx.app.log(TAG, "Position: " + randomX + ", " + randomY);
         }
+        
+        diceSound.play();
 
         // Setting the value of the current throw
         currentHandMoves[currentThrowValue]++;

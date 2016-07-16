@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.smb215team.barjis.util.Constants;
 import com.smb215team.barjis.game.objects.*;
 /**
@@ -69,7 +70,7 @@ public class GameRenderer implements Disposable {
         
         // <editor-fold desc="Dino: might lose this. I want to put the board on the screen to see how it looks in terms of dimensions and to throw my dices in a transparently delimited region">
         Sprite boardSprite = new Sprite(Assets.instance.board.board);
-        boardSprite.setSize(9, 9);
+        boardSprite.setSize(9.915f, 9);
         boardSprite.setCenter(0, 0);
         boardSprite.draw(batch);
         // </editor-fold>
@@ -79,6 +80,7 @@ public class GameRenderer implements Disposable {
         }
         Dices.instance.render(batch);
         batch.end();
+        renderDebug(batch);
     }
     
     private void renderGui (SpriteBatch batch) {
@@ -113,5 +115,23 @@ public class GameRenderer implements Disposable {
         }
         fpsFont.draw(batch, "FPS: " + fps, x, y);
         fpsFont.setColor(1, 1, 1, 1); // white
+    }
+    
+    private void renderDebug(SpriteBatch batch) {
+        dummyShapeRenderer.setProjectionMatrix(camera.combined);
+ 
+        dummyShapeRenderer.begin(ShapeType.Line);
+        dummyShapeRenderer.setColor(1, 1, 0, 1);
+        dummyShapeRenderer.rect(Constants.DICES_CONTAINER_BORDER_TOP_SIDE01.x, Constants.DICES_CONTAINER_BORDER_TOP_SIDE01.y, Constants.DICES_CONTAINER_BORDER_TOP_SIDE01.width, Constants.DICES_CONTAINER_BORDER_TOP_SIDE01.height);
+        dummyShapeRenderer.rect(Constants.DICES_CONTAINER_BORDER_BOTTOM_SIDE01.x, Constants.DICES_CONTAINER_BORDER_BOTTOM_SIDE01.y, Constants.DICES_CONTAINER_BORDER_BOTTOM_SIDE01.width, Constants.DICES_CONTAINER_BORDER_BOTTOM_SIDE01.height);
+        dummyShapeRenderer.rect(Constants.DICES_CONTAINER_BORDER_LEFT_SIDE01.x, Constants.DICES_CONTAINER_BORDER_LEFT_SIDE01.y, Constants.DICES_CONTAINER_BORDER_LEFT_SIDE01.width, Constants.DICES_CONTAINER_BORDER_LEFT_SIDE01.height);
+        dummyShapeRenderer.rect(Constants.DICES_CONTAINER_BORDER_RIGHT_SIDE01.x, Constants.DICES_CONTAINER_BORDER_RIGHT_SIDE01.y, Constants.DICES_CONTAINER_BORDER_RIGHT_SIDE01.width, Constants.DICES_CONTAINER_BORDER_RIGHT_SIDE01.height);
+
+        dummyShapeRenderer.rect(Constants.DICES_CONTAINER_BORDER_TOP_SIDE02.x, Constants.DICES_CONTAINER_BORDER_TOP_SIDE02.y, Constants.DICES_CONTAINER_BORDER_TOP_SIDE02.width, Constants.DICES_CONTAINER_BORDER_TOP_SIDE02.height);
+        dummyShapeRenderer.rect(Constants.DICES_CONTAINER_BORDER_BOTTOM_SIDE02.x, Constants.DICES_CONTAINER_BORDER_BOTTOM_SIDE02.y, Constants.DICES_CONTAINER_BORDER_BOTTOM_SIDE02.width, Constants.DICES_CONTAINER_BORDER_BOTTOM_SIDE02.height);
+        dummyShapeRenderer.rect(Constants.DICES_CONTAINER_BORDER_LEFT_SIDE02.x, Constants.DICES_CONTAINER_BORDER_LEFT_SIDE02.y, Constants.DICES_CONTAINER_BORDER_LEFT_SIDE02.width, Constants.DICES_CONTAINER_BORDER_LEFT_SIDE02.height);
+        dummyShapeRenderer.rect(Constants.DICES_CONTAINER_BORDER_RIGHT_SIDE02.x, Constants.DICES_CONTAINER_BORDER_RIGHT_SIDE02.y, Constants.DICES_CONTAINER_BORDER_RIGHT_SIDE02.width, Constants.DICES_CONTAINER_BORDER_RIGHT_SIDE02.height);
+        
+        dummyShapeRenderer.end();
     }
 }
