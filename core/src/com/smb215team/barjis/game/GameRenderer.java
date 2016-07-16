@@ -8,6 +8,7 @@ package com.smb215team.barjis.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -75,9 +76,10 @@ public class GameRenderer implements Disposable {
         boardSprite.draw(batch);
         // </editor-fold>
 
-        for(int i = 0; i < gameController.dummyPawnToFillMap.length; i++) {
-            gameController.dummyPawnToFillMap[i].render(batch);
+        for(Pawn pawn:gameController.dummyPawnToFillMap){
+            pawn.render(batch);
         }
+
         Dices.instance.render(batch);
         batch.end();
         renderDebug(batch);

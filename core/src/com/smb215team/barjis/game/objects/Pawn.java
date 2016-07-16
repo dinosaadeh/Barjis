@@ -26,6 +26,12 @@ public class Pawn extends AbstractGameObject {
         init();
     }
 
+    /** set the x and y position  */
+    public Pawn(float x , float y){
+        position.set(x,y);
+        init();
+    }
+
     public void init() {
         //dimension.set(0.45f, 0.45f);
         dimension.set(0.35f, 0.35f);
