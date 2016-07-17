@@ -6,12 +6,12 @@
 package com.smb215team.barjis.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;//for testing
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.smb215team.barjis.game.objects.Dice;
 import com.smb215team.barjis.game.objects.DiceContainer;
 import com.smb215team.barjis.game.objects.Dices;
 import com.smb215team.barjis.game.objects.Pawn;
-import com.smb215team.barjis.util.Constants;
 import com.badlogic.gdx.Game;
 import com.smb215team.barjis.game.enums.GameState;
 import com.smb215team.barjis.game.objects.Player;
@@ -32,7 +32,7 @@ public class GameController {
     public float timerForThrowingDices = 0.0f;
     
     // <editor-fold desc="Dino: TO DELETE Dummy stuff">
-    Pawn[] dummyPawnToFillMap;
+    Array<Pawn> dummyPawnToFillMap=new Array<Pawn>();
     // </editor-fold>
         
     public GameController (Game game) {
@@ -45,7 +45,8 @@ public class GameController {
         Dices.instance.init();
         diceContainer = new DiceContainer();
         timerForThrowingDices = 0.0f;
-        
+        ConfigurationController.initCells();
+
         players = new Player[2]; //TODO: account for variable number of players (1, 2, 3, 4)
         currentPlayerIndex = 0;
         for(int i = 0; i < players.length; i++) {
@@ -57,12 +58,12 @@ public class GameController {
     
     private void initTestObjects() {
         // <editor-fold desc="Dino: TO DELETE Dummy pawn/dice">
-        dummyPawnToFillMap = new Pawn[Constants.boardMap.length];
-        for(int i = 0; i < dummyPawnToFillMap.length; i++) {
-            dummyPawnToFillMap[i] = new Pawn();
-            dummyPawnToFillMap[i].position.set(Constants.boardMap[i].x, Constants.boardMap[i].y);
+        //TODO delete it "ammar" , test to see reading from xml file
+        for(Vector2 cell:ConfigurationController.boardMap){
+            dummyPawnToFillMap.add(new Pawn(cell.x,cell.y));
 
         }
+
         // </editor-fold>
     }
     
