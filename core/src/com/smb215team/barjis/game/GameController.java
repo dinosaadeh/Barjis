@@ -95,32 +95,25 @@ public class GameController {
      * play three dices on each side to decide who goes first
      */
     public void gameStart() {
+        //After knowing who goes first, diceContainer needs to be re-initialised
+        diceContainer.init("SIDE01");//TODO: this value is dummy till gameStart logic is full written
         //Once done knowing and setting who goes first, set the game state to playerTurn
         this.state = GameState.playerTurn;
     }
     
     public void playOneHand(float deltaTime) {
-        //Based on which player index I know where to play the dice
-        switch(currentPlayerIndex) {
-            case 0: diceContainer.init("SIDE01");
-                break;
-            case 1: diceContainer.init("SIDE02");
-                break;
-            default: diceContainer.init("SIDE01");
-        }
-        
         // Play the dice
+        testDicesCollisions ();
         playDices(deltaTime);
         
-//        if(!Dices.instance.canPlayerThrowDices)
-//            switchToNextPlayer();
+        if(!Dices.instance.canPlayerThrowDices)
+            switchToNextPlayer();
         // Once player is finished, switch to the next player
     }
     
     private void playDices(float deltaTime) {
         Dices.instance.update(deltaTime); //commentToDelete: later on this will be called only when needed
         
-        testDicesCollisions ();
 
         timerForThrowingDices += deltaTime;
         if(timerForThrowingDices >= 5 && Dices.instance.canPlayerThrowDices) {
@@ -135,6 +128,10 @@ public class GameController {
     }
     
     private void testDicesCollisions () {
+//        if(diceContainer.borderTop.x == Constants.DICES_CONTAINER_BORDER_TOP_SIDE01.x)
+//            Gdx.app.log(TAG, "Side 01");
+//        else
+//            Gdx.app.log(TAG, "Side 02");
         // <editor-fold desc="Test collision: Dice <-> Dice borders">
         for (Dice dice : Dices.instance.dices) {
             if(null == dice)
@@ -163,10 +160,14 @@ public class GameController {
     }
     
     private void switchToNextPlayer() {
-        if(currentPlayerIndex == players.length-1)
+        if(currentPlayerIndex == players.length-1) {
             currentPlayerIndex = 0;
-        else
+            diceContainer.init("SIDE01");
+        }
+        else {
             currentPlayerIndex++;
-        Dices.instance.canPlayerThrowDices = true;
+            diceContainer.init("SIDE02");
+        }
+        Dices.instance.reset();
     }
 }
