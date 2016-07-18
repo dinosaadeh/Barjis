@@ -90,7 +90,7 @@ public class Dices {
             dices[i].position.set(randomX, randomY);
             dices[i].bounds.set(randomX, randomY, 0.45f, 0.45f);
             dices[i].dimension.set(0.45f, 0.45f);
-            Gdx.app.log(TAG, "Position: " + randomX + ", " + randomY);
+            //Gdx.app.log(TAG, "Position: " + randomX + ", " + randomY);
         }
         
         diceSound.play();
@@ -103,7 +103,7 @@ public class Dices {
         }
         // If a stopper combination (2, 3 or 4), do not allow the player to throw dices again
         if (2 == currentThrowValue || 3 == currentThrowValue || 4 == currentThrowValue) {
-            //canPlayerThrowDices = false;
+            canPlayerThrowDices = false;
         }
     }
 

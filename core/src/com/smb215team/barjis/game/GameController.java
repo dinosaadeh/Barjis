@@ -13,6 +13,8 @@ import com.smb215team.barjis.game.objects.DiceContainer;
 import com.smb215team.barjis.game.objects.Dices;
 import com.smb215team.barjis.game.objects.Pawn;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.utils.Timer.Task;
 import com.smb215team.barjis.game.enums.GameState;
 import com.smb215team.barjis.game.objects.Player;
 import com.smb215team.barjis.screens.MenuScreen;
@@ -32,7 +34,8 @@ public class GameController {
     public float timerForThrowingDices = 0.0f;
     
     // <editor-fold desc="Dino: TO DELETE Dummy stuff">
-    Array<Pawn> dummyPawnToFillMap=new Array<Pawn>();
+    Array<Pawn> dummyPawnToFillMap = new Array<Pawn>();
+    Player dummyPlayer = new Player(1);
     // </editor-fold>
         
     public GameController (Game game) {
@@ -59,12 +62,15 @@ public class GameController {
     private void initTestObjects() {
         // <editor-fold desc="Dino: TO DELETE Dummy pawn/dice">
         //TODO delete it "ammar" , test to see reading from xml file
-        for(Vector2 cell:ConfigurationController.boardMap){
-            dummyPawnToFillMap.add(new Pawn(cell.x,cell.y));
+//        for(Vector2 cell:ConfigurationController.boardMap){
+//            dummyPawnToFillMap.add(new Pawn(cell.x, cell.y));
+//        }
 
-        }
-
-        // </editor-fold>
+        for(Vector2 cell : dummyPlayer.path){
+            if(cell == null)
+                break;
+            dummyPawnToFillMap.add(new Pawn(cell.x, cell.y));
+        }        // </editor-fold>
     }
     
     public void update (float deltaTime) {
@@ -108,7 +114,13 @@ public class GameController {
         playDices(deltaTime);
         
         if(!Dices.instance.canPlayerThrowDices)
-            switchToNextPlayer();
+            Timer.schedule(new Task(){
+                @Override
+                public void run() {
+                    switchToNextPlayer();
+                }
+            }, 10);
+            
         // Once player is finished, switch to the next player
     }
     
@@ -120,7 +132,7 @@ public class GameController {
         if(timerForThrowingDices >= 5 && Dices.instance.canPlayerThrowDices) {
             Dices.instance.throwDices(diceContainer.diceMarginFromX, diceContainer.diceMarginToX, diceContainer.diceMarginFromY, diceContainer.diceMarginToY);
             timerForThrowingDices -= 5.0f; // If you reset it to 0 you will loose a few milliseconds every 2 seconds.
-            Gdx.app.log(TAG, Dices.instance.getValue());
+            Gdx.app.log(TAG, "The value of the dices: " + Dices.instance.getValue());
         }
     }
     
@@ -129,6 +141,7 @@ public class GameController {
     }
     
     private void testDicesCollisions () {
+            Gdx.app.log(TAG, "Testing collision against " + diceContainer.name);
 //        if(diceContainer.borderTop.x == Constants.DICES_CONTAINER_BORDER_TOP_SIDE01.x)
 //            Gdx.app.log(TAG, "Side 01");
 //        else

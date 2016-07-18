@@ -20,6 +20,7 @@ import static com.smb215team.barjis.util.Constants.*;
 public class DiceContainer {
     private static final String TAG = Dice.class.getName();
  
+    public String name;
     public Rectangle borderTop;
     public Rectangle borderBottom;
     public Rectangle borderLeft;
@@ -39,11 +40,13 @@ public class DiceContainer {
     }
 
     public void init(String side) {
+        name = side;
         if(side.equals("SIDE01")){
             borderTop = DICES_CONTAINER_BORDER_TOP_SIDE01;
             borderBottom = DICES_CONTAINER_BORDER_BOTTOM_SIDE01;
             borderLeft = DICES_CONTAINER_BORDER_LEFT_SIDE01;
             borderRight = DICES_CONTAINER_BORDER_RIGHT_SIDE01;
+            Gdx.app.log(TAG, "Switched to side 1");
         }
         
         if(side.equals("SIDE02")){
@@ -51,6 +54,7 @@ public class DiceContainer {
             borderBottom = DICES_CONTAINER_BORDER_BOTTOM_SIDE02;
             borderLeft = DICES_CONTAINER_BORDER_LEFT_SIDE02;
             borderRight = DICES_CONTAINER_BORDER_RIGHT_SIDE02;
+            Gdx.app.log(TAG, "Switched to side 2");
         }
         
         diceMarginFromX = borderLeft.x + 2 * borderLeft.width;

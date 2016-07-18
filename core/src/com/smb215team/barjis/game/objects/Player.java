@@ -5,24 +5,120 @@
  */
 package com.smb215team.barjis.game.objects;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
+import com.smb215team.barjis.game.ConfigurationController;
 
 /**
  *
  * @author dinosaadeh
  */
 public class Player {
-    private static final String TAG = Dice.class.getName();
+    private static final String TAG = Player.class.getName();
 
-    Pawn[] pawns;
-    Vector2[] path;
-    
+    public Pawn[] pawns;
+    public Vector2[] path;
+    private Array<Vector2> boardMap = new Array<Vector2>();
+
     public Player() {
-        init();
+        init(0);
     }
     
-    private void init() {
+    public Player(int branch) {
+        init(branch);
+    }
+    
+    private void init(int branch) {
         pawns = new Pawn[4];
-        path = new Vector2[83];
+
+        // <editor-fold desc="Dino: Getting the full path">
+        path = new Vector2[85];
+        int pathBuilderPointer = 0;
+        ConfigurationController.initCells();
+        boardMap = ConfigurationController.boardMap;
+        Vector2[] initialPath = buildInitialPath(branch);
+        Vector2[] lastBranchPath = buildLastBranchPath(branch);
+        for(int i = 0; i < 16; i++) {
+            path[i] = initialPath[i];
+            pathBuilderPointer++;
+        }
+        
+        //Second branch
+        int nextBranch = branch + 1 == 4 ? 0 : branch + 1;
+        Vector2[] branchPath = buildOtherBranchPath(nextBranch);
+        for(int i = 0; i < branchPath.length; i++) {
+            path[i + pathBuilderPointer] = branchPath[i];
+        }
+        pathBuilderPointer += branchPath.length;
+        
+        //Third branch
+        nextBranch = nextBranch + 1 == 4 ? 0 : nextBranch + 1;
+        branchPath = buildOtherBranchPath(nextBranch);
+        for(int i = 0; i < branchPath.length; i++) {
+            path[i + pathBuilderPointer] = branchPath[i];
+        }
+        pathBuilderPointer += branchPath.length;
+        
+        //Fourth branch
+        nextBranch = nextBranch + 1 == 4 ? 0 : nextBranch + 1;
+        branchPath = buildOtherBranchPath(nextBranch);
+        for(int i = 0; i < branchPath.length; i++) {
+            path[i + pathBuilderPointer] = branchPath[i];
+        }
+        pathBuilderPointer += branchPath.length;
+        
+        for(int i = 0; i < lastBranchPath.length; i++) {
+            path[i + pathBuilderPointer] = lastBranchPath[i];
+        }
+        // </editor-fold>
+
+    }
+    
+    private Vector2[] buildInitialPath(int branch) {
+        //first branch 0 -> start from 0 * 24 = 0
+        //second branch 1 -> start from 1 * 24 = 24
+        //second branch 2 -> start from 2 * 24 = 48
+        //second branch 3 -> start from 3 * 24 = 72
+        Vector2[] resultToreturn = new Vector2[16];
+        int indexOfAddressToStartFrom = branch * 24;
+        for(int i = 0; i < 16; i++) {
+            resultToreturn[i] = new Vector2(boardMap.get(indexOfAddressToStartFrom + i).x, boardMap.get(indexOfAddressToStartFrom + i).y);
+        }
+        return resultToreturn;
+    }
+    
+    private Vector2[] buildOtherBranchPath(int branch) {
+        Vector2[] resultToreturn = new Vector2[17];
+        int indexOfAddressToStartFrom = branch * 24;
+        
+        //Get the left line
+        for(int i = 0; i < 8; i++) {
+            resultToreturn[i] = new Vector2(boardMap.get(indexOfAddressToStartFrom + 16 + i).x, boardMap.get(indexOfAddressToStartFrom + 16 + i).y);
+        }
+        //Get last cell in middle and right line
+        int counter = 0;
+         for(int i = 8; i < 17; i++) {
+            resultToreturn[i] = new Vector2(boardMap.get(indexOfAddressToStartFrom + 7 + counter).x, boardMap.get(indexOfAddressToStartFrom + 7 + counter).y);
+            counter++;
+        }
+        return resultToreturn;
+    }
+
+    private Vector2[] buildLastBranchPath(int branch) {
+        Vector2[] resultToreturn = new Vector2[16];
+        int indexOfAddressToStartFrom = branch * 24;
+        
+        //Get the left line
+        for(int i = 0; i < 8; i++) {
+            resultToreturn[i] = new Vector2(boardMap.get(indexOfAddressToStartFrom + 16 + i).x, boardMap.get(indexOfAddressToStartFrom + 16 + i).y);
+        }
+        //Get the middle line going back home
+        int counter = 0;
+         for(int i = 8; i < 16; i++) {
+            resultToreturn[i] = new Vector2(boardMap.get(indexOfAddressToStartFrom + 7 - counter).x, boardMap.get(indexOfAddressToStartFrom + 7 - counter).y);
+            counter++;
+        }
+        return resultToreturn;
     }
 }
