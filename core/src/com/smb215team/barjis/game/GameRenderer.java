@@ -47,8 +47,8 @@ public class GameRenderer implements Disposable {
     }
     
     public void render () {
-        renderTestObjects();
         renderGui(batch);
+        renderTestObjects();
     }
     
     public void resize (int width, int height) {
@@ -68,26 +68,36 @@ public class GameRenderer implements Disposable {
     private void renderTestObjects() {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        
-        // <editor-fold desc="Dino: might lose this. I want to put the board on the screen to see how it looks in terms of dimensions and to throw my dices in a transparently delimited region">
-        Sprite boardSprite = new Sprite(Assets.instance.board.board);
-        boardSprite.setSize(9.915f, 9);
-        boardSprite.setCenter(0, 0);
-        boardSprite.draw(batch);
-        // </editor-fold>
 
         for(Pawn pawn:gameController.dummyPawnToFillMap){
             pawn.render(batch);
         }
-
+        gameController.dummyPawn.render(batch);
         Dices.instance.render(batch);
         batch.end();
-        renderDebug(batch);
+        //renderDebug(batch);
     }
     
     private void renderGui (SpriteBatch batch) {
-        batch.setProjectionMatrix(cameraGUI.combined);
+        batch.setProjectionMatrix(camera.combined);
         batch.begin();
+        // <editor-fold desc="Objects that don't move.">
+        Sprite boardSprite = new Sprite(Assets.instance.board.board);
+        boardSprite.setSize(9.915f, 9);
+        boardSprite.setCenter(0, 0);
+        boardSprite.draw(batch);
+        
+        float[] deadPawnPlaceholderXPositions = {-7.6f, -6, -5, -4.7f, 7, 7.5f, 8, 9};
+        Sprite[] deadPawnPlaceholders = new Sprite[8];
+        for(int i = 0; i < deadPawnPlaceholders.length; i++) {
+            deadPawnPlaceholders[i] = new Sprite(Assets.instance.deadPawnPlaceholder.deadPawnPlaceholder);
+            deadPawnPlaceholders[i].setSize(0.40f, 0.40f);
+            deadPawnPlaceholders[i].setCenter(deadPawnPlaceholderXPositions[i], 3);
+            deadPawnPlaceholders[i].draw(batch);
+        }
+        // </editor-fold>
+        
+        batch.setProjectionMatrix(cameraGUI.combined);
         renderGuiMovesToBePlayed(batch);
         // draw FPS text (anchored to bottom right edge)
         renderGuiFpsCounter(batch);
@@ -95,9 +105,7 @@ public class GameRenderer implements Disposable {
     }
 
     private void renderGuiMovesToBePlayed (SpriteBatch batch) {
-        float x = -15;
-        float y = -15;
-        Assets.instance.fonts.defaultNormal.draw(batch, "" + Dices.instance.getValue(), x + 75, y + 37);
+        Assets.instance.fonts.defaultNormal.draw(batch, Dices.instance.getValue(), 50, 222);
     }
     
     private void renderGuiFpsCounter (SpriteBatch batch) {

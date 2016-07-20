@@ -33,7 +33,7 @@ public class Player {
         pawns = new Pawn[4];
 
         // <editor-fold desc="Dino: Getting the full path">
-        path = new Vector2[85];
+        path = new Vector2[83];
         int pathBuilderPointer = 0;
         ConfigurationController.initCells();
         boardMap = ConfigurationController.boardMap;

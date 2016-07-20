@@ -29,6 +29,7 @@ public class Assets implements Disposable, AssetErrorListener {
     
     public AssetDice dice;
     public AssetBoard board;
+    public AssetDeadPawnPlaceholder deadPawnPlaceholder;
     public AssetPawn pawn;//Dino: this is temporary until we create the player class (delete this comment when we do)
     public AssetFonts fonts;
 
@@ -54,6 +55,7 @@ public class Assets implements Disposable, AssetErrorListener {
         fonts = new AssetFonts();
         dice = new AssetDice(atlas);
         board = new AssetBoard(atlas);
+        deadPawnPlaceholder = new AssetDeadPawnPlaceholder(atlas);
         pawn = new AssetPawn(atlas);
     }
 
@@ -83,6 +85,14 @@ public class Assets implements Disposable, AssetErrorListener {
         
         public AssetBoard (TextureAtlas atlas){
             board = atlas.findRegion("board");
+        }
+    }
+    
+    public class AssetDeadPawnPlaceholder {
+        public final AtlasRegion deadPawnPlaceholder;
+        
+        public AssetDeadPawnPlaceholder (TextureAtlas atlas){
+            deadPawnPlaceholder = atlas.findRegion("ph-dead-pawn");
         }
     }
 

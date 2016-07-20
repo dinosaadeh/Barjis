@@ -16,8 +16,8 @@ import com.smb215team.barjis.game.Assets;
  * @author dinosaadeh
  */
 public class Dice extends AbstractGameObject {
-
     private static final String TAG = Dice.class.getName();
+    
     private TextureRegion diceTexureRegion;
     public boolean canCollideBorderTop = true;
     public boolean canCollideBorderBottom = true;

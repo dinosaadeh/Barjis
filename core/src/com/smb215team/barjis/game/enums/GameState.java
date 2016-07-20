@@ -10,6 +10,7 @@ package com.smb215team.barjis.game.enums;
  */
 public enum GameState {
     gameStart,
-    playerTurn,
+    playerTurnThrowDice,
+    playerTurnPlayPawns,
     gameOver
 }

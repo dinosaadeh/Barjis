@@ -10,5 +10,5 @@ package com.smb215team.barjis.game.enums;
  * @author dinosaadeh
  */
 public enum PawnState {
-    dead, protectedInShire, selectedForPlay
+    dead, canMove, selectedForPlay
 }

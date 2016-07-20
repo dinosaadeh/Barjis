@@ -75,6 +75,7 @@ public class Dices {
     }
 
     public void throwDices(float diceMarginFromX, float diceMarginToX, float diceMarginFromY, float diceMarginToY) {
+        bringDicesToFullStop();//I used this method to stop dices when by mistake a dice leaves the container. This bug should be solved and with that solved we no longer need this line.
         int currentThrowValue = 0;
         for (int i = 0; i < dices.length; i++) {
             if (Math.random() < 0.5) {
@@ -90,7 +91,7 @@ public class Dices {
             dices[i].position.set(randomX, randomY);
             dices[i].bounds.set(randomX, randomY, 0.45f, 0.45f);
             dices[i].dimension.set(0.45f, 0.45f);
-            //Gdx.app.log(TAG, "Position: " + randomX + ", " + randomY);
+            //Gdx.app.log(TAG, "Position: " + randomX + ", " + randomY + ", velocity: " + dices[i].velocity);
         }
         
         diceSound.play();
@@ -141,5 +142,22 @@ public class Dices {
         }
 
         return strToReturn;
+    }
+    
+    public boolean dicesReachedAFullStop() {
+        for(Dice dice : dices) {
+            if(dice.velocity.x != 0 || dice.velocity.y != 0)
+                return false;
+        }
+        return (true);
+    }
+    
+    public void bringDicesToFullStop() {
+        for(Dice dice : dices) {
+            if(null == dice)
+                return;
+            dice.velocity.x =0;
+            dice.velocity.y = 0;
+        }
     }
 }

@@ -35,6 +35,7 @@ public class GameController {
     
     // <editor-fold desc="Dino: TO DELETE Dummy stuff">
     Array<Pawn> dummyPawnToFillMap = new Array<Pawn>();
+    Pawn dummyPawn = new Pawn();
     Player dummyPlayer = new Player(1);
     // </editor-fold>
         
@@ -46,7 +47,6 @@ public class GameController {
     private void init () {
         state = GameState.gameStart;
         Dices.instance.init();
-        diceContainer = new DiceContainer();
         timerForThrowingDices = 0.0f;
         ConfigurationController.initCells();
 
@@ -59,26 +59,12 @@ public class GameController {
         initTestObjects();
     }
     
-    private void initTestObjects() {
-        // <editor-fold desc="Dino: TO DELETE Dummy pawn/dice">
-        //TODO delete it "ammar" , test to see reading from xml file
-//        for(Vector2 cell:ConfigurationController.boardMap){
-//            dummyPawnToFillMap.add(new Pawn(cell.x, cell.y));
-//        }
-
-        for(Vector2 cell : dummyPlayer.path){
-            if(cell == null)
-                break;
-            dummyPawnToFillMap.add(new Pawn(cell.x, cell.y));
-        }        // </editor-fold>
-    }
-    
     public void update (float deltaTime) {
         switch (state) {
             case gameStart:
                 gameStart();
                 break;
-            case playerTurn:
+            case playerTurnThrowDice:
                 playOneHand(deltaTime);
                 break;
             case gameOver:
@@ -97,55 +83,57 @@ public class GameController {
         game.setScreen(new MenuScreen(game));
     }
     
+    private void initTestObjects() {
+        // <editor-fold desc="Dino: TO DELETE Dummy pawn/dice">
+        for(Vector2 cell : dummyPlayer.path){
+            if(cell == null)
+                break;
+            dummyPawnToFillMap.add(new Pawn(cell.x, cell.y));
+        }
+        
+        dummyPawn.position.x = -6.18f;
+        dummyPawn.position.y = 2.83f;
+        // </editor-fold>
+    }
+    
     /**
      * TODO
      * play three dices on each side to decide who goes first
      */
     public void gameStart() {
         //After knowing who goes first, diceContainer needs to be re-initialised
-        diceContainer.init("SIDE01");//TODO: this value is dummy till gameStart logic is full written
-        //Once done knowing and setting who goes first, set the game state to playerTurn
-        this.state = GameState.playerTurn;
+        diceContainer = new DiceContainer("SIDE01");//TODO: this value is dummy till gameStart logic is full written
+        //Once done knowing and setting who goes first, set the game state to playerTurnThrowDice
+        this.state = GameState.playerTurnThrowDice;
     }
     
     public void playOneHand(float deltaTime) {
-        // Play the dice
         testDicesCollisions ();
+        // Play the dice
         playDices(deltaTime);
         
-        if(!Dices.instance.canPlayerThrowDices)
-            Timer.schedule(new Task(){
-                @Override
-                public void run() {
-                    switchToNextPlayer();
-                }
-            }, 10);
+        if(!Dices.instance.canPlayerThrowDices && Dices.instance.dicesReachedAFullStop())
+            switchToNextPlayer();
             
         // Once player is finished, switch to the next player
     }
     
     private void playDices(float deltaTime) {
         Dices.instance.update(deltaTime); //commentToDelete: later on this will be called only when needed
-        
 
         timerForThrowingDices += deltaTime;
         if(timerForThrowingDices >= 5 && Dices.instance.canPlayerThrowDices) {
             Dices.instance.throwDices(diceContainer.diceMarginFromX, diceContainer.diceMarginToX, diceContainer.diceMarginFromY, diceContainer.diceMarginToY);
             timerForThrowingDices -= 5.0f; // If you reset it to 0 you will loose a few milliseconds every 2 seconds.
-            Gdx.app.log(TAG, "The value of the dices: " + Dices.instance.getValue());
+            Gdx.app.debug(TAG, "The value of the dices: " + Dices.instance.getValue());
         }
     }
     
     private void moveSelectedSprite(float x, float y) {
         //testSprites[selectedSprite].translate(x, y);
     }
-    
+
     private void testDicesCollisions () {
-            Gdx.app.log(TAG, "Testing collision against " + diceContainer.name);
-//        if(diceContainer.borderTop.x == Constants.DICES_CONTAINER_BORDER_TOP_SIDE01.x)
-//            Gdx.app.log(TAG, "Side 01");
-//        else
-//            Gdx.app.log(TAG, "Side 02");
         // <editor-fold desc="Test collision: Dice <-> Dice borders">
         for (Dice dice : Dices.instance.dices) {
             if(null == dice)

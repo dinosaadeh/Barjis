@@ -14,13 +14,17 @@ import com.smb215team.barjis.game.enums.PawnState;
  * @author dinosaadeh
  */
 public class Pawn extends AbstractGameObject {
-
     private static final String TAG = Dices.class.getName();
+    
     private TextureRegion pawnImage;
     PawnState state;
-    //TODO remove the path after creating it with enum
-    private String[] path;
-    private int currentLocation;
+    /**
+     * Reflects the pawn's position index on the player's path
+     * - value of -1 means the pawn is dead (out of the board)
+     * - value between 0 and 82, on the board within the player's path
+     * - value of 83, the pawn finished its circuit.
+     */
+    private int positionOnPath;
 
     public Pawn() {
         init();
@@ -44,25 +48,17 @@ public class Pawn extends AbstractGameObject {
 
         // Set bounding box for collision detection
         bounds.set(0, 0, dimension.x, dimension.y);
-    }
-
-//Dino: TO VALIDATE/ELABORATE
-    public void move(int steps) {
-        currentLocation += steps;
+        
+        positionOnPath = -1;//The pawn starts as dead (out of the board)
     }
 
 //Dino: TO VALIDATE/ELABORATE
     public boolean canMove(int steps){
-        //TODO to fix
-        if(currentLocation+steps > path.length){
-            return false;
-        }
+        //TODO: a pawn can move if
+        // One of the dice combinations allows it to move on board
+        // One of the dice combinations allows it to enter the board
+        
         return true;
-    }
-
-//Dino: TO VALIDATE/ELABORATE
-    public String getCurrentCell(){
-        return path[currentLocation];
     }
 
     @Override
