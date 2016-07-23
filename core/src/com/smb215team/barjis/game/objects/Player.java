@@ -22,16 +22,14 @@ public class Player {
     private Array<Vector2> boardMap = new Array<Vector2>();
 
     public Player() {
-        init(0);
+        init(0, 0);
     }
     
     public Player(int branch) {
-        init(branch);
+        init(branch, 0);
     }
     
-    private void init(int branch) {
-        pawns = new Pawn[4];
-
+    private void init(int branch, int pawnImageIndex) {
         // <editor-fold desc="Dino: Getting the full path">
         path = new Vector2[83];
         int pathBuilderPointer = 0;
@@ -72,7 +70,13 @@ public class Player {
             path[i + pathBuilderPointer] = lastBranchPath[i];
         }
         // </editor-fold>
-
+        // <editor-fold desc="Initialising pawns">
+        pawns = new Pawn[4];
+        for(int i = 0; i < pawns.length; i++) {
+            pawns[i] = new Pawn();
+            pawns[i].init(pawnImageIndex);
+        }
+        // </editor-fold>
     }
     
     private Vector2[] buildInitialPath(int branch) {

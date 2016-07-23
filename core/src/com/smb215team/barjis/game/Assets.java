@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.utils.Array;
 import com.smb215team.barjis.util.Constants;
 
 /**
@@ -97,10 +98,28 @@ public class Assets implements Disposable, AssetErrorListener {
     }
 
     public class AssetPawn {
-        public final AtlasRegion pawn;
-        
+        public AtlasRegion pawn;
+        Array<AtlasRegion> listOfPawnIcons = new Array<AtlasRegion>();
+     
+        public AssetPawn (TextureAtlas atlas, int pawnImageIndex){
+            int pawnIconCounter = 0;
+            while (null != atlas.findRegion("pawn-" + pawnIconCounter)) {
+                listOfPawnIcons.add(new AtlasRegion(atlas.findRegion("pawn-" + pawnIconCounter)));
+                pawnIconCounter++;
+            }  
+            pawn = listOfPawnIcons.get(pawnImageIndex);
+        }
+
         public AssetPawn (TextureAtlas atlas){
-            pawn = atlas.findRegion("pawn-horse");
+            this (atlas, 0);
+        }
+        
+        public void init() {
+            init(0);
+        }
+        
+        public void init(int pawnImageIndex) {
+            pawn = listOfPawnIcons.get(pawnImageIndex);
         }
     }
     

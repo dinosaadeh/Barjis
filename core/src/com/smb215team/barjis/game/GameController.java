@@ -13,8 +13,6 @@ import com.smb215team.barjis.game.objects.DiceContainer;
 import com.smb215team.barjis.game.objects.Dices;
 import com.smb215team.barjis.game.objects.Pawn;
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.utils.Timer;
-import com.badlogic.gdx.utils.Timer.Task;
 import com.smb215team.barjis.game.enums.GameState;
 import com.smb215team.barjis.game.objects.Player;
 import com.smb215team.barjis.screens.MenuScreen;
@@ -36,7 +34,6 @@ public class GameController {
     // <editor-fold desc="Dino: TO DELETE Dummy stuff">
     Array<Pawn> dummyPawnToFillMap = new Array<Pawn>();
     Pawn dummyPawn = new Pawn();
-    Player dummyPlayer = new Player(1);
     // </editor-fold>
         
     public GameController (Game game) {
@@ -50,10 +47,16 @@ public class GameController {
         timerForThrowingDices = 0.0f;
         ConfigurationController.initCells();
 
-        players = new Player[2]; //TODO: account for variable number of players (1, 2, 3, 4)
+        players = new Player[2]; //TODO: account for variable number of players (1 (AI), 2, 4)
         currentPlayerIndex = 0;
-        for(int i = 0; i < players.length; i++) {
-            players[i] = new Player();
+        if(2 == players.length) {
+            players[0] = new Player(3);
+            players[1] = new Player(1);
+        }
+        else {
+            for(int i = 0; i < players.length; i++) {
+                players[i] = new Player(i);
+            }
         }
         
         initTestObjects();
@@ -85,14 +88,8 @@ public class GameController {
     
     private void initTestObjects() {
         // <editor-fold desc="Dino: TO DELETE Dummy pawn/dice">
-        for(Vector2 cell : dummyPlayer.path){
-            if(cell == null)
-                break;
-            dummyPawnToFillMap.add(new Pawn(cell.x, cell.y));
-        }
-        
-        dummyPawn.position.x = -6.18f;
-        dummyPawn.position.y = 2.83f;
+        dummyPawn.position.x = -7.345f;
+        dummyPawn.position.y = 2.12f;
         // </editor-fold>
     }
     

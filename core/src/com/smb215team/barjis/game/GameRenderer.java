@@ -69,9 +69,6 @@ public class GameRenderer implements Disposable {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
 
-        for(Pawn pawn:gameController.dummyPawnToFillMap){
-            pawn.render(batch);
-        }
         gameController.dummyPawn.render(batch);
         Dices.instance.render(batch);
         batch.end();
@@ -87,12 +84,12 @@ public class GameRenderer implements Disposable {
         boardSprite.setCenter(0, 0);
         boardSprite.draw(batch);
         
-        float[] deadPawnPlaceholderXPositions = {-7.6f, -6, -5, -4.7f, 7, 7.5f, 8, 9};
+        float[] deadPawnPlaceholderXPositions = {-7.395f, -6.735f, -6.09f, -5.445f, 4.98f, 5.625f, 6.27f, 6.945f};
         Sprite[] deadPawnPlaceholders = new Sprite[8];
         for(int i = 0; i < deadPawnPlaceholders.length; i++) {
             deadPawnPlaceholders[i] = new Sprite(Assets.instance.deadPawnPlaceholder.deadPawnPlaceholder);
-            deadPawnPlaceholders[i].setSize(0.40f, 0.40f);
-            deadPawnPlaceholders[i].setCenter(deadPawnPlaceholderXPositions[i], 3);
+            deadPawnPlaceholders[i].setSize(0.540f, 0.540f);
+            deadPawnPlaceholders[i].setPosition(deadPawnPlaceholderXPositions[i], 2.07f);
             deadPawnPlaceholders[i].draw(batch);
         }
         // </editor-fold>

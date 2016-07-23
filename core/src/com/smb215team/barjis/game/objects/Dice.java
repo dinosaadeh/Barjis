@@ -34,7 +34,7 @@ public class Dice extends AbstractGameObject {
     
     private void init(boolean isDiceUp) {
         diceTexureRegion = isDiceUp ? Assets.instance.dice.diceUp : Assets.instance.dice.diceDown;
-        dimension.set(0.5f, 0.5f);
+        dimension.set(0.66f, 0.84f);//Dino: used to be set to a square of 0.5
         // Set physics values
         //velocity.set(0f, 1f);
         float randomVelocityX = MathUtils.random(-5f, 5f);

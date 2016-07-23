@@ -35,10 +35,16 @@ public class Pawn extends AbstractGameObject {
         position.set(x,y);
         init();
     }
-
+    
     public void init() {
-        //dimension.set(0.45f, 0.45f);
-        dimension.set(0.35f, 0.35f);
+        init(0);
+    }
+
+    public void init(int pawnImageIndex) {
+        Assets.instance.pawn.init(pawnImageIndex);
+        pawnImage = Assets.instance.pawn.pawn;
+        dimension.set(0.435f, 0.435f);
+        this.setCenter(this.dimension.x / 2, this.dimension.y / 2);
         pawnImage = Assets.instance.pawn.pawn;
         // Set physics values
         velocity.set(3.0f, 4.0f);
