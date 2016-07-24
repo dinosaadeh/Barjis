@@ -7,6 +7,9 @@ package com.smb215team.barjis.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -16,8 +19,17 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType; 
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
 import com.smb215team.barjis.util.Constants;
 import com.smb215team.barjis.game.objects.*;    
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.font.FontRenderContext;
+import java.awt.geom.Rectangle2D;
+import javafx.scene.text.Font;
+import static javafx.scene.text.Font.font;
 /**
  *
  * @author dinosaadeh
@@ -27,14 +39,11 @@ public class GameRenderer implements Disposable {
     private OrthographicCamera cameraGUI;
     private SpriteBatch batch;
     private GameController gameController;
-    ShapeRenderer shapeRenderer;
-    
-    ShapeRenderer dummyShapeRenderer = new ShapeRenderer();
-    static private boolean projectionMatrixSet;
-
-    
+    private ShapeRenderer dummyShapeRenderer;
+     
     BitmapFont returnTextFont = Assets.instance.fonts.defaultNormal;///used from wrapping the returnText
-    GlyphLayout layout = new GlyphLayout(); // Obviously stick this in a field to avoid allocation each frame.
+    public  GlyphLayout layout = new GlyphLayout(); // Obviously stick this in a field to avoid allocation each frame. 
+   
     
     public GameRenderer (GameController gameController) {
         this.gameController = gameController;
@@ -119,54 +128,30 @@ public class GameRenderer implements Disposable {
     }
 
     private void renderGuiMovesToBePlayed (SpriteBatch batch) {
-       //getValueArray     0       1     2    3    4    5       6        7
-     String pResult[] ={"Shakki","Dest","2", "3", "4","Banj", "Bara", "Bonus"};    
+         //getArrayValues    0       1     2    3    4    5       6        7
+       String pResult[] ={"Shakki","Dest","2", "3", "4","Banj", "Bara", "Bonus"};    
        String returnText =""; //text to be returned on screen 
-       String plusText ="";  // "+" in text
+       String plusText ="";  // "+" in text 
      
          for (int i=0; i<gameController.pValueSumReturned.length ; i++){
-            
-             if (gameController.pValueSumReturned[i] !=0)
-             {
-                 if (returnText == "")
-               {plusText ="";}
-               else {plusText="+";}
              
-                returnText = returnText +  plusText + gameController.pValueSumReturned[i] + "x"  + pResult[i];
-                    
-/////this is just for testing purposes
-                layout.setText(returnTextFont,returnText);        
-              float width = layout.width;// contains the width of the current set text
-              float height = layout.height; // contains the height of the current set text
-                  shapeRenderer = new ShapeRenderer();
-                  projectionMatrixSet = false; 
-                  draw(batch,width,height);
-/////this is just for testing purposes
-             }
-    }      
-            Assets.instance.fonts.defaultNormal.draw(batch," " + returnText,30, 60 ); 
+             if (gameController.pValueSumReturned[i] !=0)
+             { 
+                 if (returnText == "")  {plusText ="";}  else {plusText="+";} 
+                 returnText = returnText 
+                           +  plusText
+                           + gameController.pValueSumReturned[i]
+                           + "x"  
+                           + pResult[i]; 
+       layout.setText(returnTextFont, returnText); 
+       returnTextFont.draw(batch, returnText, 30, 60);                                   
+       gameController.touchTextResult(layout.width,layout.height);   
+             } 
         ///Remark we should change the Xpos when its the second player
     }
-    
-    
-    /////this function is not yet final ///just for testing purposes
-       public void draw(SpriteBatch batch , float width,float height){
-       batch.end();
-       if(!projectionMatrixSet){
-           shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
-       }
-       shapeRenderer.begin(ShapeType.Line); 
-       shapeRenderer.rect(30, 60, width, height); 
-       Gdx.gl.glEnable(GL20.GL_BLEND);
-       Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-       Gdx.gl.glDisable(GL20.GL_BLEND);
+         }
  
-       shapeRenderer.end();
-       batch.begin();
 
-   }
-
-    
     private void renderGuiFpsCounter (SpriteBatch batch) {
         float x = cameraGUI.viewportWidth - 55;
         float y = cameraGUI.viewportHeight - 15;
