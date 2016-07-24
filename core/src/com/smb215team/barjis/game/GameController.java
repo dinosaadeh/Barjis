@@ -31,6 +31,9 @@ public class GameController {
     DiceContainer diceContainer;
     public float timerForThrowingDices = 0.0f;
     
+    int[] pValueReturned = {0,0,0,0,0,0,0,0}; ///to retrieve the array from getValue()    
+    int[] pValueSumReturned = {0,0,0,0,0,0,0,0};///to retrieve the array pValueSum
+    
     // <editor-fold desc="Dino: TO DELETE Dummy stuff">
     Array<Pawn> dummyPawnToFillMap = new Array<Pawn>();
     Pawn dummyPawn = new Pawn();
@@ -122,7 +125,32 @@ public class GameController {
         if(timerForThrowingDices >= 5 && Dices.instance.canPlayerThrowDices) {
             Dices.instance.throwDices(diceContainer.diceMarginFromX, diceContainer.diceMarginToX, diceContainer.diceMarginFromY, diceContainer.diceMarginToY);
             timerForThrowingDices -= 5.0f; // If you reset it to 0 you will loose a few milliseconds every 2 seconds.
-            Gdx.app.debug(TAG, "The value of the dices: " + Dices.instance.getValue());
+          
+            pValueReturned=Dices.instance.getValue();
+          //  Gdx.app.debug(TAG, "The value of the dices: " + Dices.instance.getValue());
+          Gdx.app.debug(TAG, "The value of the dices: " 
+                  + pValueReturned[0]
+                  + pValueReturned[1]
+                  + pValueReturned[2]
+                  + pValueReturned[3]
+                  + pValueReturned[4]
+                  + pValueReturned[5]
+                  + pValueReturned[6]
+                  + pValueReturned[7]
+          );
+       
+       pValueSumReturned=Dices.instance.pValueSum;       
+       
+      /////if a combination was thrown more than 1 time
+       pValueSumReturned[0]=pValueSumReturned[0] +pValueReturned[0];
+       pValueSumReturned[1]=pValueSumReturned[1] +pValueReturned[1];
+       pValueSumReturned[2]=pValueSumReturned[2] +pValueReturned[2];
+       pValueSumReturned[3]=pValueSumReturned[3] +pValueReturned[3];
+       pValueSumReturned[4]=pValueSumReturned[4] +pValueReturned[4];
+       pValueSumReturned[5]=pValueSumReturned[5] +pValueReturned[5];
+       pValueSumReturned[6]=pValueSumReturned[6] +pValueReturned[6];
+       pValueSumReturned[7]=pValueSumReturned[7] +pValueReturned[7];
+
         }
     }
     
