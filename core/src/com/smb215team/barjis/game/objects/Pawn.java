@@ -7,6 +7,7 @@ package com.smb215team.barjis.game.objects;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.smb215team.barjis.game.Assets;
 import com.smb215team.barjis.game.enums.PawnState;
 
@@ -18,6 +19,7 @@ public class Pawn extends AbstractGameObject {
     
     private TextureRegion pawnImage;
     PawnState state;
+    Vector2 deadPosition;
     /**
      * Reflects the pawn's position index on the player's path
      * - value of -1 means the pawn is dead (out of the board)
@@ -32,17 +34,19 @@ public class Pawn extends AbstractGameObject {
 
     /** set the x and y position  */
     public Pawn(float x , float y){
-        position.set(x,y);
+        position.set(x, y);
         init();
     }
     
     public void init() {
-        init(0);
+        deadPosition = new Vector2(0, 0);
+        init(0, deadPosition);
     }
 
-    public void init(int pawnImageIndex) {
+    public void init(int pawnImageIndex, Vector2 deadPosition) {
         Assets.instance.pawn.init(pawnImageIndex);
         pawnImage = Assets.instance.pawn.pawn;
+        
         dimension.set(0.435f, 0.435f);
         this.setCenter(this.dimension.x / 2, this.dimension.y / 2);
         pawnImage = Assets.instance.pawn.pawn;
@@ -55,6 +59,8 @@ public class Pawn extends AbstractGameObject {
         // Set bounding box for collision detection
         bounds.set(0, 0, dimension.x, dimension.y);
         
+        this.deadPosition = deadPosition;
+        this.position = deadPosition;
         positionOnPath = -1;//The pawn starts as dead (out of the board)
     }
 

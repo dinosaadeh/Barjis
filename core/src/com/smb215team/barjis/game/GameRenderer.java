@@ -8,7 +8,6 @@ package com.smb215team.barjis.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -49,6 +48,7 @@ public class GameRenderer implements Disposable {
     public void render () {
         renderGui(batch);
         renderTestObjects();
+        renderPlayer(batch);
     }
     
     public void resize (int width, int height) {
@@ -69,10 +69,18 @@ public class GameRenderer implements Disposable {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
 
-        gameController.dummyPawn.render(batch);
         Dices.instance.render(batch);
         batch.end();
         //renderDebug(batch);
+    }
+    
+    private void renderPlayer (SpriteBatch batch) {
+        batch.setProjectionMatrix(camera.combined);
+        batch.begin();
+        for(Player player : gameController.players) {
+            player.render(batch);
+        }
+        batch.end();
     }
     
     private void renderGui (SpriteBatch batch) {

@@ -30,11 +30,6 @@ public class GameController {
     int currentPlayerIndex;
     DiceContainer diceContainer;
     public float timerForThrowingDices = 0.0f;
-    
-    // <editor-fold desc="Dino: TO DELETE Dummy stuff">
-    Array<Pawn> dummyPawnToFillMap = new Array<Pawn>();
-    Pawn dummyPawn = new Pawn();
-    // </editor-fold>
         
     public GameController (Game game) {
         this.game = game;
@@ -47,17 +42,20 @@ public class GameController {
         timerForThrowingDices = 0.0f;
         ConfigurationController.initCells();
 
+        // <editor-fold desc="Initialising players' pawns">
         players = new Player[2]; //TODO: account for variable number of players (1 (AI), 2, 4)
         currentPlayerIndex = 0;
         if(2 == players.length) {
-            players[0] = new Player(3);
-            players[1] = new Player(1);
+            players[0] = new Player(3, 0, ConfigurationController.GetPawnInitialPlaceholder(0));
+            players[1] = new Player(1, 1, ConfigurationController.GetPawnInitialPlaceholder(1));
         }
         else {
             for(int i = 0; i < players.length; i++) {
-                players[i] = new Player(i);
+                players[i] = new Player(i, i, ConfigurationController.GetPawnInitialPlaceholder(i));
             }
         }
+        // Placing them at starting point
+        // </editor-fold>
         
         initTestObjects();
     }
@@ -88,8 +86,6 @@ public class GameController {
     
     private void initTestObjects() {
         // <editor-fold desc="Dino: TO DELETE Dummy pawn/dice">
-        dummyPawn.position.x = -7.345f;
-        dummyPawn.position.y = 2.12f;
         // </editor-fold>
     }
     

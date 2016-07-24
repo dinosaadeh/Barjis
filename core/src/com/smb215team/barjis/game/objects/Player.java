@@ -6,6 +6,7 @@
 package com.smb215team.barjis.game.objects;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.smb215team.barjis.game.ConfigurationController;
@@ -20,16 +21,12 @@ public class Player {
     public Pawn[] pawns;
     public Vector2[] path;
     private Array<Vector2> boardMap = new Array<Vector2>();
-
-    public Player() {
-        init(0, 0);
+    
+    public Player(int branch, int pawnImageIndex, Array<Vector2> deadPositions) {
+        init(branch, pawnImageIndex, deadPositions);
     }
     
-    public Player(int branch) {
-        init(branch, 0);
-    }
-    
-    private void init(int branch, int pawnImageIndex) {
+    private void init(int branch, int pawnImageIndex, Array<Vector2> deadPositions) {
         // <editor-fold desc="Dino: Getting the full path">
         path = new Vector2[83];
         int pathBuilderPointer = 0;
@@ -74,11 +71,12 @@ public class Player {
         pawns = new Pawn[4];
         for(int i = 0; i < pawns.length; i++) {
             pawns[i] = new Pawn();
-            pawns[i].init(pawnImageIndex);
+            pawns[i].init(pawnImageIndex, deadPositions.get(i));
         }
         // </editor-fold>
     }
     
+    // <editor-fold desc="Methods that build the path for the player">
     private Vector2[] buildInitialPath(int branch) {
         //first branch 0 -> start from 0 * 24 = 0
         //second branch 1 -> start from 1 * 24 = 24
@@ -124,5 +122,12 @@ public class Player {
             counter++;
         }
         return resultToreturn;
+    }
+    // </editor-fold>
+    
+    public void render(SpriteBatch batch) {
+        for(Pawn pawn : pawns) {
+            pawn.render(batch);
+        }
     }
 }
