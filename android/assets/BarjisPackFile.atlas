@@ -39,56 +39,56 @@ hint
   orig: 7, 15
   offset: 0, 0
   index: -1
-lbl-player-0-off
+lbl-player-off-0
   rotate: false
   xy: 2, 63
   size: 74, 31
   orig: 74, 31
   offset: 0, 0
   index: -1
-lbl-player-0-on
-  rotate: false
-  xy: 379, 217
-  size: 74, 31
-  orig: 74, 31
-  offset: 0, 0
-  index: -1
-lbl-player-1-off
+lbl-player-off-1
   rotate: false
   xy: 665, 741
   size: 78, 31
   orig: 78, 31
   offset: 0, 0
   index: -1
-lbl-player-1-on
+lbl-player-on-0
+  rotate: false
+  xy: 379, 217
+  size: 74, 31
+  orig: 74, 31
+  offset: 0, 0
+  index: -1
+lbl-player-on-1
   rotate: false
   xy: 854, 819
   size: 78, 31
   orig: 78, 31
   offset: 0, 0
   index: -1
-lblph-horse-player-off
+lblph-player-off-0
   rotate: false
   xy: 2, 172
   size: 187, 76
   orig: 187, 76
   offset: 0, 0
   index: -1
-lblph-horse-player-on
-  rotate: false
-  xy: 665, 774
-  size: 187, 76
-  orig: 187, 76
-  offset: 0, 0
-  index: -1
-lblph-jockey-player-off
+lblph-player-off-1
   rotate: false
   xy: 2, 96
   size: 186, 74
   orig: 186, 74
   offset: 0, 0
   index: -1
-lblph-jockey-player-on
+lblph-player-on-0
+  rotate: false
+  xy: 665, 774
+  size: 187, 76
+  orig: 187, 76
+  offset: 0, 0
+  index: -1
+lblph-player-on-1
   rotate: false
   xy: 191, 174
   size: 186, 74

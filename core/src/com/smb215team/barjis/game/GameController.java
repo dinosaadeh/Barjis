@@ -27,7 +27,7 @@ public class GameController {
     private Game game;
     GameState state;
     Player[] players;
-    int currentPlayerIndex;
+    public int currentPlayerIndex;
     DiceContainer diceContainer;
     public float timerForThrowingDices = 0.0f;
     

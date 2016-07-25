@@ -33,6 +33,7 @@ public class Assets implements Disposable, AssetErrorListener {
     public AssetDeadPawnPlaceholder deadPawnPlaceholder;
     public AssetPawn pawn;//Dino: this is temporary until we create the player class (delete this comment when we do)
     public AssetFonts fonts;
+    public AssetPlayerLabels playerLabels;
 
     // singleton: prevent instantiation from other classes
     private Assets () {}
@@ -58,6 +59,7 @@ public class Assets implements Disposable, AssetErrorListener {
         board = new AssetBoard(atlas);
         deadPawnPlaceholder = new AssetDeadPawnPlaceholder(atlas);
         pawn = new AssetPawn(atlas);
+        playerLabels = new AssetPlayerLabels(atlas);
     }
 
     @Override
@@ -86,6 +88,30 @@ public class Assets implements Disposable, AssetErrorListener {
         
         public AssetBoard (TextureAtlas atlas){
             board = atlas.findRegion("board");
+        }
+    }
+    
+    public class AssetPlayerLabels {
+        public final AtlasRegion lblPlaceholderPlayerOff0;
+        public final AtlasRegion lblPlaceholderPlayerOn0;
+        public final AtlasRegion lblPlayerOff0;
+        public final AtlasRegion lblPlayerOn0;
+        
+        public final AtlasRegion lblPlaceholderPlayerOff1;
+        public final AtlasRegion lblPlaceholderPlayerOn1;
+        public final AtlasRegion lblPlayerOff1;
+        public final AtlasRegion lblPlayerOn1;
+        
+        public AssetPlayerLabels (TextureAtlas atlas){
+            lblPlaceholderPlayerOff0 = atlas.findRegion("lblph-player-off-0");
+            lblPlaceholderPlayerOn0 = atlas.findRegion("lblph-player-on-0");
+            lblPlayerOff0 = atlas.findRegion("lbl-player-off-0");
+            lblPlayerOn0 = atlas.findRegion("lbl-player-on-0");
+
+            lblPlaceholderPlayerOff1 = atlas.findRegion("lblph-player-off-1");
+            lblPlaceholderPlayerOn1 = atlas.findRegion("lblph-player-on-1");
+            lblPlayerOff1 = atlas.findRegion("lbl-player-off-1");
+            lblPlayerOn1 = atlas.findRegion("lbl-player-on-1");
         }
     }
     

@@ -111,6 +111,26 @@ public class GameRenderer implements Disposable {
         }
         // </editor-fold>
         
+        // <editor-fold desc="Displaying players labels based on which player's turn it is">
+        Sprite player0LabelPlaceholder = (0 == gameController.currentPlayerIndex) ? new Sprite(Assets.instance.playerLabels.lblPlaceholderPlayerOn0) : new Sprite(Assets.instance.playerLabels.lblPlaceholderPlayerOff0);
+        Sprite player0Label = (0 == gameController.currentPlayerIndex) ? new Sprite(Assets.instance.playerLabels.lblPlayerOn0) : new Sprite(Assets.instance.playerLabels.lblPlayerOff0);
+        player0LabelPlaceholder.setSize(2.79f, 1.11f);
+        player0LabelPlaceholder.setCenter(-6.09f, 3.495f);
+        player0LabelPlaceholder.draw(batch);
+        player0Label.setSize(1.11f, 0.465f);
+        player0Label.setCenter(-5.69f, 3.52f);
+        player0Label.draw(batch);
+
+        Sprite player1LabelPlaceholder = (1 == gameController.currentPlayerIndex) ? new Sprite(Assets.instance.playerLabels.lblPlaceholderPlayerOn1) : new Sprite(Assets.instance.playerLabels.lblPlaceholderPlayerOff1);
+        Sprite player1Label = (1 == gameController.currentPlayerIndex) ? new Sprite(Assets.instance.playerLabels.lblPlayerOn1) : new Sprite(Assets.instance.playerLabels.lblPlayerOff1);
+        player1LabelPlaceholder.setSize(2.79f, 1.11f);
+        player1LabelPlaceholder.setCenter(6.09f, 3.495f);
+        player1LabelPlaceholder.draw(batch);
+        player1Label.setSize(1.11f, 0.465f);
+        player1Label.setCenter(6.49f, 3.52f);
+        player1Label.draw(batch);
+        // <editor-fold desc="Objects that don't move.">
+        
         batch.setProjectionMatrix(cameraGUI.combined);
         renderGuiMovesToBePlayed(batch);
         // draw FPS text (anchored to bottom right edge)
@@ -144,7 +164,7 @@ public class GameRenderer implements Disposable {
 /////this is just for testing purposes
              }
     }      
-            Assets.instance.fonts.defaultNormal.draw(batch," " + returnText,30, 60 ); 
+            Assets.instance.fonts.defaultNormal.draw(batch," " + returnText,30, 200 ); 
         ///Remark we should change the Xpos when its the second player
     }
     
@@ -156,7 +176,7 @@ public class GameRenderer implements Disposable {
            shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
        }
        shapeRenderer.begin(ShapeType.Line); 
-       shapeRenderer.rect(30, 60, width, height); 
+       shapeRenderer.rect(30, 200, width, height); 
        Gdx.gl.glEnable(GL20.GL_BLEND);
        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
        Gdx.gl.glDisable(GL20.GL_BLEND);
