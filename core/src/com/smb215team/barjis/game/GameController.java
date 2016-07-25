@@ -16,6 +16,7 @@ import com.badlogic.gdx.Game;
 import com.smb215team.barjis.game.enums.GameState;
 import com.smb215team.barjis.game.objects.Player;
 import com.smb215team.barjis.screens.MenuScreen;
+import com.smb215team.barjis.game.GameRenderer;
 
 /**
  *
@@ -25,14 +26,18 @@ public class GameController {
     private static final String TAG = GameController.class.getName();
     
     private Game game;
+    private GameRenderer gameRenderer;///added by naji temporary
     GameState state;
     Player[] players;
     public int currentPlayerIndex;
     DiceContainer diceContainer;
     public float timerForThrowingDices = 0.0f;
     
+     Vector2 touchPosition = new Vector2(0,0);
+    float widthText ;// contains the width of the current set text
+    float heightText ;// contains the height of the current set text
     int[] pValueReturned = {0,0,0,0,0,0,0,0}; ///to retrieve the array from getValue()    
-    int[] pValueSumReturned = {0,0,0,0,0,0,0,0};///to retrieve the array pValueSum
+    int[] pValueSumReturned = {0,0,0,0,0,0,0,0};///to retrieve the array pValueSum 
     
     // <editor-fold desc="Dino: TO DELETE Dummy stuff">
     Array<Pawn> dummyPawnToFillMap = new Array<Pawn>();
@@ -46,6 +51,7 @@ public class GameController {
     
     private void init () {
         state = GameState.gameStart;
+        
         Dices.instance.init();
         timerForThrowingDices = 0.0f;
         ConfigurationController.initCells();
@@ -112,6 +118,7 @@ public class GameController {
         testDicesCollisions ();
         // Play the dice
         playDices(deltaTime);
+         
         
         if(!Dices.instance.canPlayerThrowDices && Dices.instance.dicesReachedAFullStop())
             switchToNextPlayer();
@@ -154,6 +161,29 @@ public class GameController {
 
         }
     }
+    
+    /////this function specify the touch position of the player 
+    //// !!! having a problem with TextWidth
+    public void touchTextResult( float widthText, float heightText  )
+    {       if (Gdx.input.justTouched()){
+                touchPosition.set(Gdx.input.getX(), Gdx.input.getY()); 
+               //  widthText = gameRenderer.layout.width;   // contains the width of the current set text
+                //  heightText = gameRenderer.layout.height; // contains the height of the current set text
+                  Gdx.app.debug("just-touched-anywhere",
+                               " x " + touchPosition.x  +   " y " + touchPosition.y  +
+                               " w " + widthText    +   " h " + heightText     );
+            if( touchPosition.x >= 30 +7.5f  
+              && touchPosition.x <= 30+ 7.5f  + widthText
+              && touchPosition.y >= 60+15 
+              && touchPosition.y <= 60+15+heightText
+              && touchPosition.x!=0 
+              && touchPosition.y!=0 ){ 
+                  Gdx.app.debug("justtouched-inside-Text",
+                               " x " + touchPosition.x  +   " y " + touchPosition.y  +
+                               " w " + widthText    +   " h " + heightText     );}
+                                     }
+}
+/////this function specify the touch position of the player (to be used later for choosing moves)
     
     private void moveSelectedSprite(float x, float y) {
         //testSprites[selectedSprite].translate(x, y);
