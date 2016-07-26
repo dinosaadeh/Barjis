@@ -2,8 +2,12 @@ package com.smb215team.barjis.game.objects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.smb215team.barjis.game.Assets;
+import com.smb215team.barjis.game.GameController;
 
 /**
  * This is a singleton class that takes care of throwing the dice over and over
@@ -17,12 +21,15 @@ public class Dices {
 
     public static final Dices instance = new Dices();
     public Dice[] dices;
-    public Integer[] currentHandMoves;
-    public boolean canPlayerThrowDices; 
-    int[] pValue  ={0 ,0 , 0, 0, 0, 0, 0, 0};//the result values e.g. 1xShakki
-    public int[] pValueSum  ={0 ,0 , 0, 0, 0, 0, 0, 0};//the sum of result values 2xShakki
+    public int[] currentHandMoves;
+    public boolean canPlayerThrowDices;  
     Sound diceSound = Gdx.audio.newSound(Gdx.files.internal("diceSound.mp3"));
-
+    private SpriteBatch batch ;
+    public GameController gamecontroller;     
+    BitmapFont returnTextFont = Assets.instance.fonts.defaultNormal;///used from wrapping the returnText
+    public  GlyphLayout layout = new GlyphLayout(); // Obviously stick this in a field to avoid allocation each frame. 
+    
+    
     private Dices() {
         init();
     }
@@ -34,7 +41,7 @@ public class Dices {
     public void init() {
         dices = new Dice[6];
 
-        currentHandMoves = new Integer[8];
+        currentHandMoves = new int[8];
         currentHandMoves[0] = 0; // shakki
         currentHandMoves[1] = 0; // dest
         currentHandMoves[2] = 0; // 2
@@ -50,8 +57,7 @@ public class Dices {
     public void reset() {
         //Reset the currentHandNumberOfMoves
         for (int i = 0; i < 8; i++) {
-            currentHandMoves[i] = 0;
-            pValueSum[i]=0;// set=0 only on reset/pValue set=0 on each throwdices
+            currentHandMoves[i] = 0;  
         }
          
         canPlayerThrowDices=true;
@@ -104,19 +110,7 @@ public class Dices {
         
         diceSound.play();
 
-        // Setting the value of the current throw
-        
-        ////added by Naji to reset the counter
-        currentHandMoves[0] = 0; // shakki
-        currentHandMoves[1] = 0; // dest
-        currentHandMoves[2] = 0; // 2
-        currentHandMoves[3] = 0; // 3
-        currentHandMoves[4] = 0; // 4
-        currentHandMoves[5] = 0; // banj
-        currentHandMoves[6] = 0; // bara
-        currentHandMoves[7] = 0; // khal
-        ////added by Naji to reset the counter
-        
+     
         currentHandMoves[currentThrowValue]++;
         if (1 == currentThrowValue || 5 == currentThrowValue) // if dest or banj, add the bonus move
         {
@@ -127,81 +121,36 @@ public class Dices {
              canPlayerThrowDices = false;
         }
     }
-/*Stopped by Naji/new function was created
-    public String getValue() {
-        String strToReturn = "";
-
-        if (0 != currentHandMoves[1]) {
-            strToReturn += " " + currentHandMoves[1] + " Dest";
-        }
-
-        if (0 != currentHandMoves[5]) {
-            strToReturn += " " + currentHandMoves[5] + " Banj";
-        }
-
-        if (0 != currentHandMoves[0]) {
-            strToReturn += " " + currentHandMoves[0] + " Shakki";
-        }
-
-        if (0 != currentHandMoves[6]) {
-            strToReturn += " " + currentHandMoves[1] + " Dest";
-        }
-
-        if (0 != currentHandMoves[2]) {
-            strToReturn += " 2";
-        }
-        if (0 != currentHandMoves[3]) {
-            strToReturn += " 3";
-        }
-        if (0 != currentHandMoves[4]) {
-            strToReturn += " 4";
-        }
-
-        if (0 != currentHandMoves[7]) {
-            strToReturn += " " + currentHandMoves[7] + " Bonus";
-        }
-
-        return strToReturn;
-    }
-    */
-   ///added by naji 
-    public int[] getValue() {
-             
-     pValue[0]= 0;pValue[1]= 0;pValue[2]= 0;pValue[3]= 0;
-     pValue[4]= 0;pValue[5]= 0;pValue[6]= 0;pValue[7]= 0;
-     
-        if (0 != currentHandMoves[1]) { //Dest     
-         pValue[1]++;  
-         
-        }  
-
-        if (0 != currentHandMoves[5]) { //Banj
-          pValue[5]++;  
-            
-        }  
-
-        if (0 != currentHandMoves[0]) { //Shakki
-          pValue[0]++;   
-        }  
+    ///added by naji 
+    public void getValue(SpriteBatch batch) {  
+ //   getArrayValues    0       1     2    3    4    5       6        7
+        String pResult[] ={"Shakki","Dest","2", "3", "4","Banj", "Bara", "Bonus"};    
+        String returnText =""; //text to be returned on screen 
+        String plusText ="";  // "+" in text 
         
-        if (0 != currentHandMoves[6]) { //Bara
-          pValue[6]++; 
-        } 
-        if (0 != currentHandMoves[2]) {
-          pValue[2]++;  
-        } 
-        if (0 != currentHandMoves[3]) {
-        pValue[3]++;  
-        } 
-        if (0 != currentHandMoves[4]) {
-          pValue[4]++;  
-        }  
 
-        if (0 != currentHandMoves[7]) {//Bonus
-          pValue[7]++; 
-        }       
-        return pValue;//an array with the value of each combination
+     
+       for (int i=0; i < currentHandMoves.length ; i++) {
+     
+       ///////this is just for testing purposes
+      
+            if ( currentHandMoves[i] !=0)
+            { 
+                 if (returnText == "")  {plusText ="";}  else {plusText=" + ";} 
+                 returnText = returnText 
+                           +  plusText
+                           + currentHandMoves[i]
+                           + "x"  
+                           + pResult[i]; 
+    
+       layout.setText(returnTextFont, returnText); 
+       returnTextFont.draw(batch, returnText, 30, 80);            
+             }
+//        ///Remark we should change the Xpos when its the second player
     } 
+  
+       
+    }   
     public boolean dicesReachedAFullStop() {
         for(Dice dice : dices) {
             if(dice.velocity.x != 0 || dice.velocity.y != 0)
