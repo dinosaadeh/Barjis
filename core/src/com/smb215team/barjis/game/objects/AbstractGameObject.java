@@ -87,7 +87,9 @@ public abstract class AbstractGameObject extends Sprite {
         // Make sure the object's velocity does not exceed the
         // positive or negative terminal velocity
         velocity.x = MathUtils.clamp(velocity.x, -terminalVelocity.x, terminalVelocity.x);
-        
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////Patch Elie
+        velocity.x = velocity.x % 5;       
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //Dino: updating the bounds of the sprite
         this.bounds.set(this.position.x, this.position.y, this.dimension.x, this.dimension.y);
     }
@@ -108,6 +110,9 @@ public abstract class AbstractGameObject extends Sprite {
         // Make sure the object's velocity does not exceed the
         // positive or negative terminal velocity
         velocity.y = MathUtils.clamp(velocity.y, -terminalVelocity.y, terminalVelocity.y);
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////Patch Elie
+        velocity.y = velocity.y % 5;        
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         
         //Dino: updating the bounds of the sprite
         this.bounds.set(this.position.x, this.position.y, this.dimension.x, this.dimension.y);
