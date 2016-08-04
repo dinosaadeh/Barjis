@@ -1,21 +1,32 @@
 package com.smb215team.barjis.game.objects;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.audio.Sound; 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+//import com.badlogic.gdx.graphics.Color;
+//import com.badlogic.gdx.graphics.Texture; 
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.graphics.g2d.NinePatch;
+//import com.badlogic.gdx.graphics.g2d.NinePatch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;  
+import com.badlogic.gdx.math.MathUtils;  
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+//import com.badlogic.gdx.scenes.scene2d.ui.Label;
+//import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable; 
 import com.smb215team.barjis.game.Assets;
-import com.smb215team.barjis.game.GameController;
-
+import com.smb215team.barjis.game.GameController;   
+ //import java.awt.*;
 /**
  * This is a singleton class that takes care of throwing the dice over and over
  * and returns the total moves allowed for the current turn
  *
  * @author dinosaadeh
  */
-public class Dices {
+public class Dices  {
 
     private static final String TAG = Dices.class.getName();
 
@@ -26,9 +37,8 @@ public class Dices {
     Sound diceSound = Gdx.audio.newSound(Gdx.files.internal("diceSound.mp3"));
     private SpriteBatch batch ;
     public GameController gamecontroller;     
-    BitmapFont returnTextFont = Assets.instance.fonts.defaultNormal;///used from wrapping the returnText
-    public  GlyphLayout layout = new GlyphLayout(); // Obviously stick this in a field to avoid allocation each frame. 
-    
+    public GlyphLayout layout = new GlyphLayout(); // Obviously stick this in a field to avoid allocation each frame. 
+    GameController gameController;
     
     private Dices() {
         init();
@@ -39,8 +49,8 @@ public class Dices {
      * combinations to 0.
      */
     public void init() {
-        dices = new Dice[6];
-
+        dices = new Dice[6]; 
+        
         currentHandMoves = new int[8];
         currentHandMoves[0] = 0; // shakki
         currentHandMoves[1] = 0; // dest
@@ -52,8 +62,9 @@ public class Dices {
         currentHandMoves[7] = 0; // khal
         
         canPlayerThrowDices = true;
+
+  
     }
-    
     public void reset() {
         //Reset the currentHandNumberOfMoves
         for (int i = 0; i < 8; i++) {
@@ -61,10 +72,7 @@ public class Dices {
         }
          
         canPlayerThrowDices=true;
-        
-     
-        
-      
+ 
     }
     
     public void dispose() {
@@ -124,33 +132,88 @@ public class Dices {
     ///added by naji 
     public void getValue(SpriteBatch batch) {  
  //   getArrayValues    0       1     2    3    4    5       6        7
-        String pResult[] ={"Shakki","Dest","2", "3", "4","Banj", "Bara", "Bonus"};    
-        String returnText =""; //text to be returned on screen 
-        String plusText ="";  // "+" in text 
-        
+// Label textLabel;
+// textLabel = new Label("labelllllllllllllllllllllllllll"
+//           , new Label.LabelStyle(Assets.instance.fonts.defaultNormal
+//           , Color.BLACK));
+//  textLabel.setBounds(40, 80, 20, 20); 
+//    textLabel.setAlignment(Align.center);
+//    textLabel.setWrap(true); 
+//    textLabel.setVisible(true);
 
-     
-       for (int i=0; i < currentHandMoves.length ; i++) {
-     
-       ///////this is just for testing purposes
+    //pack the frame
+   // pack();
+
+/*
+      Texture bkg;
+       Label.LabelStyle lStyle;
+  bkg = new Texture("C:\\Users\\user\\Documents\\GitHub\\Barjis-master-160716\\android\\assets\\dummyDiceDown.png");
+       NinePatch np = new NinePatch(bkg,11,11,9,10);
+        NinePatchDrawable npd = new NinePatchDrawable(np);
+        lStyle = new Label.LabelStyle( Assets.instance.fonts.defaultNormal
+                                      , Color.BLACK);
+        lStyle.background = npd;
+        
+      Label textLabel ;
+      textLabel = new Label("labelllllllllllllllllllllllllll",lStyle); 
+      textLabel.setOrigin(0, 80);
+      textLabel.setPosition(0, 90);
       
+      textLabel.setVisible(true);
+        textLabel.setText("llaaaaab");  
+     Gdx.app.debug("label text",""+  textLabel.getOriginX()+   textLabel.getOriginY()+ textLabel.getText());
+ */
+ String pResult[] ={"Shakki","Dest","2", "3", "4","Banj", "Bara", "Bonus"};    
+        String returnText =""; //text to be returned on screen 
+        String plusText ="";  // "+" in text  
+        String [] returnTextArray ={"","","","","","","",""};
+       for (int i=0; i < currentHandMoves.length ; i++) { 
             if ( currentHandMoves[i] !=0)
             { 
                  if (returnText == "")  {plusText ="";}  else {plusText=" + ";} 
-                 returnText = returnText 
-                           +  plusText
-                           + currentHandMoves[i]
-                           + "x"  
-                           + pResult[i]; 
-    
-       layout.setText(returnTextFont, returnText); 
-       returnTextFont.draw(batch, returnText, 30, 80);            
-             }
-//        ///Remark we should change the Xpos when its the second player
-    } 
-  
+             
+                 returnTextArray[i] = + currentHandMoves[i]
+                                      + "x"  
+                                      + pResult[i];     
+                 returnText = returnText + plusText + returnTextArray[i];
+       layout.setText(Assets.instance.fonts.defaultNormal, returnText);  
+      Assets.instance.fonts.defaultNormal.draw(batch, layout, 30, 80);       
+            }
+ //       ///Remark we should change the Xpos when its the second player
+    }  
        
-    }   
+       
+         if (Gdx.input.justTouched()){
+     Vector2 touchPosition = new Vector2(Gdx.input.getX(), Gdx.input.getY()); 
+ 
+                  Gdx.app.debug("just-touched-anywhere",
+                               " x " + touchPosition.x  +   " y " + touchPosition.y  +
+                               " w " + layout.width  +   " h " + layout.height     );
+            if( touchPosition.x >= 30 +7.5f  
+              && touchPosition.x <= 30+ 7.5f  + (layout.width *1.22f)
+               //1.22 is the ratio between the text width and the one on the screen
+              && touchPosition.y >= 80+15 
+              && touchPosition.y <= 80+15+(layout.height*1.22f)
+              && touchPosition.x!=0 
+              && touchPosition.y!=0 ){
+                  Gdx.app.debug("justtouched-inside-Text",
+                               " x " + touchPosition.x  +   " y " + touchPosition.y  +
+                               " w " + layout.width   +   " h " + layout.height     );}
+                                     //}
+
+       if (getRectangle().contains(touchPosition.x, touchPosition.y))
+        { 
+                           Gdx.app.debug("rectangle","justtouched-inside-Text");
+        }
+          }
+        
+    }
+    
+private Rectangle getRectangle()
+{
+    return new Rectangle(30+7.5f, 80+15  , (int)layout.width*1.22f, (int)layout.height*1.22f);
+}
+
     public boolean dicesReachedAFullStop() {
         for(Dice dice : dices) {
             if(dice.velocity.x != 0 || dice.velocity.y != 0)
