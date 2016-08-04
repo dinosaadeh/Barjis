@@ -59,7 +59,8 @@ task run(type: Exec) {
         }
         def sdkDir = properties.getProperty('sdk.dir')
         if (sdkDir) {
-            path = sdkDir
+            path = "$System.env.ANDROID_HOME"
+
         } else {
             path = "$System.env.ANDROID_HOME"
         }

@@ -12,6 +12,10 @@ import com.badlogic.gdx.graphics.GL20;
 
 import com.smb215team.barjis.game.GameController;
 import com.smb215team.barjis.game.GameRenderer;
+import java.awt.FontFormatException;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author dinosaadeh
@@ -38,8 +42,10 @@ public class GameScreen extends AbstractGameScreen {
         Gdx.gl.glClearColor(0x94/255.0f, 0xfe/255.0f, 0xe3/255.0f, 0xff/255.0f);
         // Clears the screen
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        // Render game world to screen
-        gameRenderer.render();
+        
+            // Render game world to screen
+            gameRenderer.render();
+        
     }
 
     @Override

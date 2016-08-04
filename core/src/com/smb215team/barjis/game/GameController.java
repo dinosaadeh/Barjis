@@ -13,6 +13,7 @@ import com.smb215team.barjis.game.objects.DiceContainer;
 import com.smb215team.barjis.game.objects.Dices;
 import com.smb215team.barjis.game.objects.Pawn;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.smb215team.barjis.game.enums.GameState;
 import com.smb215team.barjis.game.objects.Player;
 import com.smb215team.barjis.screens.MenuScreen;
@@ -26,7 +27,7 @@ public class GameController {
     private static final String TAG = GameController.class.getName();
     
     private Game game;
-    private GameRenderer gameRenderer;///added by naji temporary
+    private GameRenderer gameRenderer;///added by naji temporary 
     GameState state;
     Player[] players;
     public int currentPlayerIndex;
@@ -136,33 +137,15 @@ public class GameController {
           //  Gdx.app.debug(TAG, "The value of the dices: " + Dices.instance.getValue());
           
           Gdx.app.debug(TAG, "The value of the dices: " );
-        //  Dices.instance.getValue();
-        
+         
+        Dices.instance.getValue();  
         }
     }
     
     /////this function specify the touch position of the player 
     //// !!! having a problem with TextWidth
-    public void touchTextResult( float widthText, float heightText  )
-    {       if (Gdx.input.justTouched()){
-                touchPosition.set(Gdx.input.getX(), Gdx.input.getY()); 
-               //  widthText = gameRenderer.layout.width;   // contains the width of the current set text
-                //  heightText = gameRenderer.layout.height; // contains the height of the current set text
-                  Gdx.app.debug("just-touched-anywhere",
-                               " x " + touchPosition.x  +   " y " + touchPosition.y  +
-                               " w " + widthText    +   " h " + heightText     );
-            if( touchPosition.x >= 30 +7.5f  
-              && touchPosition.x <= 30+ 7.5f  + (widthText*1.22f)
-               //1.22 is the ratio between the text width and the one on the screen
-              && touchPosition.y >= 80+15 
-              && touchPosition.y <= 80+15+(heightText*1.22f)
-              && touchPosition.x!=0 
-              && touchPosition.y!=0 ){
-                  Gdx.app.debug("justtouched-inside-Text",
-                               " x " + touchPosition.x  +   " y " + touchPosition.y  +
-                               " w " + widthText    +   " h " + heightText     );}
-                                     }
-}
+    
+ 
 /////this function specify the touch position of the player (to be used later when   choosing moves)
     
     private void moveSelectedSprite(float x, float y) {

@@ -15,9 +15,10 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType; 
+import com.badlogic.gdx.math.Vector2;
  
 import com.smb215team.barjis.util.Constants;
-import com.smb215team.barjis.game.objects.*;   
+import com.smb215team.barjis.game.objects.*;    
 /**
  *
  * @author dinosaadeh
@@ -30,10 +31,7 @@ public class GameRenderer implements Disposable {
     ShapeRenderer shapeRenderer;
     static private boolean projectionMatrixSet;
     private ShapeRenderer dummyShapeRenderer;
-     
-    BitmapFont returnTextFont = Assets.instance.fonts.defaultNormal;///used from wrapping the returnText
-    public  GlyphLayout layout = new GlyphLayout(); // Obviously stick this in a field to avoid allocation each frame. 
-   
+      
     
     public GameRenderer (GameController gameController) {
         this.gameController = gameController;
@@ -91,7 +89,7 @@ public class GameRenderer implements Disposable {
         batch.end();
     }
     
-    private void renderGui (SpriteBatch batch) {
+    private void renderGui (SpriteBatch batch)  {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         // <editor-fold desc="Objects that don't move.">
@@ -139,10 +137,12 @@ public class GameRenderer implements Disposable {
         batch.end();
     }
 
-    private void renderGuiMovesToBePlayed (SpriteBatch batch) {
+    private void renderGuiMovesToBePlayed (SpriteBatch batch)  {
         
+ 
         Dices.instance.getValue(batch);
-    }
+}
+        
     
     
     /////this function is not yet final ///just for testing purposes
