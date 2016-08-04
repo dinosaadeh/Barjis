@@ -156,7 +156,7 @@ public class Dices  {
         
       Label textLabel ;
       textLabel = new Label("labelllllllllllllllllllllllllll",lStyle); 
-      texttLabel.setOrigin(0, 80);
+      textLabel.setOrigin(0, 80);
       textLabel.setPosition(0, 90);
       
       textLabel.setVisible(true);
