@@ -1,45 +1,28 @@
 package com.smb215team.barjis.game.objects;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound; 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
-//import com.badlogic.gdx.graphics.Color;
-//import com.badlogic.gdx.graphics.Texture; 
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.graphics.g2d.NinePatch;
-//import com.badlogic.gdx.graphics.g2d.NinePatch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;  
-import com.badlogic.gdx.math.MathUtils;  
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
-//import com.badlogic.gdx.scenes.scene2d.ui.Label;
-//import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable; 
-import com.smb215team.barjis.game.Assets;
-import com.smb215team.barjis.game.GameController;   
- //import java.awt.*;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
+
 /**
  * This is a singleton class that takes care of throwing the dice over and over
  * and returns the total moves allowed for the current turn
  *
  * @author dinosaadeh
  */
-public class Dices  {
+public class Dices {
 
     private static final String TAG = Dices.class.getName();
 
     public static final Dices instance = new Dices();
     public Dice[] dices;
-    public int[] currentHandMoves;
-    public boolean canPlayerThrowDices;  
+    public Integer[] currentHandMoves;
+    public boolean canPlayerThrowDices;
+    int[] pValue  ={0 ,0 , 0, 0, 0, 0, 0, 0};//the result values e.g. 1xShakki
+    public int[] pValueSum  ={0 ,0 , 0, 0, 0, 0, 0, 0};//the sum of result values 2xShakki
     Sound diceSound = Gdx.audio.newSound(Gdx.files.internal("diceSound.mp3"));
-    private SpriteBatch batch ;
-    public GameController gamecontroller;     
-    public GlyphLayout layout = new GlyphLayout(); // Obviously stick this in a field to avoid allocation each frame. 
-    GameController gameController;
-    
+
     private Dices() {
         init();
     }
@@ -49,9 +32,9 @@ public class Dices  {
      * combinations to 0.
      */
     public void init() {
-        dices = new Dice[6]; 
-        
-        currentHandMoves = new int[8];
+        dices = new Dice[6];
+
+        currentHandMoves = new Integer[8];
         currentHandMoves[0] = 0; // shakki
         currentHandMoves[1] = 0; // dest
         currentHandMoves[2] = 0; // 2
@@ -60,21 +43,24 @@ public class Dices  {
         currentHandMoves[5] = 0; // banj
         currentHandMoves[6] = 0; // bara
         currentHandMoves[7] = 0; // khal
-        
-        canPlayerThrowDices = true;
 
-  
+        canPlayerThrowDices = true;
     }
+
     public void reset() {
         //Reset the currentHandNumberOfMoves
         for (int i = 0; i < 8; i++) {
-            currentHandMoves[i] = 0;  
+            currentHandMoves[i] = 0;
+            pValueSum[i]=0;// set=0 only on reset/pValue set=0 on each throwdices
         }
-         
+
         canPlayerThrowDices=true;
- 
+
+
+
+
     }
-    
+
     public void dispose() {
         diceSound.dispose();
     }
@@ -86,7 +72,7 @@ public class Dices  {
             dice.render(batch);
         }
     }
-    
+
     public void update(float deltaTime) {
         for(Dice dice : dices) {
             if(null == dice)
@@ -96,7 +82,7 @@ public class Dices  {
     }
 
     public void throwDices(float diceMarginFromX, float diceMarginToX, float diceMarginFromY, float diceMarginToY) {
-     
+
         bringDicesToFullStop();//I used this method to stop dices when by mistake a dice leaves the container. This bug should be solved and with that solved we no longer need this line.
         int currentThrowValue = 0;
         for (int i = 0; i < dices.length; i++) {
@@ -115,10 +101,22 @@ public class Dices  {
             dices[i].dimension.set(0.45f, 0.45f);
             //Gdx.app.log(TAG, "Position: " + randomX + ", " + randomY + ", velocity: " + dices[i].velocity);
         }
-        
+
         diceSound.play();
 
-     
+        // Setting the value of the current throw
+
+        ////added by Naji to reset the counter
+        currentHandMoves[0] = 0; // shakki
+        currentHandMoves[1] = 0; // dest
+        currentHandMoves[2] = 0; // 2
+        currentHandMoves[3] = 0; // 3
+        currentHandMoves[4] = 0; // 4
+        currentHandMoves[5] = 0; // banj
+        currentHandMoves[6] = 0; // bara
+        currentHandMoves[7] = 0; // khal
+        ////added by Naji to reset the counter
+
         currentHandMoves[currentThrowValue]++;
         if (1 == currentThrowValue || 5 == currentThrowValue) // if dest or banj, add the bonus move
         {
@@ -129,91 +127,81 @@ public class Dices  {
              canPlayerThrowDices = false;
         }
     }
-    ///added by naji 
-    public void getValue(SpriteBatch batch) {  
- //   getArrayValues    0       1     2    3    4    5       6        7
-// Label textLabel;
-// textLabel = new Label("labelllllllllllllllllllllllllll"
-//           , new Label.LabelStyle(Assets.instance.fonts.defaultNormal
-//           , Color.BLACK));
-//  textLabel.setBounds(40, 80, 20, 20); 
-//    textLabel.setAlignment(Align.center);
-//    textLabel.setWrap(true); 
-//    textLabel.setVisible(true);
+/*Stopped by Naji/new function was created
+    public String getValue() {
+        String strToReturn = "";
 
-    //pack the frame
-   // pack();
-
-/*
-      Texture bkg;
-       Label.LabelStyle lStyle;
-  bkg = new Texture("C:\\Users\\user\\Documents\\GitHub\\Barjis-master-160716\\android\\assets\\dummyDiceDown.png");
-       NinePatch np = new NinePatch(bkg,11,11,9,10);
-        NinePatchDrawable npd = new NinePatchDrawable(np);
-        lStyle = new Label.LabelStyle( Assets.instance.fonts.defaultNormal
-                                      , Color.BLACK);
-        lStyle.background = npd;
-        
-      Label textLabel ;
-      textLabel = new Label("labelllllllllllllllllllllllllll",lStyle); 
-      textLabel.setOrigin(0, 80);
-      textLabel.setPosition(0, 90);
-      
-      textLabel.setVisible(true);
-        textLabel.setText("llaaaaab");  
-     Gdx.app.debug("label text",""+  textLabel.getOriginX()+   textLabel.getOriginY()+ textLabel.getText());
- */
- String pResult[] ={"Shakki","Dest","2", "3", "4","Banj", "Bara", "Bonus"};    
-        String returnText =""; //text to be returned on screen 
-        String plusText ="";  // "+" in text  
-        String [] returnTextArray ={"","","","","","","",""};
-       for (int i=0; i < currentHandMoves.length ; i++) { 
-            if ( currentHandMoves[i] !=0)
-            { 
-                 if (returnText == "")  {plusText ="";}  else {plusText=" + ";} 
-             
-                 returnTextArray[i] = + currentHandMoves[i]
-                                      + "x"  
-                                      + pResult[i];     
-                 returnText = returnText + plusText + returnTextArray[i];
-       layout.setText(Assets.instance.fonts.defaultNormal, returnText);  
-      Assets.instance.fonts.defaultNormal.draw(batch, layout, 30, 80);       
-            }
- //       ///Remark we should change the Xpos when its the second player
-    }  
-       
-       
-         if (Gdx.input.justTouched()){
-     Vector2 touchPosition = new Vector2(Gdx.input.getX(), Gdx.input.getY()); 
- 
-                  Gdx.app.debug("just-touched-anywhere",
-                               " x " + touchPosition.x  +   " y " + touchPosition.y  +
-                               " w " + layout.width  +   " h " + layout.height     );
-            if( touchPosition.x >= 30 +7.5f  
-              && touchPosition.x <= 30+ 7.5f  + (layout.width *1.22f)
-               //1.22 is the ratio between the text width and the one on the screen
-              && touchPosition.y >= 80+15 
-              && touchPosition.y <= 80+15+(layout.height*1.22f)
-              && touchPosition.x!=0 
-              && touchPosition.y!=0 ){
-                  Gdx.app.debug("justtouched-inside-Text",
-                               " x " + touchPosition.x  +   " y " + touchPosition.y  +
-                               " w " + layout.width   +   " h " + layout.height     );}
-                                     //}
-
-       if (getRectangle().contains(touchPosition.x, touchPosition.y))
-        { 
-                           Gdx.app.debug("rectangle","justtouched-inside-Text");
+        if (0 != currentHandMoves[1]) {
+            strToReturn += " " + currentHandMoves[1] + " Dest";
         }
-          }
-        
-    }
-    
-private Rectangle getRectangle()
-{
-    return new Rectangle(30+7.5f, 80+15  , (int)layout.width*1.22f, (int)layout.height*1.22f);
-}
 
+        if (0 != currentHandMoves[5]) {
+            strToReturn += " " + currentHandMoves[5] + " Banj";
+        }
+
+        if (0 != currentHandMoves[0]) {
+            strToReturn += " " + currentHandMoves[0] + " Shakki";
+        }
+
+        if (0 != currentHandMoves[6]) {
+            strToReturn += " " + currentHandMoves[1] + " Dest";
+        }
+
+        if (0 != currentHandMoves[2]) {
+            strToReturn += " 2";
+        }
+        if (0 != currentHandMoves[3]) {
+            strToReturn += " 3";
+        }
+        if (0 != currentHandMoves[4]) {
+            strToReturn += " 4";
+        }
+
+        if (0 != currentHandMoves[7]) {
+            strToReturn += " " + currentHandMoves[7] + " Bonus";
+        }
+
+        return strToReturn;
+    }
+    */
+   ///added by naji
+    public int[] getValue() {
+
+     pValue[0]= 0;pValue[1]= 0;pValue[2]= 0;pValue[3]= 0;
+     pValue[4]= 0;pValue[5]= 0;pValue[6]= 0;pValue[7]= 0;
+
+        if (0 != currentHandMoves[1]) { //Dest
+         pValue[1]++;
+
+        }
+
+        if (0 != currentHandMoves[5]) { //Banj
+          pValue[5]++;
+
+        }
+
+        if (0 != currentHandMoves[0]) { //Shakki
+          pValue[0]++;
+        }
+
+        if (0 != currentHandMoves[6]) { //Bara
+          pValue[6]++;
+        }
+        if (0 != currentHandMoves[2]) {
+          pValue[2]++;
+        }
+        if (0 != currentHandMoves[3]) {
+        pValue[3]++;
+        }
+        if (0 != currentHandMoves[4]) {
+          pValue[4]++;
+        }
+
+        if (0 != currentHandMoves[7]) {//Bonus
+          pValue[7]++;
+        }
+        return pValue;//an array with the value of each combination
+    }
     public boolean dicesReachedAFullStop() {
         for(Dice dice : dices) {
             if(dice.velocity.x != 0 || dice.velocity.y != 0)
