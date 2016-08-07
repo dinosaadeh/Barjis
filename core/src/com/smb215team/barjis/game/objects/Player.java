@@ -130,4 +130,9 @@ public class Player {
             pawn.render(batch);
         }
     }
+    
+    //Dino: To develop
+    public void movePawn(int pawnIndex, int numberOfSteps) {
+        pawns[pawnIndex].move(numberOfSteps);
+    }
 }

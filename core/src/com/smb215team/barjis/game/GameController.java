@@ -13,6 +13,7 @@ import com.smb215team.barjis.game.objects.DiceContainer;
 import com.smb215team.barjis.game.objects.Dices;
 import com.smb215team.barjis.game.objects.Pawn;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.InputAdapter;
 import com.smb215team.barjis.game.enums.GameState;
 import com.smb215team.barjis.game.objects.Player;
 import com.smb215team.barjis.screens.MenuScreen;
@@ -22,7 +23,7 @@ import com.smb215team.barjis.game.GameRenderer;
  *
  * @author dinosaadeh
  */
-public class GameController {
+public class GameController extends InputAdapter {
     private static final String TAG = GameController.class.getName();
     
     private Game game;
@@ -32,6 +33,8 @@ public class GameController {
     public int currentPlayerIndex;
     DiceContainer diceContainer;
     public float timerForThrowingDices = 0.0f;
+    public float timerForPlayerTurn = 0.0f;
+
     
      Vector2 touchPosition = new Vector2(0,0);
     float widthText ;// contains the width of the current set text
@@ -80,6 +83,9 @@ public class GameController {
             case playerTurnThrowDice:
                 playOneHand(deltaTime);
                 break;
+            case playerTurnPlayPawns:
+                interpretPlayerMoves(deltaTime);
+                break;
             case gameOver:
                 break;
             default:
@@ -101,6 +107,7 @@ public class GameController {
         // </editor-fold>
     }
     
+    // <editor-fold desc="STATE: game starting">
     /**
      * TODO
      * play three dices on each side to decide who goes first
@@ -111,17 +118,17 @@ public class GameController {
         //Once done knowing and setting who goes first, set the game state to playerTurnThrowDice
         this.state = GameState.playerTurnThrowDice;
     }
+    // </editor-fold>
     
+    // <editor-fold desc="STATE: dices rolling">
     public void playOneHand(float deltaTime) {
         testDicesCollisions ();
         // Play the dice
         playDices(deltaTime);
-         
 
+        // Once dices are fully rolled, let the player do his moves
         if(!Dices.instance.canPlayerThrowDices && Dices.instance.dicesReachedAFullStop())
-            switchToNextPlayer();
-            
-        // Once player is finished, switch to the next player
+            this.state = state.playerTurnPlayPawns;
     }
     
     private void playDices(float deltaTime) {
@@ -140,7 +147,33 @@ public class GameController {
         
         }
     }
+    // </editor-fold>
     
+    // <editor-fold desc="STATE: player moving his pawns">
+    private void interpretPlayerMoves(float deltaTime) {
+        handlePlayerInput(deltaTime);
+        
+        timerForPlayerTurn += deltaTime;
+        // Once player is finished, switch to the next player
+        if(timerForThrowingDices >= 5 && Dices.instance.canPlayerThrowDices) {
+            switchToNextPlayer();
+        }
+    }
+    
+    private void handlePlayerInput(float deltaTime) {
+        if (Gdx.input.isTouched()){
+            int x1 = Gdx.input.getX();
+            int y1 = Gdx.input.getY();
+            //Gdx.app.log(TAG, "I'm touched :) at " + x1 + ", " + y1);
+
+            for(Pawn pawn : players[currentPlayerIndex].pawns) {
+                if(pawn.bounds.contains(x1, y1))
+                    Gdx.app.log(TAG, "I'm touched at " + pawn.position.x + ", " + pawn.position.y);
+            }
+        }
+    }
+    // </editor-fold>
+
     /////this function specify the touch position of the player 
     //// !!! having a problem with TextWidth
     public void touchTextResult( float widthText, float heightText  )

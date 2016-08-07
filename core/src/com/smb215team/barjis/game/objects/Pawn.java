@@ -5,6 +5,7 @@
  */
 package com.smb215team.barjis.game.objects;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -78,4 +79,17 @@ public class Pawn extends AbstractGameObject {
         batch.draw(pawnImage.getTexture(), position.x, position.y, origin.x, origin.y, dimension.x, dimension.y, scale.x, scale.y,
 -         rotation, pawnImage.getRegionX(), pawnImage.getRegionY(), pawnImage.getRegionWidth(), pawnImage.getRegionHeight(), false, false);
    }
+    
+    public void move(int numberOfSteps) {
+        try {
+            if(positionOnPath + numberOfSteps > 82) {
+                throw new Exception("Number of steps to add greater than the pawn can move.");
+            }
+            
+            positionOnPath += numberOfSteps;
+        }
+        catch(Exception e) {
+            Gdx.app.debug(TAG, e.getMessage());
+        }
+    }
 }
