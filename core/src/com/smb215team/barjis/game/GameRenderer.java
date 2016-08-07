@@ -5,7 +5,11 @@
  */
 package com.smb215team.barjis.game;
 
-import com.badlogic.gdx.Gdx ;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -14,10 +18,18 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType; 
- 
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
 import com.smb215team.barjis.util.Constants;
-import com.smb215team.barjis.game.objects.*;   
+import com.smb215team.barjis.game.objects.*;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.font.FontRenderContext;
+import java.awt.geom.Rectangle2D;
+import javafx.scene.text.Font;
+import static javafx.scene.text.Font.font;
 /**
  *
  * @author dinosaadeh
@@ -25,16 +37,16 @@ import com.smb215team.barjis.game.objects.*;
 public class GameRenderer implements Disposable {
     private OrthographicCamera camera;
     private OrthographicCamera cameraGUI;
-    private SpriteBatch batch ;
+    private SpriteBatch batch;
     private GameController gameController;
     ShapeRenderer shapeRenderer;
     static private boolean projectionMatrixSet;
     private ShapeRenderer dummyShapeRenderer;
-     
+
     BitmapFont returnTextFont = Assets.instance.fonts.defaultNormal;///used from wrapping the returnText
-    public  GlyphLayout layout = new GlyphLayout(); // Obviously stick this in a field to avoid allocation each frame. 
-   
-    
+    public  GlyphLayout layout = new GlyphLayout(); // Obviously stick this in a field to avoid allocation each frame.
+
+
     public GameRenderer (GameController gameController) {
         this.gameController = gameController;
         init();
@@ -42,33 +54,33 @@ public class GameRenderer implements Disposable {
 
     private void init () {
         batch = new SpriteBatch();
-        
+
         camera = new OrthographicCamera(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT);
         camera.position.set(0, 0, 0);
         camera.update();
-        
+
         cameraGUI = new OrthographicCamera(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT);
         cameraGUI.position.set(0, 0, 0);
         cameraGUI.setToOrtho(true); // flip y-axis
         cameraGUI.update();
     }
-    
+
     public void render () {
         renderGui(batch);
         renderTestObjects();
         renderPlayer(batch);
     }
-    
+
     public void resize (int width, int height) {
         camera.viewportWidth = (Constants.VIEWPORT_HEIGHT / height) * width;
         camera.update();
-        
+
         cameraGUI.viewportHeight = Constants.VIEWPORT_GUI_HEIGHT;
         cameraGUI.viewportWidth = (Constants.VIEWPORT_GUI_HEIGHT / (float)height) * (float)width;
         cameraGUI.position.set(cameraGUI.viewportWidth / 2, cameraGUI.viewportHeight / 2, 0);
         cameraGUI.update();
     }
-    
+
     @Override public void dispose () {
         batch.dispose();
     }
@@ -81,7 +93,7 @@ public class GameRenderer implements Disposable {
         batch.end();
         //renderDebug(batch);
     }
-    
+
     private void renderPlayer (SpriteBatch batch) {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
@@ -90,7 +102,7 @@ public class GameRenderer implements Disposable {
         }
         batch.end();
     }
-    
+
     private void renderGui (SpriteBatch batch) {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
@@ -99,7 +111,7 @@ public class GameRenderer implements Disposable {
         boardSprite.setSize(9.915f, 9);
         boardSprite.setCenter(0, 0);
         boardSprite.draw(batch);
-        
+
         float[] deadPawnPlaceholderXPositions = {-7.395f, -6.735f, -6.09f, -5.445f, 4.98f, 5.625f, 6.27f, 6.945f};
         Sprite[] deadPawnPlaceholders = new Sprite[8];
         for(int i = 0; i < deadPawnPlaceholders.length; i++) {
@@ -109,7 +121,7 @@ public class GameRenderer implements Disposable {
             deadPawnPlaceholders[i].draw(batch);
         }
         // </editor-fold>
-        
+
         // <editor-fold desc="Displaying players labels based on which player's turn it is">
         Sprite player0LabelPlaceholder = (0 == gameController.currentPlayerIndex) ? new Sprite(Assets.instance.playerLabels.lblPlaceholderPlayerOn0) : new Sprite(Assets.instance.playerLabels.lblPlaceholderPlayerOff0);
         Sprite player0Label = (0 == gameController.currentPlayerIndex) ? new Sprite(Assets.instance.playerLabels.lblPlayerOn0) : new Sprite(Assets.instance.playerLabels.lblPlayerOff0);
@@ -129,19 +141,47 @@ public class GameRenderer implements Disposable {
         player1Label.setCenter(6.49f, 3.52f);
         player1Label.draw(batch);
         // </editor-fold>
-        
+
         batch.setProjectionMatrix(cameraGUI.combined);
-   //renderGuiMovesToBePlayed(batch); was moved after batch.end();
+        renderGuiMovesToBePlayed(batch);
         // draw FPS text (anchored to bottom right edge)
-        
-         renderGuiMovesToBePlayed(batch);
         renderGuiFpsCounter(batch);
         batch.end();
     }
 
     private void renderGuiMovesToBePlayed (SpriteBatch batch) {
-        
-        Dices.instance.getValue(batch);
+         //getArrayValues    0       1     2    3    4    5       6        7
+//       String pResult[] ={"Shakki","Dest","2", "3", "4","Banj", "Bara", "Bonus"};
+//       String returnText =""; //text to be returned on screen
+//       String plusText ="";  // "+" in text
+//        batch.begin();
+//
+//         for (int i=0; i<gameController.pValueSumReturned.length ; i++) {
+//            returnText = returnText + plusText + gameController.pValueSumReturned[i] + "x" + pResult[i];
+///////this is just for testing purposes
+//             layout.setText(returnTextFont, returnText);
+//             float width = layout.width;// contains the width of the current set text
+//             float height = layout.height; // contains the height of the current set text
+//             shapeRenderer = new ShapeRenderer();
+//             projectionMatrixSet = false;
+//             draw(batch, width, height);
+///////this is just for testing purposes
+//        Assets.instance.fonts.defaultNormal.draw(batch," " + returnText,30, 200 );
+//             if (gameController.pValueSumReturned[i] !=0)
+//             {
+//                 if (returnText == "")  {plusText ="";}  else {plusText="+";}
+//                 returnText = returnText
+//                           +  plusText
+//                           + gameController.pValueSumReturned[i]
+//                           + "x"
+//                           + pResult[i];
+//       layout.setText(returnTextFont, returnText);
+//       returnTextFont.draw(batch, returnText, 30, 60);
+//       gameController.touchTextResult(layout.width,layout.height);
+//             }
+//        ///Remark we should change the Xpos when its the second player
+//    }
+//        batch.end();
     }
     
     

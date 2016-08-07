@@ -18,7 +18,7 @@ import com.smb215team.barjis.game.GameRenderer;
  */
 public class GameScreen extends AbstractGameScreen {
     private static final String TAG = GameScreen.class.getName();
-    
+
     private GameController gameController;
     private GameRenderer gameRenderer;
     private boolean paused;
