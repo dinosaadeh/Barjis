@@ -6,30 +6,23 @@
 package com.smb215team.barjis.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Graphics;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.Color;
+
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector3;
 import com.smb215team.barjis.util.Constants;
 import com.smb215team.barjis.game.objects.*;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.font.FontRenderContext;
-import java.awt.geom.Rectangle2D;
-import javafx.scene.text.Font;
-import static javafx.scene.text.Font.font;
+
 /**
  *
  * @author dinosaadeh
@@ -46,6 +39,10 @@ public class GameRenderer implements Disposable {
     BitmapFont returnTextFont = Assets.instance.fonts.defaultNormal;///used from wrapping the returnText
     public  GlyphLayout layout = new GlyphLayout(); // Obviously stick this in a field to avoid allocation each frame.
 
+    //TODO REMOVE from here
+    Stage stage;
+    TextButton textButton;
+    // to here
 
     public GameRenderer (GameController gameController) {
         this.gameController = gameController;
@@ -63,12 +60,31 @@ public class GameRenderer implements Disposable {
         cameraGUI.position.set(0, 0, 0);
         cameraGUI.setToOrtho(true); // flip y-axis
         cameraGUI.update();
+
+        //TODO remove from here
+
+        stage=new Stage();
+        Gdx.input.setInputProcessor(stage);
+        TextButton.TextButtonStyle style=new TextButton.TextButtonStyle();
+        style.font=new BitmapFont(Gdx.files.internal("Untitled.fnt"));
+        textButton=new TextButton("1xDest + 2xBanj",style);
+
+        textButton.addListener(new ClickListener() {
+            public void clicked(InputEvent e, float x, float y) {
+               Gdx.app.log("clickListener","Text is clicked");
+            }
+        });
+
+        stage.addActor(textButton);
+        //TODO to here
     }
 
     public void render () {
         renderGui(batch);
         renderTestObjects();
         renderPlayer(batch);
+        //TODO remove this
+        stage.draw();
     }
 
     public void resize (int width, int height) {
@@ -183,16 +199,16 @@ public class GameRenderer implements Disposable {
 //    }
 //        batch.end();
     }
-    
-    
+
+
     /////this function is not yet final ///just for testing purposes
        public void draw(SpriteBatch batch , float width,float height){
        //batch.end();
        if(!projectionMatrixSet){
            shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
        }
-       shapeRenderer.begin(ShapeType.Line); 
-       shapeRenderer.rect(30, 200, width, height); 
+       shapeRenderer.begin(ShapeType.Line);
+       shapeRenderer.rect(30, 200, width, height);
        Gdx.gl.glEnable(GL20.GL_BLEND);
        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
        Gdx.gl.glDisable(GL20.GL_BLEND);
@@ -216,10 +232,10 @@ public class GameRenderer implements Disposable {
         fpsFont.draw(batch, "FPS: " + fps, x, y);
         fpsFont.setColor(1, 1, 1, 1); // white
     }
-    
+
     private void renderDebug(SpriteBatch batch) {
         dummyShapeRenderer.setProjectionMatrix(camera.combined);
- 
+
         dummyShapeRenderer.begin(ShapeType.Line);
         dummyShapeRenderer.setColor(1, 1, 0, 1);
         dummyShapeRenderer.rect(Constants.DICES_CONTAINER_BORDER_TOP_SIDE01.x, Constants.DICES_CONTAINER_BORDER_TOP_SIDE01.y, Constants.DICES_CONTAINER_BORDER_TOP_SIDE01.width, Constants.DICES_CONTAINER_BORDER_TOP_SIDE01.height);
@@ -231,7 +247,7 @@ public class GameRenderer implements Disposable {
         dummyShapeRenderer.rect(Constants.DICES_CONTAINER_BORDER_BOTTOM_SIDE02.x, Constants.DICES_CONTAINER_BORDER_BOTTOM_SIDE02.y, Constants.DICES_CONTAINER_BORDER_BOTTOM_SIDE02.width, Constants.DICES_CONTAINER_BORDER_BOTTOM_SIDE02.height);
         dummyShapeRenderer.rect(Constants.DICES_CONTAINER_BORDER_LEFT_SIDE02.x, Constants.DICES_CONTAINER_BORDER_LEFT_SIDE02.y, Constants.DICES_CONTAINER_BORDER_LEFT_SIDE02.width, Constants.DICES_CONTAINER_BORDER_LEFT_SIDE02.height);
         dummyShapeRenderer.rect(Constants.DICES_CONTAINER_BORDER_RIGHT_SIDE02.x, Constants.DICES_CONTAINER_BORDER_RIGHT_SIDE02.y, Constants.DICES_CONTAINER_BORDER_RIGHT_SIDE02.width, Constants.DICES_CONTAINER_BORDER_RIGHT_SIDE02.height);
-        
+
         dummyShapeRenderer.end();
     }
 }
