@@ -14,6 +14,8 @@ import com.smb215team.barjis.game.objects.Dices;
 import com.smb215team.barjis.game.objects.Pawn;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector3;
 import com.smb215team.barjis.game.enums.GameState;
 import com.smb215team.barjis.game.objects.Player;
 import com.smb215team.barjis.screens.MenuScreen;
@@ -26,9 +28,11 @@ public class GameController extends InputAdapter {
     private static final String TAG = GameController.class.getName();
 
     private Game game;
+    public OrthographicCamera camera;
     GameState state;
     Player[] players;
     public int currentPlayerIndex;
+    
     DiceContainer diceContainer;
     public float timerForThrowingDices = 0.0f;
     public float timerForPlayerTurn = 0.0f;
@@ -37,8 +41,6 @@ public class GameController extends InputAdapter {
     Array<Pawn> dummyPawnToFillMap = new Array<Pawn>();
     Pawn dummyPawn = new Pawn();
     Vector2 touchPosition = new Vector2(0,0);
-    float widthText ;// contains the width of the current set text
-    float heightText ;// contains the height of the current set text
     // </editor-fold>
 
     public GameController (Game game) {
@@ -52,7 +54,7 @@ public class GameController extends InputAdapter {
         Dices.instance.init();
         timerForThrowingDices = 0.0f;
         ConfigurationController.initCells();
-
+        
         // <editor-fold desc="Initialising players' pawns">
         players = new Player[2]; //TODO: account for variable number of players (1 (AI), 2, 4)
         currentPlayerIndex = 0;
@@ -155,11 +157,10 @@ public class GameController extends InputAdapter {
         if (Gdx.input.isTouched()){
             int x1 = Gdx.input.getX();
             int y1 = Gdx.input.getY();
-            //Gdx.app.log(TAG, "I'm touched :) at " + x1 + ", " + y1);
-
-            for(Pawn pawn : players[currentPlayerIndex].pawns) {
-                if(pawn.bounds.contains(x1, y1))
-                    Gdx.app.log(TAG, "I'm touched at " + pawn.position.x + ", " + pawn.position.y);
+            Vector3 translatedTouchedRegion = camera.unproject(new Vector3(x1, y1, 0));
+            for(Pawn pawn : players[currentPlayerIndex].pawns) {                
+                if(pawn.bounds.contains(translatedTouchedRegion.x, translatedTouchedRegion.y))
+                    Gdx.app.log(TAG, "Pawn is touched at " + pawn.position.x + ", " + pawn.position.y);
             }
         }
     }
