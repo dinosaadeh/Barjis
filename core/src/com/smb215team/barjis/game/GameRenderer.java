@@ -8,6 +8,10 @@ package com.smb215team.barjis.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -33,6 +37,10 @@ public class GameRenderer implements Disposable {
     BitmapFont returnTextFont = Assets.instance.fonts.defaultNormal;///used from wrapping the returnText
     public  GlyphLayout layout = new GlyphLayout(); // Obviously stick this in a field to avoid allocation each frame.
 
+    //TODO REMOVE from here
+    Stage stage;
+    TextButton textButton;
+    // to here
 
     public GameRenderer (GameController gameController) {
         this.gameController = gameController;
@@ -50,12 +58,31 @@ public class GameRenderer implements Disposable {
         cameraGUI.position.set(0, 0, 0);
         cameraGUI.setToOrtho(true); // flip y-axis
         cameraGUI.update();
+
+        //TODO remove from here
+
+        stage=new Stage();
+        Gdx.input.setInputProcessor(stage);
+        TextButton.TextButtonStyle style=new TextButton.TextButtonStyle();
+        style.font=new BitmapFont(Gdx.files.internal("Untitled.fnt"));
+        textButton=new TextButton("1xDest + 2xBanj",style);
+
+        textButton.addListener(new ClickListener() {
+            public void clicked(InputEvent e, float x, float y) {
+               Gdx.app.log("clickListener","Text is clicked");
+            }
+        });
+
+        stage.addActor(textButton);
+        //TODO to here
     }
 
     public void render () {
         renderGui(batch);
         renderTestObjects();
         renderPlayer(batch);
+        //TODO remove this
+        stage.draw();
     }
 
     public void resize (int width, int height) {
@@ -158,10 +185,10 @@ public class GameRenderer implements Disposable {
         fpsFont.draw(batch, "FPS: " + fps, x, y);
         fpsFont.setColor(1, 1, 1, 1); // white
     }
-    
+
     private void renderDebug(SpriteBatch batch) {
         dummyShapeRenderer.setProjectionMatrix(camera.combined);
- 
+
         dummyShapeRenderer.begin(ShapeType.Line);
         dummyShapeRenderer.setColor(1, 1, 0, 1);
         dummyShapeRenderer.rect(Constants.DICES_CONTAINER_BORDER_TOP_SIDE01.x, Constants.DICES_CONTAINER_BORDER_TOP_SIDE01.y, Constants.DICES_CONTAINER_BORDER_TOP_SIDE01.width, Constants.DICES_CONTAINER_BORDER_TOP_SIDE01.height);
@@ -173,7 +200,7 @@ public class GameRenderer implements Disposable {
         dummyShapeRenderer.rect(Constants.DICES_CONTAINER_BORDER_BOTTOM_SIDE02.x, Constants.DICES_CONTAINER_BORDER_BOTTOM_SIDE02.y, Constants.DICES_CONTAINER_BORDER_BOTTOM_SIDE02.width, Constants.DICES_CONTAINER_BORDER_BOTTOM_SIDE02.height);
         dummyShapeRenderer.rect(Constants.DICES_CONTAINER_BORDER_LEFT_SIDE02.x, Constants.DICES_CONTAINER_BORDER_LEFT_SIDE02.y, Constants.DICES_CONTAINER_BORDER_LEFT_SIDE02.width, Constants.DICES_CONTAINER_BORDER_LEFT_SIDE02.height);
         dummyShapeRenderer.rect(Constants.DICES_CONTAINER_BORDER_RIGHT_SIDE02.x, Constants.DICES_CONTAINER_BORDER_RIGHT_SIDE02.y, Constants.DICES_CONTAINER_BORDER_RIGHT_SIDE02.width, Constants.DICES_CONTAINER_BORDER_RIGHT_SIDE02.height);
-        
+
         dummyShapeRenderer.end();
     }
 }
