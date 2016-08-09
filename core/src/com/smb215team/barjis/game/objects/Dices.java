@@ -19,8 +19,6 @@ public class Dices {
     public Dice[] dices;
     public Integer[] currentHandMoves;
     public boolean canPlayerThrowDices;
-    int[] pValue  ={0 ,0 , 0, 0, 0, 0, 0, 0};//the result values e.g. 1xShakki
-    public int[] pValueSum  ={0 ,0 , 0, 0, 0, 0, 0, 0};//the sum of result values 2xShakki
     Sound diceSound = Gdx.audio.newSound(Gdx.files.internal("diceSound.mp3"));
 
     private Dices() {
@@ -51,14 +49,8 @@ public class Dices {
         //Reset the currentHandNumberOfMoves
         for (int i = 0; i < 8; i++) {
             currentHandMoves[i] = 0;
-            pValueSum[i]=0;// set=0 only on reset/pValue set=0 on each throwdices
         }
-
         canPlayerThrowDices=true;
-
-
-
-
     }
 
     public void dispose() {
@@ -82,7 +74,6 @@ public class Dices {
     }
 
     public void throwDices(float diceMarginFromX, float diceMarginToX, float diceMarginFromY, float diceMarginToY) {
-
         bringDicesToFullStop();//I used this method to stop dices when by mistake a dice leaves the container. This bug should be solved and with that solved we no longer need this line.
         int currentThrowValue = 0;
         for (int i = 0; i < dices.length; i++) {
@@ -94,8 +85,8 @@ public class Dices {
             }
 
             // Position on the screen
-            float randomX = MathUtils.random(diceMarginFromX, diceMarginToX);//(-7.0f, -5.0f);
-            float randomY = MathUtils.random(diceMarginFromY, diceMarginToY);//(-4.0f, 0f);
+            float randomX = MathUtils.random(diceMarginFromX, diceMarginToX);
+            float randomY = MathUtils.random(diceMarginFromY, diceMarginToY);
             dices[i].position.set(randomX, randomY);
             dices[i].bounds.set(randomX, randomY, 0.45f, 0.45f);
             dices[i].dimension.set(0.45f, 0.45f);
@@ -105,18 +96,6 @@ public class Dices {
         diceSound.play();
 
         // Setting the value of the current throw
-
-        ////added by Naji to reset the counter
-        currentHandMoves[0] = 0; // shakki
-        currentHandMoves[1] = 0; // dest
-        currentHandMoves[2] = 0; // 2
-        currentHandMoves[3] = 0; // 3
-        currentHandMoves[4] = 0; // 4
-        currentHandMoves[5] = 0; // banj
-        currentHandMoves[6] = 0; // bara
-        currentHandMoves[7] = 0; // khal
-        ////added by Naji to reset the counter
-
         currentHandMoves[currentThrowValue]++;
         if (1 == currentThrowValue || 5 == currentThrowValue) // if dest or banj, add the bonus move
         {
@@ -127,7 +106,7 @@ public class Dices {
              canPlayerThrowDices = false;
         }
     }
-/*Stopped by Naji/new function was created
+
     public String getValue() {
         String strToReturn = "";
 
@@ -163,45 +142,7 @@ public class Dices {
 
         return strToReturn;
     }
-    */
-   ///added by naji
-    public int[] getValue() {
 
-     pValue[0]= 0;pValue[1]= 0;pValue[2]= 0;pValue[3]= 0;
-     pValue[4]= 0;pValue[5]= 0;pValue[6]= 0;pValue[7]= 0;
-
-        if (0 != currentHandMoves[1]) { //Dest
-         pValue[1]++;
-
-        }
-
-        if (0 != currentHandMoves[5]) { //Banj
-          pValue[5]++;
-
-        }
-
-        if (0 != currentHandMoves[0]) { //Shakki
-          pValue[0]++;
-        }
-
-        if (0 != currentHandMoves[6]) { //Bara
-          pValue[6]++;
-        }
-        if (0 != currentHandMoves[2]) {
-          pValue[2]++;
-        }
-        if (0 != currentHandMoves[3]) {
-        pValue[3]++;
-        }
-        if (0 != currentHandMoves[4]) {
-          pValue[4]++;
-        }
-
-        if (0 != currentHandMoves[7]) {//Bonus
-          pValue[7]++;
-        }
-        return pValue;//an array with the value of each combination
-    }
     public boolean dicesReachedAFullStop() {
         for(Dice dice : dices) {
             if(dice.velocity.x != 0 || dice.velocity.y != 0)
