@@ -56,13 +56,13 @@ public class Pawn extends AbstractGameObject {
         terminalVelocity.set(3.0f, 4.0f);
         //friction.set(12.0f, 0.0f);
         acceleration.set(0.0f, 25.0f);
-
-        // Set bounding box for collision detection
-        bounds.set(0, 0, dimension.x, dimension.y);
         
         this.deadPosition = deadPosition;
         this.position = deadPosition;
         positionOnPath = -1;//The pawn starts as dead (out of the board)
+        
+        // Set bounding box for collision detection
+        bounds.set(position.x, position.y, dimension.x, dimension.y);
     }
 
 //Dino: TO VALIDATE/ELABORATE

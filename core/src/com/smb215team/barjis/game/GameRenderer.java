@@ -54,6 +54,7 @@ public class GameRenderer implements Disposable {
 
         camera = new OrthographicCamera(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT);
         camera.position.set(0, 0, 0);
+        this.gameController.camera = camera;
         camera.update();
 
         cameraGUI = new OrthographicCamera(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT);
@@ -176,10 +177,13 @@ public class GameRenderer implements Disposable {
     }
 
     private void renderDebug(SpriteBatch batch) {
+        dummyShapeRenderer = new ShapeRenderer();
         dummyShapeRenderer.setProjectionMatrix(camera.combined);
 
         dummyShapeRenderer.begin(ShapeType.Line);
         dummyShapeRenderer.setColor(1, 1, 0, 1);
+
+        // <editor-fold desc="Dice container">
         dummyShapeRenderer.rect(Constants.DICES_CONTAINER_BORDER_TOP_SIDE01.x, Constants.DICES_CONTAINER_BORDER_TOP_SIDE01.y, Constants.DICES_CONTAINER_BORDER_TOP_SIDE01.width, Constants.DICES_CONTAINER_BORDER_TOP_SIDE01.height);
         dummyShapeRenderer.rect(Constants.DICES_CONTAINER_BORDER_BOTTOM_SIDE01.x, Constants.DICES_CONTAINER_BORDER_BOTTOM_SIDE01.y, Constants.DICES_CONTAINER_BORDER_BOTTOM_SIDE01.width, Constants.DICES_CONTAINER_BORDER_BOTTOM_SIDE01.height);
         dummyShapeRenderer.rect(Constants.DICES_CONTAINER_BORDER_LEFT_SIDE01.x, Constants.DICES_CONTAINER_BORDER_LEFT_SIDE01.y, Constants.DICES_CONTAINER_BORDER_LEFT_SIDE01.width, Constants.DICES_CONTAINER_BORDER_LEFT_SIDE01.height);
@@ -189,6 +193,17 @@ public class GameRenderer implements Disposable {
         dummyShapeRenderer.rect(Constants.DICES_CONTAINER_BORDER_BOTTOM_SIDE02.x, Constants.DICES_CONTAINER_BORDER_BOTTOM_SIDE02.y, Constants.DICES_CONTAINER_BORDER_BOTTOM_SIDE02.width, Constants.DICES_CONTAINER_BORDER_BOTTOM_SIDE02.height);
         dummyShapeRenderer.rect(Constants.DICES_CONTAINER_BORDER_LEFT_SIDE02.x, Constants.DICES_CONTAINER_BORDER_LEFT_SIDE02.y, Constants.DICES_CONTAINER_BORDER_LEFT_SIDE02.width, Constants.DICES_CONTAINER_BORDER_LEFT_SIDE02.height);
         dummyShapeRenderer.rect(Constants.DICES_CONTAINER_BORDER_RIGHT_SIDE02.x, Constants.DICES_CONTAINER_BORDER_RIGHT_SIDE02.y, Constants.DICES_CONTAINER_BORDER_RIGHT_SIDE02.width, Constants.DICES_CONTAINER_BORDER_RIGHT_SIDE02.height);
+        // </editor-fold>
+
+        // <editor-fold desc="pawns">
+        for(Player player : gameController.players) {
+            if(null == player) break;
+            for(Pawn pawn : player.pawns) {
+                if(null == pawn) break;
+                dummyShapeRenderer.rect(pawn.bounds.x, pawn.bounds.y, pawn.bounds.width, pawn.bounds.height);
+            }
+        }
+        // </editor-fold>
 
         dummyShapeRenderer.end();
     }
