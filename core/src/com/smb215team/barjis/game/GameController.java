@@ -6,8 +6,21 @@
 package com.smb215team.barjis.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
+import com.smb215team.barjis.game.enums.DicesValueEnum;
 import com.smb215team.barjis.game.objects.Dice;
 import com.smb215team.barjis.game.objects.DiceContainer;
 import com.smb215team.barjis.game.objects.Dices;
@@ -29,8 +42,13 @@ public class GameController extends InputAdapter {
     GameState state;
     Player[] players;
     public int currentPlayerIndex;
+
     DiceContainer diceContainer;
     public float timerForThrowingDices = 0.0f;
+
+    public Stage stage;
+    Array<TextButton> btnsMovesToBePlayed=new Array<TextButton>();
+
     public float timerForPlayerTurn = 0.0f;
 
     // <editor-fold desc="Dino: TO DELETE Dummy stuff">
@@ -69,6 +87,11 @@ public class GameController extends InputAdapter {
         // </editor-fold>
 
         initTestObjects();
+
+        // initialize stage
+        stage=new Stage();
+
+        Gdx.input.setInputProcessor(stage);
     }
 
     public void update (float deltaTime) {
@@ -130,16 +153,57 @@ public class GameController extends InputAdapter {
     private void playDices(float deltaTime) {
         Dices.instance.update(deltaTime); //commentToDelete: later on this will be called only when needed
 
+        Table table=new Table();
         timerForThrowingDices += deltaTime;
         if(timerForThrowingDices >= 5 && Dices.instance.canPlayerThrowDices) {
             Dices.instance.throwDices(diceContainer.diceMarginFromX, diceContainer.diceMarginToX, diceContainer.diceMarginFromY, diceContainer.diceMarginToY);
             timerForThrowingDices -= 5.0f; // If you reset it to 0 you will loose a few milliseconds every 2 seconds.
 
-          Gdx.app.debug(TAG, "The value of the dices: " + Dices.instance.getValue());
+            // create button style
+            TextButton.TextButtonStyle buttonStyle=new TextButton.TextButtonStyle();
+            buttonStyle.font=new BitmapFont(Gdx.files.internal("Untitled.fnt"));
+            
+            for(DicesValueEnum diceValue:Dices.instance.currentHandMoves.keySet()){
+
+                // create button
+                TextButton button;
+                // for example :if the label is just 1 x dest we should see dest without "1x"
+                if(Dices.instance.currentHandMoves.get(diceValue)==1){
+                    button=new TextButton(diceValue.getLabel(),buttonStyle);
+
+                }else {
+                    //grater then 1
+                    button = new TextButton(Dices.instance.currentHandMoves.get(diceValue) + "x" + diceValue.getLabel(), buttonStyle);
+                }
+
+                //listener on every button
+                button.addListener(new ChangeListener() {
+                    public void changed (ChangeEvent e, Actor actor) {
+                        Gdx.app.log("clicked : ",((TextButton)(actor)).getLabel().getText().toString());
+                        //TODO call function to decrease
+                    }
+                });
+                //TODO change position to world coordinate
+
+                table.add(button);
+
+                // new line
+                table.row();
+
+                // add the new button to the Array Of Buttons
+                btnsMovesToBePlayed.add(button);
+
+            }
+
+
+
         }
+        table.setPosition(50,Gdx.graphics.getHeight()*0.68f);
+        stage.addActor(table);
+
     }
     // </editor-fold>
-    
+
     // <editor-fold desc="STATE: player moving his pawns">
     private void interpretPlayerMoves(float deltaTime) {
         handlePlayerInput(deltaTime);

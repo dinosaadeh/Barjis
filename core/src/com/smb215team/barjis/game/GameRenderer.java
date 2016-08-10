@@ -18,6 +18,13 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.utils.Scaling;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.FillViewport;
+import com.badlogic.gdx.utils.viewport.ScalingViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.smb215team.barjis.util.Constants;
 import com.smb215team.barjis.game.objects.*;
 
@@ -37,11 +44,6 @@ public class GameRenderer implements Disposable {
     BitmapFont returnTextFont = Assets.instance.fonts.defaultNormal;///used from wrapping the returnText
     public  GlyphLayout layout = new GlyphLayout(); // Obviously stick this in a field to avoid allocation each frame.
 
-    //TODO REMOVE from here
-    Stage stage;
-    TextButton textButton;
-    // to here
-
     public GameRenderer (GameController gameController) {
         this.gameController = gameController;
         init();
@@ -59,30 +61,17 @@ public class GameRenderer implements Disposable {
         cameraGUI.setToOrtho(true); // flip y-axis
         cameraGUI.update();
 
-        //TODO remove from here
 
-        stage=new Stage();
-        Gdx.input.setInputProcessor(stage);
-        TextButton.TextButtonStyle style=new TextButton.TextButtonStyle();
-        style.font=new BitmapFont(Gdx.files.internal("Untitled.fnt"));
-        textButton=new TextButton("1xDest + 2xBanj",style);
-
-        textButton.addListener(new ClickListener() {
-            public void clicked(InputEvent e, float x, float y) {
-               Gdx.app.log("clickListener","Text is clicked");
-            }
-        });
-
-        stage.addActor(textButton);
-        //TODO to here
+        //TODO check viewport
+//        Viewport viewport=new ScreenViewport();
+//        gameController.stage.setViewport(viewport);
     }
 
     public void render () {
         renderGui(batch);
         renderTestObjects();
         renderPlayer(batch);
-        //TODO remove this
-        stage.draw();
+        gameController.stage.draw();
     }
 
     public void resize (int width, int height) {
@@ -157,15 +146,15 @@ public class GameRenderer implements Disposable {
         // </editor-fold>
 
         batch.setProjectionMatrix(cameraGUI.combined);
-        renderGuiMovesToBePlayed(batch);
+//        renderGuiMovesToBePlayed(batch); removed by ammar
         // draw FPS text (anchored to bottom right edge)
         renderGuiFpsCounter(batch);
         batch.end();
     }
-
-    private void renderGuiMovesToBePlayed (SpriteBatch batch) {
-        Assets.instance.fonts.defaultNormal.draw(batch, Dices.instance.getValue(), 50, 222);
-    }
+// remove by ammar
+//    private void renderGuiMovesToBePlayed (SpriteBatch batch) {
+//        Assets.instance.fonts.defaultNormal.draw(batch, Dices.instance.getValue(), 50, 222);
+//    }
     
     private void renderGuiFpsCounter (SpriteBatch batch) {
         float x = cameraGUI.viewportWidth - 55;

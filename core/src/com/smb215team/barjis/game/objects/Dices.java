@@ -4,6 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.smb215team.barjis.game.enums.DicesValueEnum;
+
+import java.util.EnumMap;
+import java.util.Map;
 
 /**
  * This is a singleton class that takes care of throwing the dice over and over
@@ -17,7 +21,8 @@ public class Dices {
 
     public static final Dices instance = new Dices();
     public Dice[] dices;
-    public Integer[] currentHandMoves;
+    public EnumMap<DicesValueEnum,Integer> currentHandMoves;// enumeration map , key is diceEnum and value is the number of reputation
+
     public boolean canPlayerThrowDices;
     Sound diceSound = Gdx.audio.newSound(Gdx.files.internal("diceSound.mp3"));
 
@@ -32,24 +37,16 @@ public class Dices {
     public void init() {
         dices = new Dice[6];
 
-        currentHandMoves = new Integer[8];
-        currentHandMoves[0] = 0; // shakki
-        currentHandMoves[1] = 0; // dest
-        currentHandMoves[2] = 0; // 2
-        currentHandMoves[3] = 0; // 3
-        currentHandMoves[4] = 0; // 4
-        currentHandMoves[5] = 0; // banj
-        currentHandMoves[6] = 0; // bara
-        currentHandMoves[7] = 0; // khal
+        currentHandMoves=new EnumMap<DicesValueEnum, Integer>(DicesValueEnum.class);
 
         canPlayerThrowDices = true;
+
     }
 
     public void reset() {
         //Reset the currentHandNumberOfMoves
-        for (int i = 0; i < 8; i++) {
-            currentHandMoves[i] = 0;
-        }
+        currentHandMoves=new EnumMap<DicesValueEnum, Integer>(DicesValueEnum.class);
+
         canPlayerThrowDices=true;
     }
 
@@ -93,55 +90,24 @@ public class Dices {
             //Gdx.app.log(TAG, "Position: " + randomX + ", " + randomY + ", velocity: " + dices[i].velocity);
         }
 
+        DicesValueEnum result= DicesValueEnum.getDiceValueEnumFromNumber(currentThrowValue);
         diceSound.play();
 
         // Setting the value of the current throw
-        currentHandMoves[currentThrowValue]++;
-        if (1 == currentThrowValue || 5 == currentThrowValue) // if dest or banj, add the bonus move
+
+        currentHandMoves.put(result,currentHandMoves.get(result)==null?1:currentHandMoves.get(result)+1);
+        if ( DicesValueEnum.DEST.equals(result)|| DicesValueEnum.BANJ.equals(result)) // if dest or banj, add the bonus move
         {
-            currentHandMoves[7]++;
+            currentHandMoves.put(DicesValueEnum.KHAL,currentHandMoves.get(DicesValueEnum.KHAL)==null?1:currentHandMoves.get(DicesValueEnum.KHAL)+1);
+
         }
         // If a stopper combination (2, 3 or 4), do not allow the player to throw dices again
-        if (2 == currentThrowValue || 3 == currentThrowValue || 4 == currentThrowValue) {
+        if (DicesValueEnum.TWO.equals(result)|| DicesValueEnum.THREE.equals(result)|| DicesValueEnum.FOUR.equals(result)) {
              canPlayerThrowDices = false;
         }
     }
 
-    public String getValue() {
-        String strToReturn = "";
 
-        if (0 != currentHandMoves[1]) {
-            strToReturn += " " + currentHandMoves[1] + " Dest";
-        }
-
-        if (0 != currentHandMoves[5]) {
-            strToReturn += " " + currentHandMoves[5] + " Banj";
-        }
-
-        if (0 != currentHandMoves[0]) {
-            strToReturn += " " + currentHandMoves[0] + " Shakki";
-        }
-
-        if (0 != currentHandMoves[6]) {
-            strToReturn += " " + currentHandMoves[1] + " Dest";
-        }
-
-        if (0 != currentHandMoves[2]) {
-            strToReturn += " 2";
-        }
-        if (0 != currentHandMoves[3]) {
-            strToReturn += " 3";
-        }
-        if (0 != currentHandMoves[4]) {
-            strToReturn += " 4";
-        }
-
-        if (0 != currentHandMoves[7]) {
-            strToReturn += " " + currentHandMoves[7] + " Bonus";
-        }
-
-        return strToReturn;
-    }
 
     public boolean dicesReachedAFullStop() {
         for(Dice dice : dices) {
