@@ -1,7 +1,5 @@
 package com.smb215team.barjis.game.enums;
 
-import javax.xml.crypto.dsig.keyinfo.RetrievalMethod;
-
 /**
  * Created by ammar on 7/10/16.
  */
@@ -11,12 +9,12 @@ public enum DicesValueEnum {
     SHAKKI(6,"Shakki"), DEST(10,"Dest"), TWO(2,"Two"), THREE(3,"Three"), FOUR(4,"Four"), BANJ(25,"Banj"), BARA(12,"Bara"), KHAL(1,"Bonus");
 
     // value of movement for every possibility
+    private String label;
     private int value;
 
-    private String label;
-
     DicesValueEnum(int value,String label) {
-        this.value = value;this.label=label;
+        this.label=label;
+        this.value = value;
     }
 
     public int getValue() {
@@ -43,7 +41,6 @@ public enum DicesValueEnum {
                 return  BARA;
            default:
                return null;
-
         }
     }
 }

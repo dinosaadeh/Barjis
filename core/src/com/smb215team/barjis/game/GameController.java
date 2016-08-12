@@ -89,7 +89,7 @@ public class GameController extends InputAdapter {
         initTestObjects();
 
         // initialize stage
-        stage=new Stage();
+        stage = new Stage();
 
         Gdx.input.setInputProcessor(stage);
     }
@@ -163,17 +163,15 @@ public class GameController extends InputAdapter {
             TextButton.TextButtonStyle buttonStyle=new TextButton.TextButtonStyle();
             buttonStyle.font=new BitmapFont(Gdx.files.internal("Untitled.fnt"));
 
-            for(DicesValueEnum diceValue:Dices.instance.currentHandMoves.keySet()){
-
+            for (DicesValueEnum diceValue : Dices.instance.currentHandMoves2.keySet()){
                 // create button
                 TextButton button;
                 // for example :if the label is just 1 x dest we should see dest without "1x"
-                if(Dices.instance.currentHandMoves.get(diceValue)==1){
-                    button=new TextButton(diceValue.getLabel(),buttonStyle);
-
-                }else {
+                if(Dices.instance.currentHandMoves2.get(diceValue) == 1){
+                    button = new TextButton(diceValue.getLabel(),buttonStyle);
+                } else {
                     //grater then 1
-                    button = new TextButton(Dices.instance.currentHandMoves.get(diceValue) + "x" + diceValue.getLabel(), buttonStyle);
+                    button = new TextButton(Dices.instance.currentHandMoves2.get(diceValue) + "x" + diceValue.getLabel(), buttonStyle);
                 }
 
                 //listener on every button
@@ -221,8 +219,10 @@ public class GameController extends InputAdapter {
             int y1 = Gdx.input.getY();
             Vector3 translatedTouchedRegion = camera.unproject(new Vector3(x1, y1, 0));
             for(Pawn pawn : players[currentPlayerIndex].pawns) {
-                if(pawn.bounds.contains(translatedTouchedRegion.x, translatedTouchedRegion.y))
+                if(pawn.bounds.contains(translatedTouchedRegion.x, translatedTouchedRegion.y)) {
                     Gdx.app.log(TAG, "Pawn is touched at " + pawn.position.x + ", " + pawn.position.y);
+                    pawn.move(6);
+                }
             }
         }
     }

@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.smb215team.barjis.game.Assets;
 import com.smb215team.barjis.game.enums.PawnState;
+import java.util.ArrayList;
 
 /**
  * @author dinosaadeh
@@ -21,6 +22,9 @@ public class Pawn extends AbstractGameObject {
     private TextureRegion pawnImage;
     PawnState state;
     Vector2 deadPosition;
+    private Vector2[] path;
+    public ArrayList<Integer> currentPossibleMoves;
+
     /**
      * Reflects the pawn's position index on the player's path
      * - value of -1 means the pawn is dead (out of the board)
@@ -40,13 +44,16 @@ public class Pawn extends AbstractGameObject {
     }
     
     public void init() {
+        currentPossibleMoves = new ArrayList();
         deadPosition = new Vector2(0, 0);
-        init(0, deadPosition);
+        init(0, deadPosition, new Vector2[83]);
     }
 
-    public void init(int pawnImageIndex, Vector2 deadPosition) {
+    public void init(int pawnImageIndex, Vector2 deadPosition, Vector2[] playerPath) {
         Assets.instance.pawn.init(pawnImageIndex);
         pawnImage = Assets.instance.pawn.pawn;
+        
+        path = playerPath;
         
         dimension.set(0.435f, 0.435f);
         this.setCenter(this.dimension.x / 2, this.dimension.y / 2);
@@ -65,20 +72,32 @@ public class Pawn extends AbstractGameObject {
         bounds.set(position.x, position.y, dimension.x, dimension.y);
     }
 
-//Dino: TO VALIDATE/ELABORATE
-    public boolean canMove(int steps){
-        //TODO: a pawn can move if
-        // One of the dice combinations allows it to move on board
-        // One of the dice combinations allows it to enter the board
-        
-        return true;
-    }
-
     @Override
     public void render(SpriteBatch batch) {
         batch.draw(pawnImage.getTexture(), position.x, position.y, origin.x, origin.y, dimension.x, dimension.y, scale.x, scale.y,
 -         rotation, pawnImage.getRegionX(), pawnImage.getRegionY(), pawnImage.getRegionWidth(), pawnImage.getRegionHeight(), false, false);
-   }
+    }
+    
+    public void updateAvailableMoves() {
+        currentPossibleMoves.clear();
+        //Don't bother if the pawn is dead and no Dest or Banj showed up in the combination
+        if(this.position == this.deadPosition && Dices.instance.currentHandMoves[1] == 0 &&  Dices.instance.currentHandMoves[5] == 0)
+            return;
+        //For every available move:
+        for(int i = 0; i < Dices.instance.currentHandMoves.length; i++) {
+            // This combination didn't show up to begin with
+            if(Dices.instance.currentHandMoves[i] == 0)
+                continue;
+            // Pawn shouldn't get out of the path
+            if(positionOnPath + Dices.instance.movesValues[i] > 82)
+                continue;
+            // Pawn cannot stand on a Shire if occupied by opponent
+        }
+    }
+
+    public boolean canMove(){
+        return currentPossibleMoves.size() > 0;
+    }
     
     public void move(int numberOfSteps) {
         try {
@@ -87,6 +106,10 @@ public class Pawn extends AbstractGameObject {
             }
             
             positionOnPath += numberOfSteps;
+            this.position = path[positionOnPath];
+            this.bounds.set(position.x, position.y, dimension.x, dimension.y);
+            
+            
         }
         catch(Exception e) {
             Gdx.app.debug(TAG, e.getMessage());

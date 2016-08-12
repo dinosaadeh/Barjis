@@ -71,7 +71,7 @@ public class Player {
         pawns = new Pawn[4];
         for(int i = 0; i < pawns.length; i++) {
             pawns[i] = new Pawn();
-            pawns[i].init(pawnImageIndex, deadPositions.get(i));
+            pawns[i].init(pawnImageIndex, deadPositions.get(i), this.path);
         }
         // </editor-fold>
     }
@@ -126,7 +126,9 @@ public class Player {
     // </editor-fold>
     
     public void render(SpriteBatch batch) {
+        //Vector3[] pawnAddresses;
         for(Pawn pawn : pawns) {
+            //pawn.position;
             pawn.render(batch);
         }
     }

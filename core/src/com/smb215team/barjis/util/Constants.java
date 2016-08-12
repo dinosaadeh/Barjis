@@ -41,4 +41,6 @@ public class Constants {
     public static final Rectangle DICES_CONTAINER_BORDER_LEFT_SIDE02 = new Rectangle(4.6f, -4.5f, 0.1f, 4.5f);
     public static final Rectangle DICES_CONTAINER_BORDER_RIGHT_SIDE02 = new Rectangle(7.6f, -4.5f, 0.1f, 4.5f);
     // </editor-fold>
+    
+    public static final Integer[] SHIRE_INDEXES = {10, 21, 27, 38, 44, 55, 61, 72};
 }

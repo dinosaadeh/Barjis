@@ -21,7 +21,10 @@ public class Dices {
 
     public static final Dices instance = new Dices();
     public Dice[] dices;
-    public EnumMap<DicesValueEnum,Integer> currentHandMoves;// enumeration map , key is diceEnum and value is the number of reputation
+    public Integer[] currentHandMoves;
+    public static final String[] movesLabels = {"Shakki", "Dest", "2", "3", "4", "Banj", "Bara", "Bonus"};
+    public static final Integer[] movesValues = {6, 10, 2, 3, 4, 8, 12, 1};
+    public EnumMap<DicesValueEnum,Integer> currentHandMoves2;// enumeration map , key is diceEnum and value is the number of reputation
 
     public boolean canPlayerThrowDices;
     Sound diceSound = Gdx.audio.newSound(Gdx.files.internal("diceSound.mp3"));
@@ -37,17 +40,28 @@ public class Dices {
     public void init() {
         dices = new Dice[6];
 
-        currentHandMoves=new EnumMap<DicesValueEnum, Integer>(DicesValueEnum.class);
+        currentHandMoves = new Integer[8];
+        currentHandMoves[0] = 0; // shakki
+        currentHandMoves[1] = 0; // dest
+        currentHandMoves[2] = 0; // 2
+        currentHandMoves[3] = 0; // 3
+        currentHandMoves[4] = 0; // 4
+        currentHandMoves[5] = 0; // banj
+        currentHandMoves[6] = 0; // bara
+        currentHandMoves[7] = 0; // khal
+        currentHandMoves2 = new EnumMap<DicesValueEnum, Integer>(DicesValueEnum.class);
 
         canPlayerThrowDices = true;
-
     }
 
     public void reset() {
         //Reset the currentHandNumberOfMoves
-        currentHandMoves=new EnumMap<DicesValueEnum, Integer>(DicesValueEnum.class);
+        for (int i = 0; i < 8; i++) {
+            currentHandMoves[i] = 0;
+        }
+        currentHandMoves2 = new EnumMap<DicesValueEnum, Integer>(DicesValueEnum.class);
 
-        canPlayerThrowDices=true;
+        canPlayerThrowDices = true;
     }
 
     public void dispose() {
@@ -94,20 +108,26 @@ public class Dices {
         diceSound.play();
 
         // Setting the value of the current throw
-
-        currentHandMoves.put(result,currentHandMoves.get(result)==null?1:currentHandMoves.get(result)+1);
+        currentHandMoves[currentThrowValue]++;
+        if (1 == currentThrowValue || 5 == currentThrowValue) // if dest or banj, add the bonus move
+        {
+            currentHandMoves[7]++;
+        }
+        // If a stopper combination (2, 3 or 4), do not allow the player to throw dices again
+        if (2 == currentThrowValue || 3 == currentThrowValue || 4 == currentThrowValue) {
+             canPlayerThrowDices = false;
+        }
+        
+        currentHandMoves2.put(result,currentHandMoves2.get(result)==null?1:currentHandMoves2.get(result)+1);
         if ( DicesValueEnum.DEST.equals(result)|| DicesValueEnum.BANJ.equals(result)) // if dest or banj, add the bonus move
         {
-            currentHandMoves.put(DicesValueEnum.KHAL,currentHandMoves.get(DicesValueEnum.KHAL)==null?1:currentHandMoves.get(DicesValueEnum.KHAL)+1);
-
+            currentHandMoves2.put(DicesValueEnum.KHAL,currentHandMoves2.get(DicesValueEnum.KHAL)==null?1:currentHandMoves2.get(DicesValueEnum.KHAL)+1);
         }
         // If a stopper combination (2, 3 or 4), do not allow the player to throw dices again
         if (DicesValueEnum.TWO.equals(result)|| DicesValueEnum.THREE.equals(result)|| DicesValueEnum.FOUR.equals(result)) {
              canPlayerThrowDices = false;
         }
     }
-
-
 
     public boolean dicesReachedAFullStop() {
         for(Dice dice : dices) {
