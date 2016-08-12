@@ -10,6 +10,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.smb215team.barjis.game.ConfigurationController;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -126,10 +128,13 @@ public class Player {
     // </editor-fold>
     
     public void render(SpriteBatch batch) {
-        //Vector3[] pawnAddresses;
+        Map<Vector2, Integer> pawnAddresses = new HashMap<Vector2, Integer>();
         for(Pawn pawn : pawns) {
-            //pawn.position;
-            pawn.render(batch);
+            if(pawnAddresses.containsKey(pawn.position))
+                pawnAddresses.put(pawn.position, pawnAddresses.get(pawn.position) + 1);
+            else
+                pawnAddresses.put(pawn.position, 1);
+            pawn.render(batch, pawnAddresses.get(pawn.position));
         }
     }
     

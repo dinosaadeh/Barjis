@@ -31,7 +31,8 @@ public class Assets implements Disposable, AssetErrorListener {
     public AssetDice dice;
     public AssetBoard board;
     public AssetDeadPawnPlaceholder deadPawnPlaceholder;
-    public AssetPawn pawn;//Dino: this is temporary until we create the player class (delete this comment when we do)
+    public AssetPawn pawn;
+    public PHPawnOverlapCounter phPawnOverlapCounter;
     public AssetFonts fonts;
     public AssetPlayerLabels playerLabels;
 
@@ -59,6 +60,7 @@ public class Assets implements Disposable, AssetErrorListener {
         board = new AssetBoard(atlas);
         deadPawnPlaceholder = new AssetDeadPawnPlaceholder(atlas);
         pawn = new AssetPawn(atlas);
+        phPawnOverlapCounter = new PHPawnOverlapCounter(atlas);
         playerLabels = new AssetPlayerLabels(atlas);
     }
 
@@ -148,12 +150,22 @@ public class Assets implements Disposable, AssetErrorListener {
             pawn = listOfPawnIcons.get(pawnImageIndex);
         }
     }
+
+    public class PHPawnOverlapCounter {
+        public final AtlasRegion[] phPawnOverlapCounter = new AtlasRegion[3];
+        
+        public PHPawnOverlapCounter (TextureAtlas atlas){
+            phPawnOverlapCounter[0] = atlas.findRegion("pawn-overlap-counter-2");
+            phPawnOverlapCounter[1] = atlas.findRegion("pawn-overlap-counter-3");
+            phPawnOverlapCounter[2] = atlas.findRegion("pawn-overlap-counter-4");
+        }
+    }
     
     public class AssetFonts {
         public final BitmapFont defaultNormal;
         public AssetFonts () {
         // create three fonts using Libgdx's 15px bitmap font
-        defaultNormal = new BitmapFont(Gdx.files.internal("Dimbo.fnt"), true);
+        defaultNormal = new BitmapFont(Gdx.files.internal("Untitled.fnt"), true);
         defaultNormal.getData().setScale(0.5f, 0.5f);
         // enable linear texture filtering for smooth fonts
         defaultNormal.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);

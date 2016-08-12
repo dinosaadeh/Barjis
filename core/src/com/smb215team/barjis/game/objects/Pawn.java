@@ -20,6 +20,7 @@ public class Pawn extends AbstractGameObject {
     private static final String TAG = Dices.class.getName();
     
     private TextureRegion pawnImage;
+    private TextureRegion phPawnOverlapCounter;
     PawnState state;
     Vector2 deadPosition;
     private Vector2[] path;
@@ -46,6 +47,7 @@ public class Pawn extends AbstractGameObject {
     public void init() {
         currentPossibleMoves = new ArrayList();
         deadPosition = new Vector2(0, 0);
+        phPawnOverlapCounter = Assets.instance.phPawnOverlapCounter.phPawnOverlapCounter[0];
         init(0, deadPosition, new Vector2[83]);
     }
 
@@ -78,6 +80,15 @@ public class Pawn extends AbstractGameObject {
 -         rotation, pawnImage.getRegionX(), pawnImage.getRegionY(), pawnImage.getRegionWidth(), pawnImage.getRegionHeight(), false, false);
     }
     
+    public void render(SpriteBatch batch, Integer pileCount) {
+        this.render(batch);
+        if(pileCount > 1) {
+            phPawnOverlapCounter = Assets.instance.phPawnOverlapCounter.phPawnOverlapCounter[pileCount - 2];
+            batch.draw(phPawnOverlapCounter.getTexture(), position.x + 0.27f, position.y + 0.25f, origin.x, origin.y, 0.24f, 0.24f, scale.x, scale.y,
+    -         rotation, phPawnOverlapCounter.getRegionX(), phPawnOverlapCounter.getRegionY(), phPawnOverlapCounter.getRegionWidth(), phPawnOverlapCounter.getRegionHeight(), false, false);
+        }
+    }
+    
     public void updateAvailableMoves() {
         currentPossibleMoves.clear();
         //Don't bother if the pawn is dead and no Dest or Banj showed up in the combination
@@ -91,7 +102,9 @@ public class Pawn extends AbstractGameObject {
             // Pawn shouldn't get out of the path
             if(positionOnPath + Dices.instance.movesValues[i] > 82)
                 continue;
-            // Pawn cannot stand on a Shire if occupied by opponent
+            // TODO: Pawn cannot stand on a Shire if occupied by opponent
+            
+            currentPossibleMoves.add(i);
         }
     }
 
