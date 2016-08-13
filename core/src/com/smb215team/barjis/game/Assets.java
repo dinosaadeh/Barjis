@@ -33,6 +33,7 @@ public class Assets implements Disposable, AssetErrorListener {
     public AssetDeadPawnPlaceholder deadPawnPlaceholder;
     public AssetPawn pawn;
     public PHPawnOverlapCounter phPawnOverlapCounter;
+    public PawnHighlightCanMove pawnHighlightCanMove;
     public AssetFonts fonts;
     public AssetPlayerLabels playerLabels;
 
@@ -54,14 +55,16 @@ public class Assets implements Disposable, AssetErrorListener {
         for (Texture t : atlas.getTextures()) {
             t.setFilter(TextureFilter.Linear, TextureFilter.Linear);
         }
-        // create game resource objects
+        // <editor-fold desc="create game resource objects">
         fonts = new AssetFonts();
         dice = new AssetDice(atlas);
         board = new AssetBoard(atlas);
         deadPawnPlaceholder = new AssetDeadPawnPlaceholder(atlas);
         pawn = new AssetPawn(atlas);
         phPawnOverlapCounter = new PHPawnOverlapCounter(atlas);
+        pawnHighlightCanMove = new PawnHighlightCanMove(atlas);
         playerLabels = new AssetPlayerLabels(atlas);
+        // </editor-fold>
     }
 
     @Override
@@ -161,6 +164,14 @@ public class Assets implements Disposable, AssetErrorListener {
         }
     }
     
+    public class PawnHighlightCanMove {
+        public final AtlasRegion pawnHighlightCanMove;
+        
+        public PawnHighlightCanMove (TextureAtlas atlas){
+            pawnHighlightCanMove = atlas.findRegion("pawn-highlight-can-move");
+        }
+    }
+                
     public class AssetFonts {
         public final BitmapFont defaultNormal;
         public AssetFonts () {

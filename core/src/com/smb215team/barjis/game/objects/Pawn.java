@@ -21,6 +21,7 @@ public class Pawn extends AbstractGameObject {
     
     private TextureRegion pawnImage;
     private TextureRegion phPawnOverlapCounter;
+    private TextureRegion pawnHighlightCanMove;
     PawnState state;
     Vector2 deadPosition;
     private Vector2[] path;
@@ -48,6 +49,7 @@ public class Pawn extends AbstractGameObject {
         currentPossibleMoves = new ArrayList();
         deadPosition = new Vector2(0, 0);
         phPawnOverlapCounter = Assets.instance.phPawnOverlapCounter.phPawnOverlapCounter[0];
+        pawnHighlightCanMove = Assets.instance.pawnHighlightCanMove.pawnHighlightCanMove;
         init(0, deadPosition, new Vector2[83]);
     }
 
@@ -78,6 +80,8 @@ public class Pawn extends AbstractGameObject {
     public void render(SpriteBatch batch) {
         batch.draw(pawnImage.getTexture(), position.x, position.y, origin.x, origin.y, dimension.x, dimension.y, scale.x, scale.y,
 -         rotation, pawnImage.getRegionX(), pawnImage.getRegionY(), pawnImage.getRegionWidth(), pawnImage.getRegionHeight(), false, false);
+        batch.draw(pawnHighlightCanMove.getTexture(), position.x - 0.065f, position.y - 0.065f, origin.x, origin.y, 0.58f, 0.58f, scale.x, scale.y,
+-         rotation, pawnHighlightCanMove.getRegionX(), pawnHighlightCanMove.getRegionY(), pawnHighlightCanMove.getRegionWidth(), pawnHighlightCanMove.getRegionHeight(), false, false);
     }
     
     public void render(SpriteBatch batch, Integer pileCount) {

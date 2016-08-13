@@ -137,9 +137,4 @@ public class Player {
             pawn.render(batch, pawnAddresses.get(pawn.position));
         }
     }
-    
-    //Dino: To develop
-    public void movePawn(int pawnIndex, int numberOfSteps) {
-        pawns[pawnIndex].move(numberOfSteps);
-    }
 }

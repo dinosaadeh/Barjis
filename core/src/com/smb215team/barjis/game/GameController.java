@@ -47,11 +47,12 @@ public class GameController extends InputAdapter {
     public int currentPlayerIndex;
     DiceContainer diceContainer;
     public float timerForThrowingDices = 0.0f;
+    public float timerForPlayerTurn = 0.0f;
+    private Vector2 clickProtectorPosition;
+    private float clickProtectorTime;
 
     public Stage stage;
     Array<TextButton> btnsMovesToBePlayed=new Array<TextButton>();
-
-    public float timerForPlayerTurn = 0.0f;
 
     // <editor-fold desc="Dino: TO DELETE Dummy stuff">
     Array<Pawn> dummyPawnToFillMap = new Array<Pawn>();
@@ -218,10 +219,19 @@ public class GameController extends InputAdapter {
             int x1 = Gdx.input.getX();
             int y1 = Gdx.input.getY();
             Vector3 translatedTouchedRegion = camera.unproject(new Vector3(x1, y1, 0));
+            if(null !=  clickProtectorPosition && translatedTouchedRegion.x == clickProtectorPosition.x && translatedTouchedRegion.y == clickProtectorPosition.y) {
+                if(deltaTime != clickProtectorTime) {
+                    return;
+                }
+            } else {
+                clickProtectorPosition = new Vector2(translatedTouchedRegion.x, translatedTouchedRegion.y);
+                clickProtectorTime = deltaTime;
+            }
             for(Pawn pawn : players[currentPlayerIndex].pawns) {
-                if(pawn.bounds.contains(translatedTouchedRegion.x, translatedTouchedRegion.y)) {
-                    Gdx.app.log(TAG, "Pawn is touched at " + pawn.position.x + ", " + pawn.position.y);
+                if(pawn.bounds.contains(translatedTouchedRegion.x, translatedTouchedRegion.y)){
+                    Gdx.app.log(TAG, "fitna");
                     pawn.move(6);
+                    break;
                 }
             }
         }
