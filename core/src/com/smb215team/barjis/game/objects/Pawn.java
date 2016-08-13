@@ -40,7 +40,7 @@ public class Pawn extends AbstractGameObject {
     }
 
     /** set the x and y position  */
-    public Pawn(float x , float y){
+    public Pawn(float x, float y){
         position.set(x, y);
         init();
     }
@@ -80,8 +80,10 @@ public class Pawn extends AbstractGameObject {
     public void render(SpriteBatch batch) {
         batch.draw(pawnImage.getTexture(), position.x, position.y, origin.x, origin.y, dimension.x, dimension.y, scale.x, scale.y,
 -         rotation, pawnImage.getRegionX(), pawnImage.getRegionY(), pawnImage.getRegionWidth(), pawnImage.getRegionHeight(), false, false);
-        batch.draw(pawnHighlightCanMove.getTexture(), position.x - 0.065f, position.y - 0.065f, origin.x, origin.y, 0.58f, 0.58f, scale.x, scale.y,
--         rotation, pawnHighlightCanMove.getRegionX(), pawnHighlightCanMove.getRegionY(), pawnHighlightCanMove.getRegionWidth(), pawnHighlightCanMove.getRegionHeight(), false, false);
+        if(canMove()) {
+            batch.draw(pawnHighlightCanMove.getTexture(), position.x - 0.065f, position.y - 0.065f, origin.x, origin.y, 0.58f, 0.58f, scale.x, scale.y,
+    -         rotation, pawnHighlightCanMove.getRegionX(), pawnHighlightCanMove.getRegionY(), pawnHighlightCanMove.getRegionWidth(), pawnHighlightCanMove.getRegionHeight(), false, false);
+        }
     }
     
     public void render(SpriteBatch batch, Integer pileCount) {

@@ -48,8 +48,10 @@ public class GameController extends InputAdapter {
     DiceContainer diceContainer;
     public float timerForThrowingDices = 0.0f;
     public float timerForPlayerTurn = 0.0f;
+    // <editor-fold desc="click protector variables. When a click takes place, click position and deltatime are saved to compare and make sure nothing else interacts to one click">
     private Vector2 clickProtectorPosition;
     private float clickProtectorTime;
+    // </editor-fold>
 
     public Stage stage;
     Array<TextButton> btnsMovesToBePlayed=new Array<TextButton>();
@@ -201,6 +203,34 @@ public class GameController extends InputAdapter {
         stage.addActor(table);
 
     }
+
+    private void testDicesCollisions () {
+        // <editor-fold desc="Test collision: Dice <-> Dice borders">
+        for (Dice dice : Dices.instance.dices) {
+            if(null == dice)
+                return;
+            if (!diceContainer.borderTop.overlaps(dice.bounds) && !diceContainer.borderBottom.overlaps(dice.bounds) && !diceContainer.borderLeft.overlaps(dice.bounds) && !diceContainer.borderRight.overlaps(dice.bounds)) {
+                dice.canCollideBorderTop = true;
+                dice.canCollideBorderBottom = true;
+                dice.canCollideBorderLeft = true;
+                dice.canCollideBorderRight = true;
+                continue;
+            }
+            if (diceContainer.borderTop.overlaps(dice.bounds) && dice.canCollideBorderTop){
+                dice.collideWithWall(false, 't');
+            }
+            if (diceContainer.borderBottom.overlaps(dice.bounds) && dice.canCollideBorderBottom){
+                dice.collideWithWall(false, 'b');
+            }
+            if (diceContainer.borderLeft.overlaps(dice.bounds) && dice.canCollideBorderLeft){
+                dice.collideWithWall(true, 'l');
+            }
+            if (diceContainer.borderRight.overlaps(dice.bounds) && dice.canCollideBorderRight){
+                dice.collideWithWall(true, 'r');
+            }
+        }
+        // </editor-fold>
+    }
     // </editor-fold>
 
     // <editor-fold desc="STATE: player moving his pawns">
@@ -237,38 +267,6 @@ public class GameController extends InputAdapter {
         }
     }
     // </editor-fold>
-
-    private void moveSelectedSprite(float x, float y) {
-        //testSprites[selectedSprite].translate(x, y);
-    }
-
-    private void testDicesCollisions () {
-        // <editor-fold desc="Test collision: Dice <-> Dice borders">
-        for (Dice dice : Dices.instance.dices) {
-            if(null == dice)
-                return;
-            if (!diceContainer.borderTop.overlaps(dice.bounds) && !diceContainer.borderBottom.overlaps(dice.bounds) && !diceContainer.borderLeft.overlaps(dice.bounds) && !diceContainer.borderRight.overlaps(dice.bounds)) {
-                dice.canCollideBorderTop = true;
-                dice.canCollideBorderBottom = true;
-                dice.canCollideBorderLeft = true;
-                dice.canCollideBorderRight = true;
-                continue;
-            }
-            if (diceContainer.borderTop.overlaps(dice.bounds) && dice.canCollideBorderTop){
-                dice.collideWithWall(false, 't');
-            }
-            if (diceContainer.borderBottom.overlaps(dice.bounds) && dice.canCollideBorderBottom){
-                dice.collideWithWall(false, 'b');
-            }
-            if (diceContainer.borderLeft.overlaps(dice.bounds) && dice.canCollideBorderLeft){
-                dice.collideWithWall(true, 'l');
-            }
-            if (diceContainer.borderRight.overlaps(dice.bounds) && dice.canCollideBorderRight){
-                dice.collideWithWall(true, 'r');
-            }
-        }
-        // </editor-fold>
-    }
 
     private void switchToNextPlayer() {
         if(currentPlayerIndex == players.length-1) {
