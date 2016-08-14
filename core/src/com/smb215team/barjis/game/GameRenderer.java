@@ -72,7 +72,8 @@ public class GameRenderer implements Disposable {
         renderGui(batch);
         renderTestObjects();
         renderPlayer(batch);
-        //gameController.stage.draw();
+        gameController.stage.draw();
+
     }
 
     public void resize (int width, int height) {

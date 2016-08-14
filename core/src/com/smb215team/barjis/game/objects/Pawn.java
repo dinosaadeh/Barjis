@@ -134,4 +134,7 @@ public class Pawn extends AbstractGameObject {
             Gdx.app.debug(TAG, e.getMessage());
         }
     }
+    public int getPositionOnPath(){
+        return this.positionOnPath;
+    }
 }

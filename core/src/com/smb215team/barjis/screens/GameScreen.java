@@ -45,6 +45,7 @@ public class GameScreen extends AbstractGameScreen {
     @Override
     public void resize(int width, int height) {
         gameRenderer.resize(width, height);
+        gameController.stage.getViewport().update(width,height,true);
     }
 
     @Override

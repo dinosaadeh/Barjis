@@ -127,6 +127,18 @@ public class Dices {
         if (DicesValueEnum.TWO.equals(result)|| DicesValueEnum.THREE.equals(result)|| DicesValueEnum.FOUR.equals(result)) {
              canPlayerThrowDices = false;
         }
+        //TODO remove data to test when finish developing
+        currentHandMoves2.clear();
+        currentHandMoves2.put(DicesValueEnum.DEST,3);
+        currentHandMoves2.put(DicesValueEnum.BANJ,4);
+        currentHandMoves2.put(DicesValueEnum.BARA,1);
+        currentHandMoves2.put(DicesValueEnum.SHAKKI,3);
+        currentHandMoves2.put(DicesValueEnum.KHAL,7);
+        currentHandMoves2.put(DicesValueEnum.TWO,5);
+        currentHandMoves2.put(DicesValueEnum.THREE,5);
+        currentHandMoves2.put(DicesValueEnum.FOUR,5);
+
+
     }
 
     public boolean dicesReachedAFullStop() {

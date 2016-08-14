@@ -43,4 +43,6 @@ public class Constants {
     // </editor-fold>
     
     public static final Integer[] SHIRE_INDEXES = {10, 21, 27, 38, 44, 55, 61, 72};
+//TODO to check
+    public static final Integer DiceNumber=83;
 }
