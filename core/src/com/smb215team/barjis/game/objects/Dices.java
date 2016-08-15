@@ -137,8 +137,6 @@ public class Dices {
         currentHandMoves2.put(DicesValueEnum.TWO,5);
         currentHandMoves2.put(DicesValueEnum.THREE,5);
         currentHandMoves2.put(DicesValueEnum.FOUR,5);
-
-
     }
 
     public boolean dicesReachedAFullStop() {

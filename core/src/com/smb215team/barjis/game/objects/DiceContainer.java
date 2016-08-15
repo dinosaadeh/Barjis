@@ -46,7 +46,7 @@ public class DiceContainer {
             borderBottom = DICES_CONTAINER_BORDER_BOTTOM_SIDE01;
             borderLeft = DICES_CONTAINER_BORDER_LEFT_SIDE01;
             borderRight = DICES_CONTAINER_BORDER_RIGHT_SIDE01;
-            Gdx.app.debug(TAG, "Switched to side 1");
+            //Gdx.app.debug(TAG, "Switched to side 1");
         }
         
         if(side.equals("SIDE02")){
@@ -54,7 +54,7 @@ public class DiceContainer {
             borderBottom = DICES_CONTAINER_BORDER_BOTTOM_SIDE02;
             borderLeft = DICES_CONTAINER_BORDER_LEFT_SIDE02;
             borderRight = DICES_CONTAINER_BORDER_RIGHT_SIDE02;
-            Gdx.app.debug(TAG, "Switched to side 2");
+            //Gdx.app.debug(TAG, "Switched to side 2");
         }
         
         diceMarginFromX = borderLeft.x + 2 * borderLeft.width;

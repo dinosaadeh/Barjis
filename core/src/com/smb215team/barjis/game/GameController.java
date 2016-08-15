@@ -47,9 +47,10 @@ public class GameController extends InputAdapter {
     // <editor-fold desc="click protector variables. When a click takes place, click position and deltatime are saved to compare and make sure nothing else interacts to one click">
     private Vector2 clickProtectorPosition;
     private float clickProtectorTime;
-    private int valueToMovePawn;
-    private Pawn pawnToPlay;
     // </editor-fold>
+    private Pawn currentSelectedPawnForPlay;
+    private int valueToMovePawn;
+    private Pawn pawnToPlay;//TODO: Ali, there is already a variable called currentSelectedPawnForPlay
 
     public Stage stage;
     private Table table;
@@ -84,13 +85,10 @@ public class GameController extends InputAdapter {
                 players[i] = new Player(i, i, ConfigurationController.GetPawnInitialPlaceholder(i));
             }
         }
-        // Placing them at starting point
         // </editor-fold>
 
-        initTestObjects();
-
         // initialize stage
-        stage = new Stage(new FillViewport(Constants.VIEWPORT_GUI_WIDTH,Constants.VIEWPORT_GUI_HEIGHT));
+        stage = new Stage(new FillViewport(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT));
 
         Gdx.input.setInputProcessor(stage);
         table=new Table();
@@ -124,11 +122,6 @@ public class GameController extends InputAdapter {
         // switch to menu screen
         game.setScreen(new MenuScreen(game));
     }
-
-    private void initTestObjects() {
-        // <editor-fold desc="Dino: TO DELETE Dummy pawn/dice">
-        // </editor-fold>
-    }
     
     // <editor-fold desc="STATE: game starting">
     /**
@@ -159,7 +152,6 @@ public class GameController extends InputAdapter {
 
         timerForThrowingDices += deltaTime;
         if(timerForThrowingDices >= 5 && Dices.instance.canPlayerThrowDices) {
-
             Dices.instance.throwDices(diceContainer.diceMarginFromX, diceContainer.diceMarginToX, diceContainer.diceMarginFromY, diceContainer.diceMarginToY);
             timerForThrowingDices -= 5.0f; // If you reset it to 0 you will loose a few milliseconds every 2 seconds.
 
@@ -300,8 +292,9 @@ public class GameController extends InputAdapter {
         
         timerForPlayerTurn += deltaTime;
         // Once player is finished, switch to the next player
-        if(timerForThrowingDices >= 5 && Dices.instance.canPlayerThrowDices) {
+        if(timerForPlayerTurn >= 5) {
             switchToNextPlayer();
+            timerForPlayerTurn -= 5.0f; // If you reset it to 0 you will loose a few milliseconds every 2 seconds.
         }
     }
     
@@ -320,16 +313,18 @@ public class GameController extends InputAdapter {
             }
             for(Pawn pawn : players[currentPlayerIndex].pawns) {
                 if(pawn.bounds.contains(translatedTouchedRegion.x, translatedTouchedRegion.y)){
-                    pawnToPlay=pawn;
+                    currentSelectedPawnForPlay = pawn;
+                    pawnToPlay = pawn;
+                    pawn.move(6);
                     changeBtnStyleIfTPawnCntPlay();
                     break;
                 }
             }
         }
     }
-
     // </editor-fold>
-
+    
+    // <editor-fold desc="Helper Methods">
     private void switchToNextPlayer() {
         if(currentPlayerIndex == players.length-1) {
             currentPlayerIndex = 0;
@@ -341,4 +336,19 @@ public class GameController extends InputAdapter {
         }
         Dices.instance.reset();
     }
+    
+    /**
+     * This method returns true of the position on a pawn's path is a shire. Shire positions are set 
+     * in constants as path index and not as x, y addresses.
+     * @param positionOnPath
+     * @return 
+     */
+    private boolean isCellShire(int positionOnPath) {
+        for(int i = 0; i < Constants.SHIRE_INDEXES.length; i++) {
+            if(Constants.SHIRE_INDEXES[i] == positionOnPath)
+                return true;
+        }
+        return false;
+    }
+    // </editor-fold>
 }
