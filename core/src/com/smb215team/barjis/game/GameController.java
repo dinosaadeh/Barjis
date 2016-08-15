@@ -5,9 +5,12 @@
  */
 package com.smb215team.barjis.game;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -15,16 +18,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FillViewport;
-import com.smb215team.barjis.game.enums.DicesValueEnum;
+import com.smb215team.barjis.game.enums.GameState;
 import com.smb215team.barjis.game.objects.Dice;
 import com.smb215team.barjis.game.objects.DiceContainer;
 import com.smb215team.barjis.game.objects.Dices;
 import com.smb215team.barjis.game.objects.Pawn;
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.Vector3;
-import com.smb215team.barjis.game.enums.GameState;
 import com.smb215team.barjis.game.objects.Player;
 import com.smb215team.barjis.screens.MenuScreen;
 import com.smb215team.barjis.util.Constants;
@@ -49,8 +47,7 @@ public class GameController extends InputAdapter {
     private float clickProtectorTime;
     // </editor-fold>
     private Pawn currentSelectedPawnForPlay;
-    private int valueToMovePawn;
-    private Pawn pawnToPlay;//TODO: Ali, there is already a variable called currentSelectedPawnForPlay
+    private int selectedIndexInTable;
 
     public Stage stage;
     private Table table;
@@ -92,8 +89,7 @@ public class GameController extends InputAdapter {
 
         Gdx.input.setInputProcessor(stage);
         table=new Table();
-        //TODO remove developing mode
-        table.setDebug(true);
+
     }
 
     public void update (float deltaTime) {
@@ -175,21 +171,23 @@ public class GameController extends InputAdapter {
         TextButton.TextButtonStyle buttonStyle=new TextButton.TextButtonStyle();
         buttonStyle.font=Assets.instance.fonts.defaultNormal;
 
+        for (int i=0;i<Dices.instance.currentHandMoves.length;i++){
 
+            if(Dices.instance.currentHandMoves[i]==0){
+                continue;
+            }
 
-
-        for (DicesValueEnum diceValue : Dices.instance.currentHandMoves2.keySet()){
             // create button
             TextButton button;
             // for example :if the label is just 1 x dest we should see dest without "1x"
-            if(Dices.instance.currentHandMoves2.get(diceValue) == 1){
-                button = new TextButton(diceValue.getLabel(),buttonStyle);
+            if(Dices.instance.currentHandMoves[i] ==1){
+                button = new TextButton(Dices.movesLabels[i],buttonStyle);
             } else {
                 //grater then 1
-                button = new TextButton(Dices.instance.currentHandMoves2.get(diceValue) + "x" + diceValue.getLabel(), buttonStyle);
+                button = new TextButton(Dices.instance.currentHandMoves[i] + "x" + Dices.movesLabels[i], buttonStyle);
 
             }
-            button.setUserObject(diceValue);
+            button.setUserObject(i);
             //listener on every button
             button.addListener(new ChangeListener() {
                 public void changed (ChangeEvent e, Actor actor) {
@@ -205,8 +203,16 @@ public class GameController extends InputAdapter {
             }
 
         }
+        if(currentPlayerIndex==0) {
 
-        table.setPosition(5,350);
+            table.setPosition(5, 345);
+
+        }else{
+            if(currentPlayerIndex ==1) {
+                table.setPosition(642, 345);
+            }
+        }
+
         table.left().top();
         stage.addActor(table);
 
@@ -214,44 +220,46 @@ public class GameController extends InputAdapter {
 
     public void textClicked(ChangeListener.ChangeEvent e, Actor actor){
 
-        if(pawnToPlay!= null) {
-            valueToMovePawn = ((DicesValueEnum) actor.getUserObject()).getValue();
-            pawnToPlay.move(valueToMovePawn);
-            if(Dices.instance.currentHandMoves2.get((((DicesValueEnum) actor.getUserObject()))).equals(1)){
-                Dices.instance.currentHandMoves2.remove(((DicesValueEnum) actor.getUserObject()));
-            }else{
-                Dices.instance.currentHandMoves2.put(((DicesValueEnum) actor.getUserObject()), Dices.instance.currentHandMoves2.get((DicesValueEnum) actor.getUserObject()) - 1);
+        if(currentSelectedPawnForPlay!= null) {
+            selectedIndexInTable = ((Integer) actor.getUserObject());
+            if(Dices.movesValues[selectedIndexInTable]<1){
+                return;// if the
             }
+            currentSelectedPawnForPlay.move(Dices.movesValues[selectedIndexInTable]);
+            Dices.instance.currentHandMoves[selectedIndexInTable]--;
+            //re-create the button Table
             fillDiceButtonText();
+            changeBtnStyleIfTPawnCntPlay();
         }
 
     }
 
     private void changeBtnStyleIfTPawnCntPlay(){
-        if(pawnToPlay!=null){
+        if(currentSelectedPawnForPlay!=null){
 
-            if(pawnToPlay.getPositionOnPath()==-1){
-                for(Actor button:table.getChildren()){
-                    if((button.getUserObject()).equals(DicesValueEnum.KHAL)){
-                        button.setColor(1,1,1,1f);
-                        ((TextButton)(button)).setDisabled(false);
+            if(currentSelectedPawnForPlay.getPositionOnPath()==-1) {
+                for (Actor button : table.getChildren()) {
+                    if ((button.getUserObject()).equals(7)) {// equal the Bonus khal
+                        button.setColor(1, 1, 1, 1f);
+                        ((TextButton) (button)).setDisabled(false);
+                    } else {
+                        button.setColor(1, 1, 1, 0.5f);
+                        ((TextButton) (button)).setDisabled(true);
+
+
                     }
-                    else{
-                        button.setColor(1,1,1,0.5f);
-                        ((TextButton)(button)).setDisabled(true);
 
-
-                    }
                 }
             }
             else{// Pawn is in The Game
                 for(Actor button:table.getChildren()){
+                    Integer indexInTable= (Integer) button.getUserObject();
 
-                    if(pawnToPlay.getPositionOnPath()+((DicesValueEnum)button.getUserObject()).getValue()>Constants.DiceNumber){
-                        ((TextButton)(button)).setColor(1,1,1,0.5f);
+                    if(currentSelectedPawnForPlay.getPositionOnPath()+Dices.movesValues[indexInTable]>Constants.DiceNumber){
+                        button.setColor(1,1,1,0.5f);
                         ((TextButton)(button)).setDisabled(true);
                     }else{
-                        ((TextButton)(button)).setColor(1,1,1,1f);
+                        button.setColor(1,1,1,1f);
                         ((TextButton)(button)).setDisabled(false);
                     }
                 }
@@ -319,8 +327,6 @@ public class GameController extends InputAdapter {
             for(Pawn pawn : players[currentPlayerIndex].pawns) {
                 if(pawn.bounds.contains(translatedTouchedRegion.x, translatedTouchedRegion.y)){
                     currentSelectedPawnForPlay = pawn;
-                    pawnToPlay = pawn;
-                    pawn.move(6);
                     changeBtnStyleIfTPawnCntPlay();
                     break;
                 }

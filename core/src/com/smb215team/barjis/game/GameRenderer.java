@@ -162,7 +162,7 @@ public class GameRenderer implements Disposable {
         float x = cameraGUI.viewportWidth - 55;
         float y = cameraGUI.viewportHeight - 15;
         int fps = Gdx.graphics.getFramesPerSecond();
-        BitmapFont fpsFont = Assets.instance.fonts.defaultNormal;
+        BitmapFont fpsFont = Assets.instance.fonts.flippedDefaultNormal;
         if (fps >= 45) {
             // 45 or more FPS show up in green
             fpsFont.setColor(0, 1, 0, 1);

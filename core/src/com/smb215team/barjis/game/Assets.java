@@ -174,13 +174,19 @@ public class Assets implements Disposable, AssetErrorListener {
                 
     public class AssetFonts {
         public final BitmapFont defaultNormal;
+        public final BitmapFont flippedDefaultNormal;
         public AssetFonts () {
         // create three fonts using Libgdx's 15px bitmap font
         defaultNormal = new BitmapFont(Gdx.files.internal("Untitled.fnt"));
-            defaultNormal.getData().setScale(0.8f, 0.8f);
-
-            // enable linear texture filtering for smooth fonts
+        defaultNormal.getData().setScale(0.8f, 0.8f);
+        // enable linear texture filtering for smooth fonts
         defaultNormal.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+
+            flippedDefaultNormal = new BitmapFont(Gdx.files.internal("Untitled.fnt"),true);
+            flippedDefaultNormal.getData().setScale(0.5f, 0.5f);
+            // enable linear texture filtering for smooth fonts
+            flippedDefaultNormal.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+
         }
     }
 }

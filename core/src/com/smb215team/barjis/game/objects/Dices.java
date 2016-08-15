@@ -23,8 +23,7 @@ public class Dices {
     public Dice[] dices;
     public Integer[] currentHandMoves;
     public static final String[] movesLabels = {"Shakki", "Dest", "2", "3", "4", "Banj", "Bara", "Bonus"};
-    public static final Integer[] movesValues = {6, 10, 2, 3, 4, 8, 12, 1};
-    public EnumMap<DicesValueEnum,Integer> currentHandMoves2;// enumeration map , key is diceEnum and value is the number of reputation
+    public static final Integer[] movesValues = {6, 10, 2, 3, 4, 25, 12, 1};
 
     public boolean canPlayerThrowDices;
     Sound diceSound = Gdx.audio.newSound(Gdx.files.internal("diceSound.mp3"));
@@ -49,7 +48,6 @@ public class Dices {
         currentHandMoves[5] = 0; // banj
         currentHandMoves[6] = 0; // bara
         currentHandMoves[7] = 0; // khal
-        currentHandMoves2 = new EnumMap<DicesValueEnum, Integer>(DicesValueEnum.class);
 
         canPlayerThrowDices = true;
     }
@@ -59,7 +57,6 @@ public class Dices {
         for (int i = 0; i < 8; i++) {
             currentHandMoves[i] = 0;
         }
-        currentHandMoves2 = new EnumMap<DicesValueEnum, Integer>(DicesValueEnum.class);
 
         canPlayerThrowDices = true;
     }
@@ -104,7 +101,6 @@ public class Dices {
             //Gdx.app.log(TAG, "Position: " + randomX + ", " + randomY + ", velocity: " + dices[i].velocity);
         }
 
-        DicesValueEnum result= DicesValueEnum.getDiceValueEnumFromNumber(currentThrowValue);
         diceSound.play();
 
         // Setting the value of the current throw
@@ -117,26 +113,9 @@ public class Dices {
         if (2 == currentThrowValue || 3 == currentThrowValue || 4 == currentThrowValue) {
              canPlayerThrowDices = false;
         }
-        
-        currentHandMoves2.put(result,currentHandMoves2.get(result)==null?1:currentHandMoves2.get(result)+1);
-        if ( DicesValueEnum.DEST.equals(result)|| DicesValueEnum.BANJ.equals(result)) // if dest or banj, add the bonus move
-        {
-            currentHandMoves2.put(DicesValueEnum.KHAL,currentHandMoves2.get(DicesValueEnum.KHAL)==null?1:currentHandMoves2.get(DicesValueEnum.KHAL)+1);
-        }
-        // If a stopper combination (2, 3 or 4), do not allow the player to throw dices again
-        if (DicesValueEnum.TWO.equals(result)|| DicesValueEnum.THREE.equals(result)|| DicesValueEnum.FOUR.equals(result)) {
-             canPlayerThrowDices = false;
-        }
-        //TODO remove data to test when finish developing
-        currentHandMoves2.clear();
-        currentHandMoves2.put(DicesValueEnum.DEST,3);
-        currentHandMoves2.put(DicesValueEnum.BANJ,4);
-        currentHandMoves2.put(DicesValueEnum.BARA,1);
-        currentHandMoves2.put(DicesValueEnum.SHAKKI,3);
-        currentHandMoves2.put(DicesValueEnum.KHAL,7);
-        currentHandMoves2.put(DicesValueEnum.TWO,5);
-        currentHandMoves2.put(DicesValueEnum.THREE,5);
-        currentHandMoves2.put(DicesValueEnum.FOUR,5);
+
+
+
     }
 
     public boolean dicesReachedAFullStop() {
