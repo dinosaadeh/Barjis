@@ -137,4 +137,30 @@ public class Player {
             pawn.render(batch, pawnAddresses.get(pawn.position));
         }
     }
+    
+    private int getPositionByAddress(Vector2 cellAddress) {
+        for(int i = 0; i < path.length; i++)
+            if(path[i] == cellAddress)
+                return i;
+        return -1;
+    }
+    
+    public Array<Vector2> pawnsOnShire() {
+        Array<Vector2> resultsToReturn = new Array<Vector2>();
+        for(Pawn pawn : pawns) {
+            if(pawn.isOnShire())
+                resultsToReturn.add(pawn.position);
+        }
+        return resultsToReturn;
+    }
+    
+    public void updateAvailableMoves(Array<Vector2> opponentPawnsAddressesOnShire) {
+        Array<Integer> inaccessibleShireIndexes = new Array<Integer>();
+        for(Vector2 address : opponentPawnsAddressesOnShire) {
+            inaccessibleShireIndexes.add(getPositionByAddress(address));
+        }
+        for(Pawn pawn : pawns) {
+            pawn.updateAvailableMoves(inaccessibleShireIndexes);
+        }
+    }
 }

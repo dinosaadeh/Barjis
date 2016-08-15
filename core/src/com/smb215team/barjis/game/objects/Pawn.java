@@ -9,8 +9,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.smb215team.barjis.game.Assets;
+import com.smb215team.barjis.game.GameController;
 import com.smb215team.barjis.game.enums.PawnState;
+import com.smb215team.barjis.util.Constants;
 import java.util.ArrayList;
 
 /**
@@ -95,7 +98,7 @@ public class Pawn extends AbstractGameObject {
         }
     }
     
-    public void updateAvailableMoves() {
+    public void updateAvailableMoves(Array<Integer> inaccessibleShireIndexes) {
         currentPossibleMoves.clear();
         //Don't bother if the pawn is dead and no Dest or Banj showed up in the combination
         if(this.position == this.deadPosition && Dices.instance.currentHandMoves[1] == 0 &&  Dices.instance.currentHandMoves[5] == 0)
@@ -109,7 +112,8 @@ public class Pawn extends AbstractGameObject {
             if(positionOnPath + Dices.instance.movesValues[i] > 82)
                 continue;
             // TODO: Pawn cannot stand on a Shire if occupied by opponent
-            
+            if(inaccessibleShireIndexes.contains(positionOnPath + Dices.instance.movesValues[i], true))
+                continue;
             currentPossibleMoves.add(i);
         }
     }
@@ -134,6 +138,15 @@ public class Pawn extends AbstractGameObject {
             Gdx.app.debug(TAG, e.getMessage());
         }
     }
+    
+    public boolean isOnShire() {
+        for(int i = 0; i < Constants.SHIRE_INDEXES.length; i++) {
+            if(Constants.SHIRE_INDEXES[i] == positionOnPath)
+                return true;
+        }
+        return false;
+    }
+    
     public int getPositionOnPath(){
         return this.positionOnPath;
     }

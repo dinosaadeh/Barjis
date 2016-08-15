@@ -143,8 +143,16 @@ public class GameController extends InputAdapter {
         playDices(deltaTime);
 
         // Once dices are fully rolled, let the player do his moves
-        if(!Dices.instance.canPlayerThrowDices && Dices.instance.dicesReachedAFullStop())
+        if(!Dices.instance.canPlayerThrowDices && Dices.instance.dicesReachedAFullStop()) {
+            //Notify the player of the cells he cannot move to (Shires occupied by opponent)
+            Array<Vector2> opponentPawnsAddressesOnShire = new Array<Vector2>();
+            for(int i = 0; i < players.length; i++) {
+                if(currentPlayerIndex == i)
+                    continue;
+                opponentPawnsAddressesOnShire.addAll(players[i].pawnsOnShire());
+            }
             this.state = state.playerTurnPlayPawns;
+        }
     }
 
     private void playDices(float deltaTime) {
@@ -157,8 +165,6 @@ public class GameController extends InputAdapter {
 
             fillDiceButtonText();
         }
-
-
     }
 
     public void fillDiceButtonText(){
@@ -204,7 +210,6 @@ public class GameController extends InputAdapter {
         stage.addActor(table);
 
     }
-
 
     public void textClicked(ChangeListener.ChangeEvent e, Actor actor){
 
@@ -255,7 +260,6 @@ public class GameController extends InputAdapter {
         }
 
     }
-
 
     private void testDicesCollisions () {
         // <editor-fold desc="Test collision: Dice <-> Dice borders">
@@ -343,10 +347,17 @@ public class GameController extends InputAdapter {
      * @param positionOnPath
      * @return 
      */
-    private boolean isCellShire(int positionOnPath) {
+    public static boolean isCellShire(int positionOnPath) {
         for(int i = 0; i < Constants.SHIRE_INDEXES.length; i++) {
             if(Constants.SHIRE_INDEXES[i] == positionOnPath)
                 return true;
+        }
+        return false;
+    }
+    
+    public boolean isCellOccupiedByOtherPlayers(int positionOnPath) {
+        for(int i = 0; i < players.length; i++) {
+            //if(curren)
         }
         return false;
     }
