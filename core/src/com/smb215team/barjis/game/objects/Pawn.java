@@ -131,8 +131,6 @@ public class Pawn extends AbstractGameObject {
             positionOnPath += numberOfSteps;
             this.position = path[positionOnPath];
             this.bounds.set(position.x, position.y, dimension.x, dimension.y);
-            
-            
         }
         catch(Exception e) {
             Gdx.app.debug(TAG, e.getMessage());

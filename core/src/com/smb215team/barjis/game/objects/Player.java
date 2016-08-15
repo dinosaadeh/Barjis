@@ -140,7 +140,7 @@ public class Player {
     
     private int getPositionByAddress(Vector2 cellAddress) {
         for(int i = 0; i < path.length; i++)
-            if(path[i] == cellAddress)
+            if(path[i].equals(cellAddress))
                 return i;
         return -1;
     }
@@ -157,7 +157,10 @@ public class Player {
     public void updateAvailableMoves(Array<Vector2> opponentPawnsAddressesOnShire) {
         Array<Integer> inaccessibleShireIndexes = new Array<Integer>();
         for(Vector2 address : opponentPawnsAddressesOnShire) {
-            inaccessibleShireIndexes.add(getPositionByAddress(address));
+            int positionOfAddress = getPositionByAddress(address);
+            if(-1 == positionOfAddress)
+                continue;
+            inaccessibleShireIndexes.add(positionOfAddress);
         }
         for(Pawn pawn : pawns) {
             pawn.updateAvailableMoves(inaccessibleShireIndexes);

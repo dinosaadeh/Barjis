@@ -151,6 +151,7 @@ public class GameController extends InputAdapter {
                     continue;
                 opponentPawnsAddressesOnShire.addAll(players[i].pawnsOnShire());
             }
+            players[currentPlayerIndex].updateAvailableMoves(opponentPawnsAddressesOnShire);
             this.state = state.playerTurnPlayPawns;
         }
     }
@@ -297,7 +298,7 @@ public class GameController extends InputAdapter {
         timerForPlayerTurn += deltaTime;
         // Once player is finished, switch to the next player
         if(timerForPlayerTurn >= 5) {
-            switchToNextPlayer();
+            //switchToNextPlayer();
             timerForPlayerTurn -= 5.0f; // If you reset it to 0 you will loose a few milliseconds every 2 seconds.
         }
     }
