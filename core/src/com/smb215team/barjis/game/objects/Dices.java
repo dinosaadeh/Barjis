@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
-import com.smb215team.barjis.game.enums.DicesValueEnum;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -40,16 +39,7 @@ public class Dices {
         dices = new Dice[6];
 
         currentHandMoves = new Integer[8];
-        currentHandMoves[0] = 0; // shakki
-        currentHandMoves[1] = 0; // dest
-        currentHandMoves[2] = 0; // 2
-        currentHandMoves[3] = 0; // 3
-        currentHandMoves[4] = 0; // 4
-        currentHandMoves[5] = 0; // banj
-        currentHandMoves[6] = 0; // bara
-        currentHandMoves[7] = 0; // khal
-
-        canPlayerThrowDices = true;
+        reset();
     }
 
     public void reset() {
@@ -113,9 +103,6 @@ public class Dices {
         if (2 == currentThrowValue || 3 == currentThrowValue || 4 == currentThrowValue) {
              canPlayerThrowDices = false;
         }
-
-
-
     }
 
     public boolean dicesReachedAFullStop() {

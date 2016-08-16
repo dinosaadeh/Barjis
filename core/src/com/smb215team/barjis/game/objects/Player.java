@@ -166,4 +166,12 @@ public class Player {
             pawn.updateAvailableMoves(inaccessibleShireIndexes);
         }
     }
+    
+    public boolean hasMovesToPlay() {
+        for(Pawn pawn : pawns) {
+            if(pawn.canMove())
+                return true;
+        }
+        return false;
+    }
 }

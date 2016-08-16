@@ -41,6 +41,7 @@ public class Dice extends AbstractGameObject {
         float randomVelocityY = MathUtils.random(-5f, 5f);
         velocity.set(randomVelocityX, randomVelocityY);
         terminalVelocity.set(5.0f, 5.0f);
+        rotation = MathUtils.random(0f, 360f);
         //terminalVelocity.set(randomVelocityX + 2.0f, randomVelocityY + 2.0f);
         friction.set(0.2f, 0.2f);
         //acceleration.set(2.0f, 2.0f);

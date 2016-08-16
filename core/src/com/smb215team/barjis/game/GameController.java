@@ -40,8 +40,11 @@ public class GameController extends InputAdapter {
     Player[] players;
     public int currentPlayerIndex;
     DiceContainer diceContainer;
+    // <editor-fold desc="Timers">
     public float timerForThrowingDices = 0.0f;
     public float timerForPlayerTurn = 0.0f;
+    public float timerForPlayerWithNoMoves = 0.0f;//when a player has no moves, disable buttons and wait for an enough amount of time for the player to realise what happened
+    // </editor-fold>
     // <editor-fold desc="click protector variables. When a click takes place, click position and deltatime are saved to compare and make sure nothing else interacts to one click">
     private Vector2 clickProtectorPosition;
     private float clickProtectorTime;
@@ -140,6 +143,7 @@ public class GameController extends InputAdapter {
 
         // Once dices are fully rolled, let the player do his moves
         if(!Dices.instance.canPlayerThrowDices && Dices.instance.dicesReachedAFullStop()) {
+            // <editor-fold desc="Preparation before player moves his pawns">
             //Notify the player of the cells he cannot move to (Shires occupied by opponent)
             Array<Vector2> opponentPawnsAddressesOnShire = new Array<Vector2>();
             for(int i = 0; i < players.length; i++) {
@@ -148,6 +152,9 @@ public class GameController extends InputAdapter {
                 opponentPawnsAddressesOnShire.addAll(players[i].pawnsOnShire());
             }
             players[currentPlayerIndex].updateAvailableMoves(opponentPawnsAddressesOnShire);
+            
+            timerForPlayerWithNoMoves = 0f;
+            // </editor-fold>
             this.state = state.playerTurnPlayPawns;
         }
     }
@@ -156,9 +163,9 @@ public class GameController extends InputAdapter {
         Dices.instance.update(deltaTime); //commentToDelete: later on this will be called only when needed
 
         timerForThrowingDices += deltaTime;
-        if(timerForThrowingDices >= 5 && Dices.instance.canPlayerThrowDices) {
+        if(timerForThrowingDices >= Constants.TIMER_LIMIT_FOR_THROWING_DICES && Dices.instance.canPlayerThrowDices) {
             Dices.instance.throwDices(diceContainer.diceMarginFromX, diceContainer.diceMarginToX, diceContainer.diceMarginFromY, diceContainer.diceMarginToY);
-            timerForThrowingDices -= 5.0f; // If you reset it to 0 you will loose a few milliseconds every 2 seconds.
+            timerForThrowingDices -= Constants.TIMER_LIMIT_FOR_THROWING_DICES; // If you reset it to 0 you will loose a few milliseconds every 2 seconds.
 
             fillDiceButtonText();
         }
@@ -240,13 +247,31 @@ public class GameController extends InputAdapter {
 
     // <editor-fold desc="STATE: player moving his pawns">
     private void interpretPlayerMoves(float deltaTime) {
-        handlePlayerInput(deltaTime);
-        
-        timerForPlayerTurn += deltaTime;
-        // Once player is finished, switch to the next player
-        if(timerForPlayerTurn >= 5) {
-            switchToNextPlayer();
-            timerForPlayerTurn -= 5.0f; // If you reset it to 0 you will loose a few milliseconds every 2 seconds.
+        //If the current player has nothing to play, switch to next player.
+        if(!players[currentPlayerIndex].hasMovesToPlay()) {
+            handlePlayerWithNoPossibleMoves(deltaTime);
+        }
+        else {        
+            handlePlayerInput(deltaTime);
+
+            timerForPlayerTurn += deltaTime;
+            // Once player is finished, switch to the next player
+            // Dino: to change, mo more timer!
+            if(timerForPlayerTurn >= 5) {
+                switchToNextPlayer();
+                timerForPlayerTurn -= 5.0f; // If you reset it to 0 you will loose a few milliseconds every 2 seconds.
+            }
+        }
+    }
+
+    private void handlePlayerWithNoPossibleMoves(float deltaTime) {
+        timerForPlayerWithNoMoves += deltaTime;
+        if(timerForPlayerWithNoMoves >= Constants.TIMER_LIMIT_FOR_PLAYER_WITH_NO_MOVES) {
+                switchToNextPlayer();
+                timerForPlayerWithNoMoves -= Constants.TIMER_LIMIT_FOR_PLAYER_WITH_NO_MOVES; // If you reset it to 0 you will loose a few milliseconds every 2 seconds.
+        }
+        else {//dim all text buttons so that the user knows he cannot play anything
+            diableAllButtonStyle();
         }
     }
     
@@ -315,6 +340,13 @@ public class GameController extends InputAdapter {
             }
         }
     }
+
+    private void diableAllButtonStyle() {
+        for (Actor button : table.getChildren()) {
+            button.setColor(1, 1, 1, 0.5f);
+            ((TextButton) (button)).setDisabled(true);
+        }
+    }
     // </editor-fold>
     
     // <editor-fold desc="Helper Methods">
@@ -328,6 +360,7 @@ public class GameController extends InputAdapter {
             diceContainer.init("SIDE02");
         }
         Dices.instance.reset();
+        this.state = GameState.playerTurnThrowDice;
     }
     
     /**

@@ -6,7 +6,6 @@
 package com.smb215team.barjis.util;
 
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 
 /**
  * @author dinosaadeh
@@ -44,5 +43,9 @@ public class Constants {
     
     public static final Integer[] SHIRE_INDEXES = {10, 21, 27, 38, 44, 55, 61, 72};
 //TODO to check
-    public static final Integer DiceNumber=83;
+    public static final Integer DiceNumber = 83;
+    // <editor-fold desc="Timer limits">
+    public static final float TIMER_LIMIT_FOR_THROWING_DICES = 5f;//5 seconds
+    public static final float TIMER_LIMIT_FOR_PLAYER_WITH_NO_MOVES = 2f;//2 seconds
+    // </editor-fold>
 }
