@@ -23,4 +23,6 @@ Quand un joueur arrive à une combinaison arrêtant (2, 3 ou 4), le joueur peut 
 ## Instructions d'installation
 Un projet LIBGDX se compose de plusieurs projets. Ça dépend des système déstinataires. À la base, il y a le sous projet core qui contient tout le code du jeu. Le projet desktop nous aide à tester le jeu sans le besoin de le déployer sur une appareil mobile tout le temps. Le projet android est le projet qui génère l'APK final à installer sur des appareils Android.
 
+Pour exécuter le code, vous aurez besoin d'un IDE Java de votre choix et avoir configurer Android SDK sur la machine.
+
 ![alt tag](https://drive.google.com/uc?export=view&id=0By-byFWb51ReN0Z4eTk4YnlBRUU)
