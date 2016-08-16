@@ -20,3 +20,9 @@ Shakki  | ![alt tag](https://drive.google.com/uc?export=view&id=0By-byFWb51RedUd
 Bara  | ![alt tag](https://drive.google.com/uc?export=view&id=0By-byFWb51ReM0FoRVZRVzF3ajA)  | douze déplacements possibles d'un pion. Cette combinaison permet de rejetter les coquilles pour obtenir une combinaison supplémentaire.
 Quand un joueur arrive à une combinaison arrêtant (2, 3 ou 4), le joueur peut décider quel pion va se déplacer. Le joueur peut déplacer un ou plusieurs pions. Les cases marquées par un X sur la grille sont appelées « chiré ». Ces cases protègent le pion. Hors de ces cases, les pions sont susceptibles d’être tué par l’adversaire. Les cases de milieu d’où un pion commence et termine sa course ne peut pas être accéder par l’adversaire.
 
+## Instructions d'installation
+Un projet LIBGDX se compose de plusieurs projets. Ça dépend des système déstinataires. À la base, il y a le sous projet core qui contient tout le code du jeu. Le projet desktop nous aide à tester le jeu sans le besoin de le déployer sur une appareil mobile tout le temps. Le projet android est le projet qui génère l'APK final à installer sur des appareils Android.
+
+Pour exécuter le code, vous aurez besoin d'un IDE Java de votre choix et avoir configurer Android SDK sur la machine.
+
+![alt tag](https://drive.google.com/uc?export=view&id=0By-byFWb51ReN0Z4eTk4YnlBRUU)
