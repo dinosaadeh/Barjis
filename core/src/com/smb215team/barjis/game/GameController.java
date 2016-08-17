@@ -128,10 +128,76 @@ public class GameController extends InputAdapter {
      * play three dices on each side to decide who goes first
      */
     public void gameStart() {
-        //After knowing who goes first, diceContainer needs to be re-initialised
-        diceContainer = new DiceContainer("SIDE01");//TODO: this value is dummy till gameStart logic is full written
-        //Once done knowing and setting who goes first, set the game state to playerTurnThrowDice
-        this.state = GameState.playerTurnThrowDice;
+        currentPlayerIndex = -1;
+        int dummyCounterForTesting =  0;
+        DiceContainer diceContainerLeft = new DiceContainer("SIDE01");
+        DiceContainer diceContainerRight = new DiceContainer("SIDE02");
+        testDicesCollisionsInTwoContainers (diceContainerLeft, diceContainerRight);
+        while (-1 == currentPlayerIndex && dummyCounterForTesting != 3) {
+            dummyCounterForTesting++;
+            currentPlayerIndex = Dices.instance.throwDicesOnEachSideToDecideFirstPlayer(diceContainerLeft, diceContainerRight);
+        }
+        if(-1 != currentPlayerIndex) {
+            //After knowing who goes first, diceContainer needs to be re-initialised
+            diceContainer = new DiceContainer("SIDE0" + (currentPlayerIndex + 1));//TODO: this value is dummy till gameStart logic is full written
+            //Once done knowing and setting who goes first, set the game state to playerTurnThrowDice
+            this.state = GameState.playerTurnThrowDice;
+        }
+    }
+
+    private void testDicesCollisionsInTwoContainers (DiceContainer diceContainerLeft, DiceContainer diceContainerRight) {
+        // <editor-fold desc="Test collision: Dice <-> Dice borders Left Side">
+        for (int i = 0; i <= 2; i++) {
+            Dice dice = Dices.instance.dices[i];
+            if(null == dice)
+                return;
+            if (!diceContainerLeft.borderTop.overlaps(dice.bounds) && !diceContainerLeft.borderBottom.overlaps(dice.bounds) && !diceContainerLeft.borderLeft.overlaps(dice.bounds) && !diceContainerLeft.borderRight.overlaps(dice.bounds)) {
+                dice.canCollideBorderTop = true;
+                dice.canCollideBorderBottom = true;
+                dice.canCollideBorderLeft = true;
+                dice.canCollideBorderRight = true;
+                continue;
+            }
+            if (diceContainerLeft.borderTop.overlaps(dice.bounds) && dice.canCollideBorderTop){
+                dice.collideWithWall(false, 't');
+            }
+            if (diceContainerLeft.borderBottom.overlaps(dice.bounds) && dice.canCollideBorderBottom){
+                dice.collideWithWall(false, 'b');
+            }
+            if (diceContainerLeft.borderLeft.overlaps(dice.bounds) && dice.canCollideBorderLeft){
+                dice.collideWithWall(true, 'l');
+            }
+            if (diceContainerLeft.borderRight.overlaps(dice.bounds) && dice.canCollideBorderRight){
+                dice.collideWithWall(true, 'r');
+            }
+        }
+        // </editor-fold>
+        // <editor-fold desc="Test collision: Dice <-> Dice borders Right Side">
+        for (int i = 3; i < Dices.instance.dices.length; i++) {
+            Dice dice = Dices.instance.dices[i];
+            if(null == dice)
+                return;
+            if (!diceContainerRight.borderTop.overlaps(dice.bounds) && !diceContainerRight.borderBottom.overlaps(dice.bounds) && !diceContainerRight.borderLeft.overlaps(dice.bounds) && !diceContainerRight.borderRight.overlaps(dice.bounds)) {
+                dice.canCollideBorderTop = true;
+                dice.canCollideBorderBottom = true;
+                dice.canCollideBorderLeft = true;
+                dice.canCollideBorderRight = true;
+                continue;
+            }
+            if (diceContainerRight.borderTop.overlaps(dice.bounds) && dice.canCollideBorderTop){
+                dice.collideWithWall(false, 't');
+            }
+            if (diceContainerRight.borderBottom.overlaps(dice.bounds) && dice.canCollideBorderBottom){
+                dice.collideWithWall(false, 'b');
+            }
+            if (diceContainerRight.borderLeft.overlaps(dice.bounds) && dice.canCollideBorderLeft){
+                dice.collideWithWall(true, 'l');
+            }
+            if (diceContainerRight.borderRight.overlaps(dice.bounds) && dice.canCollideBorderRight){
+                dice.collideWithWall(true, 'r');
+            }
+        }
+        // </editor-fold>
     }
     // </editor-fold>
     

@@ -105,6 +105,45 @@ public class Dices {
         }
     }
 
+    /**
+     * Throws 3 dices on each side to see which player starts.
+     * This accounts only for 2 player mode (not 4)
+     * @return 0 for left, 1 for right and -1 if both sides have the same value
+     */
+    public int throwDicesOnEachSideToDecideFirstPlayer(DiceContainer diceContainerLeft, DiceContainer diceContainerRight) {
+        int currentThrowValueLeft = 0;
+        int currentThrowValueRight = 0;
+        float randomX = 0.0f, randomY = 0.0f;
+        for (int i = 0; i < dices.length; i++) {
+            if (Math.random() < 0.5) {
+                dices[i] = new Dice(true);
+            } else {
+                dices[i] = new Dice(false);
+                if(i <= 2)
+                    currentThrowValueLeft++;
+                else
+                    currentThrowValueRight++;
+            }
+
+            // Position on the screen
+            if(i <= 2) {
+                randomX = MathUtils.random(diceContainerLeft.diceMarginFromX, diceContainerLeft.diceMarginToX);
+                randomY = MathUtils.random(diceContainerLeft.diceMarginFromY, diceContainerLeft.diceMarginToY);
+            } else {
+                randomX = MathUtils.random(diceContainerRight.diceMarginFromX, diceContainerRight.diceMarginToX);
+                randomY = MathUtils.random(diceContainerRight.diceMarginFromY, diceContainerRight.diceMarginToY);
+            }
+            
+            dices[i].position.set(randomX, randomY);
+            dices[i].bounds.set(randomX, randomY, 0.45f, 0.45f);
+            dices[i].dimension.set(0.45f, 0.45f);
+        }
+
+        diceSound.play();
+        if (currentThrowValueLeft == currentThrowValueRight) return -1;
+        return (currentThrowValueLeft > currentThrowValueRight) ? 0 : 1;
+    }
+
     public boolean dicesReachedAFullStop() {
         for(Dice dice : dices) {
             if(dice.velocity.x != 0 || dice.velocity.y != 0)
