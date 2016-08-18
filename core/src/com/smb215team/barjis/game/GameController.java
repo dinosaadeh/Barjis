@@ -41,6 +41,7 @@ public class GameController extends InputAdapter {
     public int currentPlayerIndex;
     DiceContainer diceContainer;
     // <editor-fold desc="Timers">
+    public float timerForThrowingDicesAtGameStart = 0.0f;
     public float timerForThrowingDices = 0.0f;
     public float timerForPlayerTurn = 0.0f;
     public float timerForPlayerWithNoMoves = 0.0f;//when a player has no moves, disable buttons and wait for an enough amount of time for the player to realise what happened
@@ -75,7 +76,7 @@ public class GameController extends InputAdapter {
 
         // <editor-fold desc="Initialising players' pawns">
         players = new Player[2]; //TODO: account for variable number of players (1 (AI), 2, 4)
-        currentPlayerIndex = 0;
+        currentPlayerIndex = -1;
         if(2 == players.length) {
             players[0] = new Player(3, 0, ConfigurationController.GetPawnInitialPlaceholder(0));
             players[1] = new Player(1, 1, ConfigurationController.GetPawnInitialPlaceholder(1));
@@ -98,7 +99,7 @@ public class GameController extends InputAdapter {
     public void update (float deltaTime) {
         switch (state) {
             case gameStart:
-                gameStart();
+                gameStart(deltaTime);
                 break;
             case playerTurnThrowDice:
                 playOneHand(deltaTime);
@@ -125,24 +126,26 @@ public class GameController extends InputAdapter {
     // <editor-fold desc="STATE: game starting">
     /**
      * TODO
-     * play three dices on each side to decide who goes first
+     * play three dices on each side to decide who goes first. 
+     * Dices keep rolling until there is no tie (but this is not apparent to player)
+     * Once a player is set, we wait for a moment to let the player realise who goes first and then we start the game.
      */
-    public void gameStart() {
-        currentPlayerIndex = -1;
-        int dummyCounterForTesting =  0;
+    public void gameStart(float deltaTime) {
+        Dices.instance.update(deltaTime);
+        timerForThrowingDicesAtGameStart += deltaTime;
         DiceContainer diceContainerLeft = new DiceContainer("SIDE01");
         DiceContainer diceContainerRight = new DiceContainer("SIDE02");
         testDicesCollisionsInTwoContainers (diceContainerLeft, diceContainerRight);
-        while (-1 == currentPlayerIndex && dummyCounterForTesting != 3) {
-            dummyCounterForTesting++;
+        while (-1 == currentPlayerIndex) {
             currentPlayerIndex = Dices.instance.throwDicesOnEachSideToDecideFirstPlayer(diceContainerLeft, diceContainerRight);
         }
-        if(-1 != currentPlayerIndex) {
-            //After knowing who goes first, diceContainer needs to be re-initialised
-            diceContainer = new DiceContainer("SIDE0" + (currentPlayerIndex + 1));//TODO: this value is dummy till gameStart logic is full written
-            //Once done knowing and setting who goes first, set the game state to playerTurnThrowDice
-            this.state = GameState.playerTurnThrowDice;
-        }
+        //wait for a moment for player to realise what happened
+        while(timerForThrowingDicesAtGameStart < Constants.TIMER_LIMIT_FOR_THROWING_DICES_AT_GAME_START)
+            return;
+        //After knowing who goes first, diceContainer needs to be re-initialised
+        diceContainer = new DiceContainer("SIDE0" + (currentPlayerIndex + 1));//TODO: this value is dummy till gameStart logic is full written
+        //Once done knowing and setting who goes first, set the game state to playerTurnThrowDice
+        this.state = GameState.playerTurnThrowDice;
     }
 
     private void testDicesCollisionsInTwoContainers (DiceContainer diceContainerLeft, DiceContainer diceContainerRight) {
@@ -203,7 +206,7 @@ public class GameController extends InputAdapter {
     
     // <editor-fold desc="STATE: dices rolling">
     public void playOneHand(float deltaTime) {
-        testDicesCollisions ();
+        testDicesCollisions();
         // Play the dice
         playDices(deltaTime);
 
@@ -282,7 +285,7 @@ public class GameController extends InputAdapter {
         stage.addActor(table);
     }
 
-    private void testDicesCollisions () {
+    private void testDicesCollisions() {
         // <editor-fold desc="Test collision: Dice <-> Dice borders">
         for (Dice dice : Dices.instance.dices) {
             if(null == dice)

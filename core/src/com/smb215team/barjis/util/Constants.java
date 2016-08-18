@@ -45,6 +45,7 @@ public class Constants {
 //TODO to check
     public static final Integer DiceNumber = 83;
     // <editor-fold desc="Timer limits">
+    public static final float TIMER_LIMIT_FOR_THROWING_DICES_AT_GAME_START = 3f;//2 seconds
     public static final float TIMER_LIMIT_FOR_THROWING_DICES = 5f;//5 seconds
     public static final float TIMER_LIMIT_FOR_PLAYER_WITH_NO_MOVES = 2f;//2 seconds
     // </editor-fold>
