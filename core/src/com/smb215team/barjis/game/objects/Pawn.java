@@ -122,7 +122,7 @@ public class Pawn extends AbstractGameObject {
         return currentPossibleMoves.size() > 0;
     }
     
-    public void move(int numberOfSteps) {
+    public Vector2 move(int numberOfSteps) {
         try {
             if(positionOnPath + numberOfSteps > 82) {
                 throw new Exception("Number of steps to add greater than the pawn can move.");
@@ -135,6 +135,7 @@ public class Pawn extends AbstractGameObject {
         catch(Exception e) {
             Gdx.app.debug(TAG, e.getMessage());
         }
+        return this.position;
     }
     
     public boolean isOnShire() {
@@ -147,5 +148,10 @@ public class Pawn extends AbstractGameObject {
     
     public int getPositionOnPath(){
         return this.positionOnPath;
+    }
+    
+    public void die() {
+        this.position = deadPosition;
+        this.bounds.set(position.x, position.y, dimension.x, dimension.y);
     }
 }
