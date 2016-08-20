@@ -36,7 +36,7 @@ public class Pawn extends AbstractGameObject {
      * - value between 0 and 82, on the board within the player's path
      * - value of 83, the pawn finished its circuit.
      */
-    private int positionOnPath;
+    public int positionOnPath;
 
     public Pawn() {
         init();
@@ -108,10 +108,15 @@ public class Pawn extends AbstractGameObject {
             // This combination didn't show up to begin with
             if(Dices.instance.currentHandMoves[i] == 0)
                 continue;
-            // Pawn shouldn't get out of the path
-            if(positionOnPath + Dices.instance.movesValues[i] > 82)
+            // <editor-fold desc="Pawn shouldn't get out of the path">
+            // taking into account we're not evaluation the case of Banj
+            if(positionOnPath + Dices.instance.movesValues[i] > 82 && i != 6)
                 continue;
-            // TODO: Pawn cannot stand on a Shire if occupied by opponent
+            // Pawn shouldn't get out of the path (taking into account we're not evaluation the case of Banj
+            if(6 == i && 58 < positionOnPath && positionOnPath + 8 > 82)
+                continue;
+            // </editor-fold>
+            // Pawn cannot stand on a Shire if occupied by opponent
             if(inaccessibleShireIndexes.contains(positionOnPath + Dices.instance.movesValues[i], true))
                 continue;
             currentPossibleMoves.add(i);
@@ -122,8 +127,13 @@ public class Pawn extends AbstractGameObject {
         return currentPossibleMoves.size() > 0;
     }
     
-    public void move(int numberOfSteps) {
+    public Vector2 move(int numberOfSteps) {
         try {
+            //Accounting for Banj: 
+            //If a pawn is at the position > 58, it can move the 8 steps and NOT the 17 extra steps
+            if(25 == numberOfSteps && 58 < positionOnPath) {
+                    numberOfSteps = 8;
+            }
             if(positionOnPath + numberOfSteps > 82) {
                 throw new Exception("Number of steps to add greater than the pawn can move.");
             }
@@ -135,6 +145,7 @@ public class Pawn extends AbstractGameObject {
         catch(Exception e) {
             Gdx.app.debug(TAG, e.getMessage());
         }
+        return this.position;
     }
     
     public boolean isOnShire() {
@@ -147,5 +158,10 @@ public class Pawn extends AbstractGameObject {
     
     public int getPositionOnPath(){
         return this.positionOnPath;
+    }
+    
+    public void die() {
+        this.position = deadPosition;
+        this.bounds.set(position.x, position.y, dimension.x, dimension.y);
     }
 }

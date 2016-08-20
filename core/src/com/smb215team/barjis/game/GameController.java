@@ -43,7 +43,6 @@ public class GameController extends InputAdapter {
     // <editor-fold desc="Timers">
     public float timerForThrowingDicesAtGameStart = 0.0f;
     public float timerForThrowingDices = 0.0f;
-    public float timerForPlayerTurn = 0.0f;
     public float timerForPlayerWithNoMoves = 0.0f;//when a player has no moves, disable buttons and wait for an enough amount of time for the player to realise what happened
     // </editor-fold>
     // <editor-fold desc="click protector variables. When a click takes place, click position and deltatime are saved to compare and make sure nothing else interacts to one click">
@@ -55,12 +54,6 @@ public class GameController extends InputAdapter {
 
     public Stage stage;
     private Table table;
-
-    // <editor-fold desc="Dino: TO DELETE Dummy stuff">
-    Array<Pawn> dummyPawnToFillMap = new Array<Pawn>();
-    Pawn dummyPawn = new Pawn();
-    Vector2 touchPosition = new Vector2(0,0);
-    // </editor-fold>
 
     public GameController (Game game) {
         this.game = game;
@@ -92,8 +85,7 @@ public class GameController extends InputAdapter {
         stage = new Stage(new FillViewport(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT));
 
         Gdx.input.setInputProcessor(stage);
-        table=new Table();
-
+        table = new Table();
     }
 
     public void update (float deltaTime) {
@@ -125,10 +117,9 @@ public class GameController extends InputAdapter {
     
     // <editor-fold desc="STATE: game starting">
     /**
-     * TODO
      * play three dices on each side to decide who goes first. 
      * Dices keep rolling until there is no tie (but this is not apparent to player)
-     * Once a player is set, we wait for a moment to let the player realise who goes first and then we start the game.
+     * Once a player is set, we wait for a moment to let the player realize who goes first and then we start the game.
      */
     public void gameStart(float deltaTime) {
         Dices.instance.update(deltaTime);
@@ -146,6 +137,10 @@ public class GameController extends InputAdapter {
         diceContainer = new DiceContainer("SIDE0" + (currentPlayerIndex + 1));//TODO: this value is dummy till gameStart logic is full written
         //Once done knowing and setting who goes first, set the game state to playerTurnThrowDice
         this.state = GameState.playerTurnThrowDice;
+        
+        //testing
+        players[0].pawns[0].move(59);
+        Gdx.app.log(TAG, players[0].pawns[0].positionOnPath + "");
     }
 
     private void testDicesCollisionsInTwoContainers (DiceContainer diceContainerLeft, DiceContainer diceContainerRight) {
@@ -212,18 +207,7 @@ public class GameController extends InputAdapter {
 
         // Once dices are fully rolled, let the player do his moves
         if(!Dices.instance.canPlayerThrowDices && Dices.instance.dicesReachedAFullStop()) {
-            // <editor-fold desc="Preparation before player moves his pawns">
-            //Notify the player of the cells he cannot move to (Shires occupied by opponent)
-            Array<Vector2> opponentPawnsAddressesOnShire = new Array<Vector2>();
-            for(int i = 0; i < players.length; i++) {
-                if(currentPlayerIndex == i)
-                    continue;
-                opponentPawnsAddressesOnShire.addAll(players[i].pawnsOnShire());
-            }
-            players[currentPlayerIndex].updateAvailableMoves(opponentPawnsAddressesOnShire);
-            
-            timerForPlayerWithNoMoves = 0f;
-            // </editor-fold>
+            prepareForStatePlayerTurnPlayPawns();
             this.state = state.playerTurnPlayPawns;
         }
     }
@@ -315,24 +299,38 @@ public class GameController extends InputAdapter {
     // </editor-fold>
 
     // <editor-fold desc="STATE: player moving his pawns">
+    private void prepareForStatePlayerTurnPlayPawns() {
+        //Notify the player of the cells he cannot move to (Shires occupied by opponent)
+        players[currentPlayerIndex].opponentPawnsAddressesOnShire.clear();
+        for(int i = 0; i < players.length; i++) {
+            if(currentPlayerIndex == i)
+                continue;
+            players[currentPlayerIndex].opponentPawnsAddressesOnShire.addAll(players[i].pawnsOnShire());
+        }
+        players[currentPlayerIndex].updateAvailableMoves();
+
+        timerForPlayerWithNoMoves = 0f;
+        currentSelectedPawnForPlay = null;
+    }
+    
     private void interpretPlayerMoves(float deltaTime) {
+        players[currentPlayerIndex].updateAvailableMoves();
         //If the current player has nothing to play, switch to next player.
         if(!players[currentPlayerIndex].hasMovesToPlay()) {
             handlePlayerWithNoPossibleMoves(deltaTime);
         }
         else {        
             handlePlayerInput(deltaTime);
-
-            timerForPlayerTurn += deltaTime;
-            // Once player is finished, switch to the next player
-            // Dino: to change, mo more timer!
-            if(timerForPlayerTurn >= 5) {
-                switchToNextPlayer();
-                timerForPlayerTurn -= 5.0f; // If you reset it to 0 you will loose a few milliseconds every 2 seconds.
-            }
+            if(null != currentSelectedPawnForPlay)
+                changeButtonStyleIfTPawnCantPlay();
         }
     }
 
+    /**
+     * When a player has no moves to play, this method dims his moves buttons, waits for a short while
+     * and switches to the next player.
+     * @param deltaTime 
+     */
     private void handlePlayerWithNoPossibleMoves(float deltaTime) {
         timerForPlayerWithNoMoves += deltaTime;
         if(timerForPlayerWithNoMoves >= Constants.TIMER_LIMIT_FOR_PLAYER_WITH_NO_MOVES) {
@@ -373,7 +371,12 @@ public class GameController extends InputAdapter {
             if(Dices.movesValues[selectedIndexInTable] < 1){
                 return;// if the
             }
-            currentSelectedPawnForPlay.move(Dices.movesValues[selectedIndexInTable]);
+            Vector2 newPawnPosition = currentSelectedPawnForPlay.move(Dices.movesValues[selectedIndexInTable]);
+            killPawnsOnPosition(newPawnPosition);
+            if(players[currentPlayerIndex].hasWonTheGame()) {
+                this.state = state.gameOver;
+                return;
+            }
             Dices.instance.currentHandMoves[selectedIndexInTable]--;
             //re-create the button Table
             fillDiceButtonText();
@@ -413,6 +416,17 @@ public class GameController extends InputAdapter {
             ((TextButton) (button)).setDisabled(true);
         }
     }
+    
+    private void killPawnsOnPosition(Vector2 position) {
+        for(int i = 0; i < players.length; i++) {
+            if(currentPlayerIndex == i)
+                continue;
+            for(Pawn pawn : players[i].pawns) {
+                if(position.equals(pawn.position))
+                    pawn.die();
+            }
+        }
+    }
     // </editor-fold>
     
     // <editor-fold desc="Helper Methods">
@@ -426,6 +440,7 @@ public class GameController extends InputAdapter {
             diceContainer.init("SIDE02");
         }
         Dices.instance.reset();
+        currentSelectedPawnForPlay = null;
         this.state = GameState.playerTurnThrowDice;
     }
     

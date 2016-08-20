@@ -23,6 +23,11 @@ public class Player {
     public Pawn[] pawns;
     public Vector2[] path;
     private Array<Vector2> boardMap = new Array<Vector2>();
+    /**
+     * This array is populated every time a player wants to play. This makes sure a player cannot move to
+     * a shire if occupied by opponent
+     */
+    public Array<Vector2> opponentPawnsAddressesOnShire = new Array<Vector2>();
     
     public Player(int branch, int pawnImageIndex, Array<Vector2> deadPositions) {
         init(branch, pawnImageIndex, deadPositions);
@@ -154,7 +159,7 @@ public class Player {
         return resultsToReturn;
     }
     
-    public void updateAvailableMoves(Array<Vector2> opponentPawnsAddressesOnShire) {
+    public void updateAvailableMoves() {
         Array<Integer> inaccessibleShireIndexes = new Array<Integer>();
         for(Vector2 address : opponentPawnsAddressesOnShire) {
             int positionOfAddress = getPositionByAddress(address);
@@ -173,5 +178,13 @@ public class Player {
                 return true;
         }
         return false;
+    }
+    
+    public boolean hasWonTheGame() {
+        for(Pawn pawn : pawns) {
+            if(pawn.positionOnPath < 83)
+                return false;
+        }
+        return true;
     }
 }
