@@ -108,10 +108,15 @@ public class Pawn extends AbstractGameObject {
             // This combination didn't show up to begin with
             if(Dices.instance.currentHandMoves[i] == 0)
                 continue;
-            // Pawn shouldn't get out of the path
-            if(positionOnPath + Dices.instance.movesValues[i] > 82)
+            // <editor-fold desc="Pawn shouldn't get out of the path">
+            // taking into account we're not evaluation the case of Banj
+            if(positionOnPath + Dices.instance.movesValues[i] > 82 && i != 6)
                 continue;
-            // TODO: Pawn cannot stand on a Shire if occupied by opponent
+            // Pawn shouldn't get out of the path (taking into account we're not evaluation the case of Banj
+            if(6 == i && 58 < positionOnPath && positionOnPath + 8 > 82)
+                continue;
+            // </editor-fold>
+            // Pawn cannot stand on a Shire if occupied by opponent
             if(inaccessibleShireIndexes.contains(positionOnPath + Dices.instance.movesValues[i], true))
                 continue;
             currentPossibleMoves.add(i);
@@ -124,6 +129,11 @@ public class Pawn extends AbstractGameObject {
     
     public Vector2 move(int numberOfSteps) {
         try {
+            //Accounting for Banj: 
+            //If a pawn is at the position > 58, it can move the 8 steps and NOT the 17 extra steps
+            if(25 == numberOfSteps && 58 < positionOnPath) {
+                    numberOfSteps = 8;
+            }
             if(positionOnPath + numberOfSteps > 82) {
                 throw new Exception("Number of steps to add greater than the pawn can move.");
             }
