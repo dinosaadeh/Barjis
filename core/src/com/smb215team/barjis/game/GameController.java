@@ -256,7 +256,7 @@ public class GameController extends InputAdapter {
             // for example :if the label is just 1 x dest we should see dest without "1x"
             if(Dices.instance.currentHandMoves[i] == 1) {
                 button = new TextButton(Dices.movesLabels[i], buttonStyle);
-            } else {//greater then 1
+            } else {//greater than 1
                 button = new TextButton(Dices.instance.currentHandMoves[i] + "x" + Dices.movesLabels[i], buttonStyle);
             }
             button.setUserObject(i);
@@ -360,7 +360,7 @@ public class GameController extends InputAdapter {
             for(Pawn pawn : players[currentPlayerIndex].pawns) {
                 if(pawn.bounds.contains(translatedTouchedRegion.x, translatedTouchedRegion.y)){
                     currentSelectedPawnForPlay = pawn;
-                    changeButtonStyleIfTPawnCantPlay();
+                    enableButtonPawnCanPlay();
                     break;
                 }
             }
@@ -377,36 +377,33 @@ public class GameController extends InputAdapter {
             Dices.instance.currentHandMoves[selectedIndexInTable]--;
             //re-create the button Table
             fillDiceButtonText();
-            changeButtonStyleIfTPawnCantPlay();
+            enableButtonPawnCanPlay();
         }
     }
 
-    private void changeButtonStyleIfTPawnCantPlay() {
+    private void enableButtonPawnCanPlay() {
         if(currentSelectedPawnForPlay != null) {
-            if(currentSelectedPawnForPlay.getPositionOnPath() == -1) {
-                for (Actor button : table.getChildren()) {
-                    if ((button.getUserObject()).equals(7)) {// equal the Bonus khal
-                        button.setColor(1, 1, 1, 1f);
-                        ((TextButton) (button)).setDisabled(false);
-                    } else {
+
+                for(Actor button:table.getChildren()) {
+                    Integer indexForButton = (Integer) button.getUserObject();
+                    boolean indexIsFindInTable=false;
+                    for (Integer EnabledIndex : currentSelectedPawnForPlay.currentPossibleMoves) {//start inner for
+                        if (EnabledIndex == indexForButton) {
+                            button.setColor(1, 1, 1, 1f);
+                            ((TextButton) (button)).setDisabled(false);
+                            indexIsFindInTable=true;
+                            break;// stop inner for
+                        }
+
+                    }
+                    if(!indexIsFindInTable) {
                         button.setColor(1, 1, 1, 0.5f);
                         ((TextButton) (button)).setDisabled(true);
-                    }
-                }
-            }
-            else{// Pawn is in The Game
-                for(Actor button:table.getChildren()){
-                    Integer indexInTable= (Integer) button.getUserObject();
 
-                    if(currentSelectedPawnForPlay.getPositionOnPath()+Dices.movesValues[indexInTable] > Constants.DiceNumber){
-                        button.setColor(1, 1, 1, 0.5f);
-                        ((TextButton)(button)).setDisabled(true);
-                    } else {
-                        button.setColor(1, 1, 1, 1f);
-                        ((TextButton)(button)).setDisabled(false);
                     }
+
                 }
-            }
+
         }
     }
 
