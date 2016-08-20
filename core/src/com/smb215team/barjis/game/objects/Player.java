@@ -179,4 +179,12 @@ public class Player {
         }
         return false;
     }
+    
+    public boolean hasWonTheGame() {
+        for(Pawn pawn : pawns) {
+            if(pawn.positionOnPath < 83)
+                return false;
+        }
+        return true;
+    }
 }

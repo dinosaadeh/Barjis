@@ -369,6 +369,10 @@ public class GameController extends InputAdapter {
             }
             Vector2 newPawnPosition = currentSelectedPawnForPlay.move(Dices.movesValues[selectedIndexInTable]);
             killPawnsOnPosition(newPawnPosition);
+            if(players[currentPlayerIndex].hasWonTheGame()) {
+                this.state = state.gameOver;
+                return;
+            }
             Dices.instance.currentHandMoves[selectedIndexInTable]--;
             //re-create the button Table
             fillDiceButtonText();
@@ -435,6 +439,7 @@ public class GameController extends InputAdapter {
             diceContainer.init("SIDE02");
         }
         Dices.instance.reset();
+        currentSelectedPawnForPlay = null;
         this.state = GameState.playerTurnThrowDice;
     }
     

@@ -36,7 +36,7 @@ public class Pawn extends AbstractGameObject {
      * - value between 0 and 82, on the board within the player's path
      * - value of 83, the pawn finished its circuit.
      */
-    private int positionOnPath;
+    public int positionOnPath;
 
     public Pawn() {
         init();
