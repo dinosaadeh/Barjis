@@ -322,7 +322,7 @@ public class GameController extends InputAdapter {
         else {        
             handlePlayerInput(deltaTime);
             if(null != currentSelectedPawnForPlay)
-                changeButtonStyleIfTPawnCantPlay();
+                enableButtonPawnCanPlay();
         }
     }
 
