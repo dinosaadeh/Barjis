@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -23,6 +24,7 @@ public class Dices {
     public Integer[] currentHandMoves;
     public static final String[] movesLabels = {"Shakki", "Dest", "2", "3", "4", "Banj", "Bara", "Bonus"};
     public static final Integer[] movesValues = {6, 10, 2, 3, 4, 25, 12, 1};
+    public Rectangle diceBounds[];
 
     public boolean canPlayerThrowDices;
     Sound diceSound = Gdx.audio.newSound(Gdx.files.internal("diceSound.mp3"));
@@ -68,6 +70,8 @@ public class Dices {
             if(null == dice)
                 return;
             dice.update(deltaTime);
+           dicesCollision();
+      
         }
     }
 
@@ -77,8 +81,12 @@ public class Dices {
         for (int i = 0; i < dices.length; i++) {
             if (Math.random() < 0.5) {
                 dices[i] = new Dice(true);
+                // diceBounds[i] = new Rectangle(dices[i].position.x, dices[i].position.y, dices[i].getWidth() ,dices[i].getHeight());
+        
+                
             } else {
                 dices[i] = new Dice(false);
+              //  diceBounds[i] = new Rectangle(dices[i].position.x, dices[i].position.y, dices[i].getWidth() ,dices[i].getHeight());
                 currentThrowValue++;
             }
 
@@ -88,9 +96,10 @@ public class Dices {
             dices[i].position.set(randomX, randomY);
             dices[i].bounds.set(randomX, randomY, 0.45f, 0.45f);
             dices[i].dimension.set(0.45f, 0.45f);
-            //Gdx.app.log(TAG, "Position: " + randomX + ", " + randomY + ", velocity: " + dices[i].velocity);
-        }
-
+          
+        //    Gdx.app.log(TAG, "1  Position: " + randomX + ", " + randomY + ", velocity: " + dices[i].velocity);
+        } 
+        
         diceSound.play();
 
         // Setting the value of the current throw
@@ -158,6 +167,23 @@ public class Dices {
                 return;
             dice.velocity.x =0;
             dice.velocity.y = 0;
+        }
+    }
+    
+    public void dicesCollision () {
+        
+        for (int j = 0; j < dices.length;j++) {
+          for (int i = j+1; i < dices.length-1;i++) {
+            dices[i].bounds.x += dices[i].position.x * dices[i].velocity.x;
+            dices[i].bounds.y += dices[i].position.y * dices[i].velocity.y;
+          
+             if  (dices[j].bounds.overlaps(dices[i].bounds) ) 
+                 {Gdx.app.log(TAG, "Collision between dice " +j+ " et dice "+i);
+               dices[i].velocity.x *= -1;
+               dices[i].velocity.y *= -1;
+                 }
+             
+          }
         }
     }
 }
