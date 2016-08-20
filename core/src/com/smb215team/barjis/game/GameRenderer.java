@@ -159,8 +159,8 @@ public class GameRenderer implements Disposable {
 //    }
     
     private void renderGuiFpsCounter (SpriteBatch batch) {
-        float x = cameraGUI.viewportWidth - 55;
-        float y = cameraGUI.viewportHeight - 15;
+        float x = cameraGUI.viewportWidth - 65;
+        float y = cameraGUI.viewportHeight - 25;
         int fps = Gdx.graphics.getFramesPerSecond();
         BitmapFont fpsFont = Assets.instance.fonts.flippedDefaultNormal;
         if (fps >= 45) {
