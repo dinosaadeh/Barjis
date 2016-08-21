@@ -137,10 +137,6 @@ public class GameController extends InputAdapter {
         diceContainer = new DiceContainer("SIDE0" + (currentPlayerIndex + 1));//TODO: this value is dummy till gameStart logic is full written
         //Once done knowing and setting who goes first, set the game state to playerTurnThrowDice
         this.state = GameState.playerTurnThrowDice;
-        
-        //testing
-        players[0].pawns[0].move(59);
-        Gdx.app.log(TAG, players[0].pawns[0].positionOnPath + "");
     }
 
     private void testDicesCollisionsInTwoContainers (DiceContainer diceContainerLeft, DiceContainer diceContainerRight) {

@@ -4,10 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
-
-import java.util.EnumMap;
-import java.util.Map;
 
 /**
  * This is a singleton class that takes care of throwing the dice over and over
@@ -24,7 +20,6 @@ public class Dices {
     public Integer[] currentHandMoves;
     public static final String[] movesLabels = {"Shakki", "Dest", "2", "3", "4", "Banj", "Bara", "Bonus"};
     public static final Integer[] movesValues = {6, 10, 2, 3, 4, 25, 12, 1};
-    public Rectangle diceBounds[];
 
     public boolean canPlayerThrowDices;
     Sound diceSound = Gdx.audio.newSound(Gdx.files.internal("diceSound.mp3"));
@@ -70,8 +65,7 @@ public class Dices {
             if(null == dice)
                 return;
             dice.update(deltaTime);
-         dicesCollision();
-      
+            dicesCollision();//Dino: TO Review
         }
     }
 
@@ -80,13 +74,9 @@ public class Dices {
         int currentThrowValue = 0;
         for (int i = 0; i < dices.length; i++) {
             if (Math.random() < 0.5) {
-                dices[i] = new Dice(true);
-                // diceBounds[i] = new Rectangle(dices[i].position.x, dices[i].position.y, dices[i].getWidth() ,dices[i].getHeight());
-        
-                
+                dices[i] = new Dice(true);                
             } else {
                 dices[i] = new Dice(false);
-              //  diceBounds[i] = new Rectangle(dices[i].position.x, dices[i].position.y, dices[i].getWidth() ,dices[i].getHeight());
                 currentThrowValue++;
             }
 
