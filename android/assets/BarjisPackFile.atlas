@@ -6,162 +6,203 @@ filter: Nearest,Nearest
 repeat: none
 board
   rotate: false
-  xy: 2, 265
+  xy: 2, 422
   size: 661, 600
   orig: 661, 600
   offset: 0, 0
   index: -1
+btn-back
+  rotate: false
+  xy: 2, 13
+  size: 132, 58
+  orig: 132, 58
+  offset: 0, 0
+  index: -1
 dice-down
   rotate: false
-  xy: 665, 698
+  xy: 618, 364
   size: 44, 56
   orig: 44, 56
   offset: 0, 0
   index: -1
 dice-up
   rotate: false
-  xy: 2, 20
+  xy: 665, 779
   size: 44, 56
   orig: 44, 56
   offset: 0, 0
   index: -1
 disabled-text-overlay
   rotate: false
-  xy: 78, 79
+  xy: 212, 41
   size: 4, 30
   orig: 4, 30
   offset: 0, 0
   index: -1
 hint
   rotate: false
-  xy: 48, 61
+  xy: 898, 974
   size: 7, 15
   orig: 7, 15
   offset: 0, 0
   index: -1
 lbl-player-off-0
   rotate: false
-  xy: 2, 78
+  xy: 429, 235
   size: 74, 31
   orig: 74, 31
   offset: 0, 0
   index: -1
 lbl-player-off-1
   rotate: false
-  xy: 665, 756
+  xy: 854, 991
   size: 78, 31
   orig: 78, 31
   offset: 0, 0
   index: -1
 lbl-player-on-0
   rotate: false
-  xy: 379, 232
+  xy: 136, 40
   size: 74, 31
   orig: 74, 31
   offset: 0, 0
   index: -1
 lbl-player-on-1
   rotate: false
-  xy: 854, 834
+  xy: 665, 837
   size: 78, 31
   orig: 78, 31
   offset: 0, 0
   index: -1
 lblph-player-off-0
   rotate: false
-  xy: 2, 187
+  xy: 665, 946
   size: 187, 76
   orig: 187, 76
   offset: 0, 0
   index: -1
 lblph-player-off-1
   rotate: false
-  xy: 2, 111
+  xy: 665, 870
   size: 186, 74
   orig: 186, 74
   offset: 0, 0
   index: -1
 lblph-player-on-0
   rotate: false
-  xy: 665, 789
+  xy: 429, 344
   size: 187, 76
   orig: 187, 76
   offset: 0, 0
   index: -1
 lblph-player-on-1
   rotate: false
-  xy: 191, 189
+  xy: 429, 268
   size: 186, 74
   orig: 186, 74
   offset: 0, 0
   index: -1
+main-screen-logo
+  rotate: false
+  xy: 2, 73
+  size: 425, 347
+  orig: 425, 347
+  offset: 0, 0
+  index: -1
 path-overlay-pawn-going-home
   rotate: false
-  xy: 854, 789
+  xy: 2, 10
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 path-overlay-pawns-that-can-move
   rotate: false
-  xy: 896, 831
+  xy: 429, 190
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 pawn-0
   rotate: false
-  xy: 745, 758
+  xy: 934, 993
   size: 29, 29
   orig: 29, 29
   offset: 0, 0
   index: -1
 pawn-1
   rotate: false
-  xy: 934, 836
+  xy: 745, 839
   size: 29, 29
   orig: 29, 29
   offset: 0, 0
   index: -1
 pawn-highlight-can-move
   rotate: false
-  xy: 854, 792
+  xy: 429, 193
   size: 40, 40
   orig: 40, 40
   offset: 0, 0
   index: -1
+pawn-highlight-can-move-on-board
+  rotate: false
+  xy: 854, 947
+  size: 42, 42
+  orig: 42, 42
+  offset: 0, 0
+  index: -1
+pawn-highlight-finished
+  rotate: false
+  xy: 505, 243
+  size: 25, 23
+  orig: 25, 23
+  offset: 0, 0
+  index: -1
 pawn-overlap-counter-2
   rotate: false
-  xy: 455, 247
+  xy: 618, 346
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 pawn-overlap-counter-3
   rotate: false
-  xy: 665, 680
+  xy: 665, 761
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 pawn-overlap-counter-4
   rotate: false
-  xy: 711, 738
+  xy: 711, 819
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 ph-dead-pawn
   rotate: false
-  xy: 379, 194
+  xy: 136, 2
   size: 36, 36
   orig: 36, 36
   offset: 0, 0
   index: -1
 ph-pawn-overlap-counter
   rotate: false
-  xy: 2, 2
+  xy: 174, 22
   size: 16, 16
   orig: 16, 16
+  offset: 0, 0
+  index: -1
+
+BarjisPackFile2.png
+size: 1024,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+text-container
+  rotate: false
+  xy: 2, 2
+  size: 524, 600
+  orig: 524, 600
   offset: 0, 0
   index: -1
