@@ -354,7 +354,7 @@ public class GameController extends InputAdapter {
             for(Pawn pawn : players[currentPlayerIndex].pawns) {
                 if(pawn.bounds.contains(translatedTouchedRegion.x, translatedTouchedRegion.y)){
                     currentSelectedPawnForPlay = pawn;
-                    enableButtonPawnCanPlay();
+                    enableButtonPawnCanPlay(); 
                     break;
                 }
             }
@@ -459,6 +459,23 @@ public class GameController extends InputAdapter {
             //if(curren)
         }
         return false;
+    }
+    
+    private void hintTriangle() {
+        if(currentSelectedPawnForPlay != null) {
+           for(Actor button:table.getChildren()) {
+             Integer indexForButton = (Integer) button.getUserObject();
+             boolean indexIsFindInTable=false;                    
+             for (Integer EnabledIndex : currentSelectedPawnForPlay.currentPossibleMoves) 
+              {
+                if (EnabledIndex == indexForButton) {   
+            Vector2 hintPosition = currentSelectedPawnForPlay.move(Dices.movesValues[selectedIndexInTable]);        
+                        }
+               }
+            
+ 
+                    }
+        }
     }
     // </editor-fold>
 }
