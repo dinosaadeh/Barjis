@@ -461,20 +461,18 @@ public class GameController extends InputAdapter {
         return false;
     }
     
+    //WIP: Naji
     private void hintTriangle() {
-        if(currentSelectedPawnForPlay != null) {
-           for(Actor button:table.getChildren()) {
-             Integer indexForButton = (Integer) button.getUserObject();
-             boolean indexIsFindInTable=false;                    
-             for (Integer EnabledIndex : currentSelectedPawnForPlay.currentPossibleMoves) 
-              {
-                if (EnabledIndex == indexForButton) {   
-            Vector2 hintPosition = currentSelectedPawnForPlay.move(Dices.movesValues[selectedIndexInTable]);        
-                        }
-               }
-            
- 
+        if (currentSelectedPawnForPlay != null) {
+            for (Actor button : table.getChildren()) {
+                Integer indexForButton = (Integer) button.getUserObject();
+                boolean indexIsFindInTable = false;
+                for (Integer EnabledIndex : currentSelectedPawnForPlay.currentPossibleMoves) {
+                    if (EnabledIndex == indexForButton) {
+                        Vector2 hintPosition = currentSelectedPawnForPlay.move(Dices.movesValues[selectedIndexInTable]);
                     }
+                }
+            }
         }
     }
     // </editor-fold>
