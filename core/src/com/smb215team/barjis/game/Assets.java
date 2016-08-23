@@ -38,6 +38,7 @@ public class Assets implements Disposable, AssetErrorListener {
     public PawnHighlightCanMove pawnHighlightCanMove;
     public AssetFonts fonts;
     public AssetPlayerLabels playerLabels;
+    public AssetMainScreenLogo assetMainScreenLogo;
 
     // singleton: prevent instantiation from other classes
     private Assets () {}
@@ -66,6 +67,7 @@ public class Assets implements Disposable, AssetErrorListener {
         phPawnOverlapCounter = new PHPawnOverlapCounter(atlas);
         pawnHighlightCanMove = new PawnHighlightCanMove(atlas);
         playerLabels = new AssetPlayerLabels(atlas);
+        assetMainScreenLogo = new AssetMainScreenLogo(atlas);
         // </editor-fold>
     }
 
@@ -173,7 +175,15 @@ public class Assets implements Disposable, AssetErrorListener {
             pawnHighlightCanMove = atlas.findRegion("pawn-highlight-can-move");
         }
     }
-                
+    
+    public class AssetMainScreenLogo {
+        public final AtlasRegion assetMainScreenLogo;
+        
+        public AssetMainScreenLogo (TextureAtlas atlas){
+            assetMainScreenLogo = atlas.findRegion("main-screen-logo");
+        }
+    }
+    
     public class AssetFonts {
         public final BitmapFont defaultNormal;
         public final BitmapFont flippedDefaultNormal;
