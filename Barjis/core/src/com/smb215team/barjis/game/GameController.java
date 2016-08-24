@@ -288,7 +288,21 @@ public class GameController extends InputAdapter {
             }
             if (diceContainer.borderRight.overlaps(dice.bounds) && dice.canCollideBorderRight){
                 dice.collideWithWall(true, 'r');
-            }
+            } 
+            //////limitations to reduce borders bypassing
+          if (dice.position.x < diceContainer.borderLeft.x)
+             {dice.position.x = diceContainer.borderLeft.x;} 
+          
+          if (dice.position.x > diceContainer.borderRight.x)
+             {dice.position.x = diceContainer.borderRight.x-0.3f;}
+         
+          if (dice.position.y > diceContainer.borderTop.y)
+             {dice.position.y = diceContainer.borderTop.y;}    
+
+          if (dice.position.y < diceContainer.borderBottom.y)
+             {dice.position.y = diceContainer.borderBottom.y;}           
+            //////limitations to reduce borders bypassing   
+       
         }
         // </editor-fold>
     }
@@ -319,7 +333,7 @@ public class GameController extends InputAdapter {
             handlePlayerInput(deltaTime);
             if(null != currentSelectedPawnForPlay)
                 enableButtonPawnCanPlay();
-               // hintPawnCanMove(); 
+                hintPawnCanMove(); 
         }
     }
 
@@ -356,7 +370,7 @@ public class GameController extends InputAdapter {
                 if(pawn.bounds.contains(translatedTouchedRegion.x, translatedTouchedRegion.y)){
                     currentSelectedPawnForPlay = pawn;
                     enableButtonPawnCanPlay(); 
-                 //   hintPawnCanMove();
+                    hintPawnCanMove();
                     break;
                 }
             }
@@ -379,7 +393,7 @@ public class GameController extends InputAdapter {
             //re-create the button Table
             fillDiceButtonText();
             enableButtonPawnCanPlay();
-           // hintPawnCanMove();
+            hintPawnCanMove();
 
         }
     }
@@ -469,15 +483,17 @@ public class GameController extends InputAdapter {
     ////possible moves for selected pawn
     public void  hintPawnCanMove() {
         if(currentSelectedPawnForPlay != null) {
-           for(Actor button:table.getChildren()) {
+           for(Actor button:table.getChildren()) {  
              Integer indexForButton = (Integer) button.getUserObject(); 
              for (Integer EnabledIndex : currentSelectedPawnForPlay.currentPossibleMoves) 
               {
                 if (EnabledIndex == indexForButton) {    
                     ////below function is for moving the Hint Texutre
-             currentSelectedPawnForPlay.moveHint(Dices.movesValues[selectedIndexInTable] ); }
+             currentSelectedPawnForPlay.moveHint(Dices.movesValues[selectedIndexInTable] ); 
+             return;
+                }
                } 
-                    }
+             }
         }  
     }
     /*
