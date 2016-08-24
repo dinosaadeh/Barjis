@@ -83,14 +83,6 @@ public class Assets implements Disposable, AssetErrorListener {
     public void error(AssetDescriptor asset, Throwable throwable) {
         Gdx.app.error(TAG, "Couldn't load asset '" + asset.fileName + "'", (Exception)throwable);
     }
-
-    public static class AssetHint {
-        public final AtlasRegion hint;
-
-        public AssetHint(TextureAtlas atlas) {
-            hint = atlas.findRegion("hint");
-        }
-    }
     
     public class AssetDice {
         public final AtlasRegion diceDown;
@@ -210,6 +202,14 @@ public class Assets implements Disposable, AssetErrorListener {
             // enable linear texture filtering for smooth fonts
             flippedDefaultNormal.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
+        }
+    }
+    
+   public static class AssetHint {
+        public final AtlasRegion hint;
+
+        public AssetHint(TextureAtlas atlas) {
+            hint = atlas.findRegion("hint");
         }
     }
 }
