@@ -88,9 +88,8 @@ public class Pawn extends AbstractGameObject {
         if(canMove()) {
             batch.draw(pawnHighlightCanMove.getTexture(), position.x - 0.065f, position.y - 0.065f, origin.x, origin.y, 0.58f, 0.58f, scale.x, scale.y,
     -         rotation, pawnHighlightCanMove.getRegionX(), pawnHighlightCanMove.getRegionY(), pawnHighlightCanMove.getRegionWidth(), pawnHighlightCanMove.getRegionHeight(), false, false);
-        
-      //  batch.draw(hint, path[positionHint].x, path[positionHint].y,0.15f,0.15f);/// for drawing the Hint
-    }
+       // batch.draw(hint, path[positionHint].x,  path[positionHint].y,0.15f,0.15f);//Drawing the Hint
+        }
     }
     
     public void render(SpriteBatch batch, Integer pileCount) {
@@ -151,6 +150,7 @@ public class Pawn extends AbstractGameObject {
         }
         return this.position;
     }
+    
         //////copy of the function move used to set the position of the hintTriangle.
       public void moveHint(int numberOfSteps ) { 
         try {
@@ -169,6 +169,7 @@ public class Pawn extends AbstractGameObject {
             Gdx.app.debug(TAG, e.getMessage());
         } 
     }
+
     
     public boolean isOnShire() {
         for(int i = 0; i < Constants.SHIRE_INDEXES.length; i++) {
@@ -186,4 +187,5 @@ public class Pawn extends AbstractGameObject {
         this.position = deadPosition;
         this.bounds.set(position.x, position.y, dimension.x, dimension.y);
     }
+    
 }
