@@ -29,7 +29,7 @@ public class Pawn extends AbstractGameObject {
     PawnState state;
     Vector2 deadPosition;
     private Vector2[] path;
-    public ArrayList<Integer> currentPossibleMoves;
+    public ArrayList<Integer> currentPossibleMoves; 
 
     /**
      * Reflects the pawn's position index on the player's path
@@ -60,7 +60,6 @@ public class Pawn extends AbstractGameObject {
     public void init(int pawnImageIndex, Vector2 deadPosition, Vector2[] playerPath) {
         Assets.instance.pawn.init(pawnImageIndex);
         pawnImage = Assets.instance.pawn.pawn;
-        hint = Assets.instance.hint.hint;
         
         path = playerPath;
         
@@ -88,7 +87,16 @@ public class Pawn extends AbstractGameObject {
         if(canMove()) {
             batch.draw(pawnHighlightCanMove.getTexture(), position.x - 0.065f, position.y - 0.065f, origin.x, origin.y, 0.58f, 0.58f, scale.x, scale.y,
     -         rotation, pawnHighlightCanMove.getRegionX(), pawnHighlightCanMove.getRegionY(), pawnHighlightCanMove.getRegionWidth(), pawnHighlightCanMove.getRegionHeight(), false, false);
-       // batch.draw(hint, path[positionHint].x,  path[positionHint].y,0.15f,0.15f);//Drawing the Hint
+         
+     ///added to draw the hints of possible moves (for all pawns and not just for the one selected)
+            for (Integer hintIndex : this.currentPossibleMoves)  
+              {
+             if(this != null) { 
+             this.moveHint(Dices.movesValues[hintIndex] ); 
+             hint = Assets.instance.hint.hint;
+              batch.draw(hint, path[positionHint].x,  path[positionHint].y,0.15f,0.15f);//Drawing the Hint         
+              }
+            }
         }
     }
     
@@ -99,7 +107,7 @@ public class Pawn extends AbstractGameObject {
             batch.draw(phPawnOverlapCounter.getTexture(), position.x + 0.27f, position.y + 0.25f, origin.x, origin.y, 0.24f, 0.24f, scale.x, scale.y,
     -         rotation, phPawnOverlapCounter.getRegionX(), phPawnOverlapCounter.getRegionY(), phPawnOverlapCounter.getRegionWidth(), phPawnOverlapCounter.getRegionHeight(), false, false);
         }
-    }
+    }   
     
     public void updateAvailableMoves(Array<Integer> inaccessibleShireIndexes) {
         currentPossibleMoves.clear();
@@ -153,7 +161,8 @@ public class Pawn extends AbstractGameObject {
     
         //////copy of the function move used to set the position of the hintTriangle.
       public void moveHint(int numberOfSteps ) { 
-        try {
+        try { 
+             
             //Accounting for Banj: 
             //If a pawn is at the position > 58, it can move the 8 steps and NOT the 17 extra steps
             if(25 == numberOfSteps && 58 < positionOnPath) {
@@ -163,7 +172,7 @@ public class Pawn extends AbstractGameObject {
                 throw new Exception("Number of steps to add greater than the pawn can move.");
             }  
             positionHint=positionOnPath;
-            positionHint +=numberOfSteps;  
+            positionHint +=numberOfSteps;   
         } 
         catch(Exception e) {
             Gdx.app.debug(TAG, e.getMessage());
