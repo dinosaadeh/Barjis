@@ -170,7 +170,7 @@ public class GameController extends InputAdapter {
              {dice.position.x = diceContainerLeft.borderLeft.x;} 
           
           if (dice.position.x > diceContainerLeft.borderRight.x)
-             {dice.position.x = diceContainerLeft.borderRight.x-0.3f;}
+             {dice.position.x = diceContainerLeft.borderRight.x;}
          
           if (dice.position.y > diceContainerLeft.borderTop.y)
              {dice.position.y = diceContainerLeft.borderTop.y;}    
@@ -211,7 +211,7 @@ public class GameController extends InputAdapter {
              {dice.position.x = diceContainerRight.borderLeft.x;} 
           
           if (dice.position.x > diceContainerRight.borderRight.x)
-             {dice.position.x = diceContainerRight.borderRight.x-0.3f;}
+             {dice.position.x = diceContainerRight.borderRight.x;}
          
           if (dice.position.y > diceContainerRight.borderTop.y)
              {dice.position.y = diceContainerRight.borderTop.y;}    
@@ -324,7 +324,7 @@ public class GameController extends InputAdapter {
              {dice.position.x = diceContainer.borderLeft.x;} 
           
           if (dice.position.x > diceContainer.borderRight.x)
-             {dice.position.x = diceContainer.borderRight.x-0.3f;}
+             {dice.position.x = diceContainer.borderRight.x;}
          
           if (dice.position.y > diceContainer.borderTop.y)
              {dice.position.y = diceContainer.borderTop.y;}    
@@ -362,8 +362,7 @@ public class GameController extends InputAdapter {
         else {        
             handlePlayerInput(deltaTime);
             if(null != currentSelectedPawnForPlay)
-                enableButtonPawnCanPlay();
-                //hintPawnCanMove(); 
+                enableButtonPawnCanPlay(); 
         }
     }
 
@@ -399,8 +398,7 @@ public class GameController extends InputAdapter {
             for(Pawn pawn : players[currentPlayerIndex].pawns) {
                 if(pawn.bounds.contains(translatedTouchedRegion.x, translatedTouchedRegion.y)){
                     currentSelectedPawnForPlay = pawn;
-                    enableButtonPawnCanPlay(); 
-                    hintPawnCanMove();
+                    enableButtonPawnCanPlay();  
                     break;
                 }
             }
@@ -423,7 +421,6 @@ public class GameController extends InputAdapter {
             //re-create the button Table
             fillDiceButtonText();
             enableButtonPawnCanPlay();
-            hintPawnCanMove();
 
         }
     }
@@ -504,8 +501,7 @@ public class GameController extends InputAdapter {
         }
         return false;
     }
-    
-    
+     /*stopped for now and it is being done in Pawn Class render()
     ////possible moves for selected pawn
     public void  hintPawnCanMove() {
         if(currentSelectedPawnForPlay != null) { 
@@ -514,21 +510,7 @@ public class GameController extends InputAdapter {
              currentSelectedPawnForPlay.moveHint(Dices.movesValues[hintIndex] ); 
               }  
       }
-    }
-    /*
-    //WIP: Naji
-    private void hintTriangle() {
-        if (currentSelectedPawnForPlay != null) {
-            for (Actor button : table.getChildren()) {
-                Integer indexForButton = (Integer) button.getUserObject();
-                boolean indexIsFindInTable = false;
-                for (Integer EnabledIndex : currentSelectedPawnForPlay.currentPossibleMoves) {
-                    if (EnabledIndex == indexForButton) {
-                        Vector2 hintPosition = currentSelectedPawnForPlay.move(Dices.movesValues[selectedIndexInTable]);
-                    }
-                }
-            }
-        }
     }*/
+ 
     // </editor-fold>
 }
