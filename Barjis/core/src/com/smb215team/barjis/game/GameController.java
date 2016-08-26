@@ -164,6 +164,20 @@ public class GameController extends InputAdapter {
             if (diceContainerLeft.borderRight.overlaps(dice.bounds) && dice.canCollideBorderRight){
                 dice.collideWithWall(true, 'r');
             }
+            
+          //////limitations to reduce borders bypassing
+          if (dice.position.x < diceContainerLeft.borderLeft.x)
+             {dice.position.x = diceContainerLeft.borderLeft.x;} 
+          
+          if (dice.position.x > diceContainerLeft.borderRight.x)
+             {dice.position.x = diceContainerLeft.borderRight.x-0.3f;}
+         
+          if (dice.position.y > diceContainerLeft.borderTop.y)
+             {dice.position.y = diceContainerLeft.borderTop.y;}    
+
+          if (dice.position.y < diceContainerLeft.borderBottom.y)
+             {dice.position.y = diceContainerLeft.borderBottom.y;}           
+            //////limitations to reduce borders bypassing   
         }
         // </editor-fold>
         // <editor-fold desc="Test collision: Dice <-> Dice borders Right Side">
@@ -190,6 +204,22 @@ public class GameController extends InputAdapter {
             if (diceContainerRight.borderRight.overlaps(dice.bounds) && dice.canCollideBorderRight){
                 dice.collideWithWall(true, 'r');
             }
+            
+            
+           //////limitations to reduce borders bypassing
+          if (dice.position.x < diceContainerRight.borderLeft.x)
+             {dice.position.x = diceContainerRight.borderLeft.x;} 
+          
+          if (dice.position.x > diceContainerRight.borderRight.x)
+             {dice.position.x = diceContainerRight.borderRight.x-0.3f;}
+         
+          if (dice.position.y > diceContainerRight.borderTop.y)
+             {dice.position.y = diceContainerRight.borderTop.y;}    
+
+          if (dice.position.y < diceContainerRight.borderBottom.y)
+             {dice.position.y = diceContainerRight.borderBottom.y;}           
+            //////limitations to reduce borders bypassing   
+            
         }
         // </editor-fold>
     }
@@ -333,7 +363,7 @@ public class GameController extends InputAdapter {
             handlePlayerInput(deltaTime);
             if(null != currentSelectedPawnForPlay)
                 enableButtonPawnCanPlay();
-                hintPawnCanMove(); 
+                //hintPawnCanMove(); 
         }
     }
 
@@ -410,17 +440,13 @@ public class GameController extends InputAdapter {
                             ((TextButton) (button)).setDisabled(false);
                             indexIsFindInTable=true;
                             break;// stop inner for
-                        }
-
+                        } 
                     }
                     if(!indexIsFindInTable) {
                         button.setColor(1, 1, 1, 0.5f);
-                        ((TextButton) (button)).setDisabled(true);
-
-                    }
-
-                }
-
+                        ((TextButton) (button)).setDisabled(true); 
+                    } 
+                } 
         }
     }
 
@@ -482,19 +508,12 @@ public class GameController extends InputAdapter {
     
     ////possible moves for selected pawn
     public void  hintPawnCanMove() {
-        if(currentSelectedPawnForPlay != null) {
-           for(Actor button:table.getChildren()) {  
-             Integer indexForButton = (Integer) button.getUserObject(); 
-             for (Integer EnabledIndex : currentSelectedPawnForPlay.currentPossibleMoves) 
-              {
-                if (EnabledIndex == indexForButton) {    
-                    ////below function is for moving the Hint Texutre
-             currentSelectedPawnForPlay.moveHint(Dices.movesValues[selectedIndexInTable] ); 
-             return;
-                }
-               } 
-             }
-        }  
+        if(currentSelectedPawnForPlay != null) { 
+             for (Integer hintIndex : currentSelectedPawnForPlay.currentPossibleMoves)  
+              {             
+             currentSelectedPawnForPlay.moveHint(Dices.movesValues[hintIndex] ); 
+              }  
+      }
     }
     /*
     //WIP: Naji
