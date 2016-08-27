@@ -265,6 +265,9 @@ public class GameController extends InputAdapter {
         stage.addActor(table);
     }
 
+    /**
+     * Tests the dices collision with the current dice container.
+     */
     private void testDicesCollisions() {
         // <editor-fold desc="Test collision: Dice <-> Dice borders">
         for (Dice dice : Dices.instance.dices) {
