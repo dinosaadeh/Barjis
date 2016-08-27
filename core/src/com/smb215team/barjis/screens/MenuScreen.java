@@ -12,23 +12,29 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.smb215team.barjis.game.Assets;
 import com.smb215team.barjis.util.Constants;
+
 /**
  *
  * @author dinosaadeh
  */
 public class MenuScreen extends AbstractGameScreen {
     private static final String TAG = MenuScreen.class.getName();
-    Stage stage;
-    Table table;
+    private Stage stage;
+    private Skin skin;
     private Image mainScreenLogo;
     
     public MenuScreen (Game game) {
         super(game);
-        
+        skin = new Skin(Gdx.files.internal("menuSkin.json"));
+        stage = new Stage(new FillViewport(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT));
+        Gdx.input.setInputProcessor(stage);
     }
     
     @Override
@@ -46,20 +52,42 @@ public class MenuScreen extends AbstractGameScreen {
     @Override public void resize (int width, int height) { }
     
     @Override public void show () {
-        stage = new Stage(new FillViewport(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT));
-        table = new Table();
+        Table mainTable = new Table();
+        mainTable.setFillParent(true);
+        mainTable.setDebug(true);
+        
+        //First row is for Barjis name
+        Table firstRow = new Table();
+        firstRow.setHeight(104f);
+        firstRow.setWidth(350f);
+        firstRow.align(Align.bottomLeft);
+        firstRow.debug();
+        Label barjisLabel = new Label("Barjis", skin);
+        firstRow.add(barjisLabel).padLeft(39.0625f);
+
+        mainTable.addActor(firstRow);
+        //mainTable.row();
+        
+        //Second row for the main image and the menu
+        Table secondRow = new Table();
+        secondRow.setWidth(426);
+        secondRow.setHeight(433.75f);
+        mainScreenLogo = new Image(Assets.instance.assetMainScreenLogo.assetMainScreenLogo);
+        secondRow.add(mainScreenLogo).padLeft(10);
+        
+        mainTable.addActor(secondRow);
+        mainTable.row();
+        
+        //Third row is for libgdx and sound configuration
+        Table thirdRow = new Table();
         //table.setDebug(true);
         //table.setBounds(0, 0, 100, 100);
-        table.row();
-        mainScreenLogo = new Image(Assets.instance.assetMainScreenLogo.assetMainScreenLogo);
-        table.setWidth(426);
-        table.setHeight(433.75f);
-        table.setDebug(true);
+        thirdRow.setWidth(426);
+        thirdRow.setHeight(433.75f);
         
-        table.add(mainScreenLogo).padLeft(10);
-        //table.setPosition(117.76f, 130f);
-        //table.setPosition(10f, 130f);
-        stage.addActor(table);
+        thirdRow.add(mainScreenLogo).padLeft(10);
+        
+        stage.addActor(mainTable);
     }
     
     @Override public void hide () { }
