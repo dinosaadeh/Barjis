@@ -92,7 +92,7 @@ public class Pawn extends AbstractGameObject {
             for (Integer hintIndex : this.currentPossibleMoves)  
               {
              if(this != null) { 
-             this.moveHint(Dices.movesValues[hintIndex] ); 
+             this.moveHint(Dices.movesValues[hintIndex] ) ; 
              hint = Assets.instance.hint.hint;
               batch.draw(hint, path[positionHint].x,  path[positionHint].y,0.15f,0.15f);//Drawing the Hint         
               }
