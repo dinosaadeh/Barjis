@@ -164,20 +164,6 @@ public class GameController extends InputAdapter {
             if (diceContainerLeft.borderRight.overlaps(dice.bounds) && dice.canCollideBorderRight){
                 dice.collideWithWall(true, 'r');
             }
-            
-          //////limitations to reduce borders bypassing
-          if (dice.position.x < diceContainerLeft.borderLeft.x)
-             {dice.position.x = diceContainerLeft.borderLeft.x;} 
-          
-          if (dice.position.x > diceContainerLeft.borderRight.x)
-             {dice.position.x = diceContainerLeft.borderRight.x;}
-         
-          if (dice.position.y > diceContainerLeft.borderTop.y)
-             {dice.position.y = diceContainerLeft.borderTop.y;}    
-
-          if (dice.position.y < diceContainerLeft.borderBottom.y)
-             {dice.position.y = diceContainerLeft.borderBottom.y;}           
-            //////limitations to reduce borders bypassing   
         }
         // </editor-fold>
         // <editor-fold desc="Test collision: Dice <-> Dice borders Right Side">
@@ -204,22 +190,6 @@ public class GameController extends InputAdapter {
             if (diceContainerRight.borderRight.overlaps(dice.bounds) && dice.canCollideBorderRight){
                 dice.collideWithWall(true, 'r');
             }
-            
-            
-           //////limitations to reduce borders bypassing
-          if (dice.position.x < diceContainerRight.borderLeft.x)
-             {dice.position.x = diceContainerRight.borderLeft.x;} 
-          
-          if (dice.position.x > diceContainerRight.borderRight.x)
-             {dice.position.x = diceContainerRight.borderRight.x;}
-         
-          if (dice.position.y > diceContainerRight.borderTop.y)
-             {dice.position.y = diceContainerRight.borderTop.y;}    
-
-          if (dice.position.y < diceContainerRight.borderBottom.y)
-             {dice.position.y = diceContainerRight.borderBottom.y;}           
-            //////limitations to reduce borders bypassing   
-            
         }
         // </editor-fold>
     }
@@ -295,6 +265,9 @@ public class GameController extends InputAdapter {
         stage.addActor(table);
     }
 
+    /**
+     * Tests the dices collision with the current dice container.
+     */
     private void testDicesCollisions() {
         // <editor-fold desc="Test collision: Dice <-> Dice borders">
         for (Dice dice : Dices.instance.dices) {
@@ -318,21 +291,7 @@ public class GameController extends InputAdapter {
             }
             if (diceContainer.borderRight.overlaps(dice.bounds) && dice.canCollideBorderRight){
                 dice.collideWithWall(true, 'r');
-            } 
-            //////limitations to reduce borders bypassing
-          if (dice.position.x < diceContainer.borderLeft.x)
-             {dice.position.x = diceContainer.borderLeft.x;} 
-          
-          if (dice.position.x > diceContainer.borderRight.x)
-             {dice.position.x = diceContainer.borderRight.x;}
-         
-          if (dice.position.y > diceContainer.borderTop.y)
-             {dice.position.y = diceContainer.borderTop.y;}    
-
-          if (dice.position.y < diceContainer.borderBottom.y)
-             {dice.position.y = diceContainer.borderBottom.y;}           
-            //////limitations to reduce borders bypassing   
-       
+            }
         }
         // </editor-fold>
     }
@@ -362,7 +321,7 @@ public class GameController extends InputAdapter {
         else {        
             handlePlayerInput(deltaTime);
             if(null != currentSelectedPawnForPlay)
-                enableButtonPawnCanPlay(); 
+                enableButtonPawnCanPlay();
         }
     }
 
@@ -398,7 +357,7 @@ public class GameController extends InputAdapter {
             for(Pawn pawn : players[currentPlayerIndex].pawns) {
                 if(pawn.bounds.contains(translatedTouchedRegion.x, translatedTouchedRegion.y)){
                     currentSelectedPawnForPlay = pawn;
-                    enableButtonPawnCanPlay();  
+                    enableButtonPawnCanPlay(); 
                     break;
                 }
             }
@@ -421,7 +380,6 @@ public class GameController extends InputAdapter {
             //re-create the button Table
             fillDiceButtonText();
             enableButtonPawnCanPlay();
-
         }
     }
 
@@ -437,13 +395,17 @@ public class GameController extends InputAdapter {
                             ((TextButton) (button)).setDisabled(false);
                             indexIsFindInTable=true;
                             break;// stop inner for
-                        } 
+                        }
+
                     }
                     if(!indexIsFindInTable) {
                         button.setColor(1, 1, 1, 0.5f);
-                        ((TextButton) (button)).setDisabled(true); 
-                    } 
-                } 
+                        ((TextButton) (button)).setDisabled(true);
+
+                    }
+
+                }
+
         }
     }
 
@@ -501,16 +463,20 @@ public class GameController extends InputAdapter {
         }
         return false;
     }
-     /*stopped for now and it is being done in Pawn Class render()
-    ////possible moves for selected pawn
-    public void  hintPawnCanMove() {
-        if(currentSelectedPawnForPlay != null) { 
-             for (Integer hintIndex : currentSelectedPawnForPlay.currentPossibleMoves)  
-              {             
-             currentSelectedPawnForPlay.moveHint(Dices.movesValues[hintIndex] ); 
-              }  
-      }
-    }*/
- 
+    
+    //WIP: Naji
+    private void hintTriangle() {
+        if (currentSelectedPawnForPlay != null) {
+            for (Actor button : table.getChildren()) {
+                Integer indexForButton = (Integer) button.getUserObject();
+                boolean indexIsFindInTable = false;
+                for (Integer EnabledIndex : currentSelectedPawnForPlay.currentPossibleMoves) {
+                    if (EnabledIndex == indexForButton) {
+                        Vector2 hintPosition = currentSelectedPawnForPlay.move(Dices.movesValues[selectedIndexInTable]);
+                    }
+                }
+            }
+        }
+    }
     // </editor-fold>
 }
