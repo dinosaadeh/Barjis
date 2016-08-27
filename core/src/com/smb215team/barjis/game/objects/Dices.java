@@ -89,7 +89,7 @@ public class Dices {
 
             Gdx.app.log(TAG, "x " + randomX + " y " + randomY + " w " + dices[i].getWidth() + " h " + dices[i].getHeight());
         } 
-        
+
         diceSound.play();
 
         // Setting the value of the current throw
@@ -101,7 +101,7 @@ public class Dices {
         // If a stopper combination (2, 3 or 4), do not allow the player to throw dices again
         if (2 == currentThrowValue || 3 == currentThrowValue || 4 == currentThrowValue) {
              canPlayerThrowDices = false;
-        } 
+        }
     }
 
     /**

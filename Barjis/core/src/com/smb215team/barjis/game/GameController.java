@@ -225,7 +225,7 @@ public class GameController extends InputAdapter {
         table.clear();
         // create button style
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
-        buttonStyle.font = Assets.instance.fonts.defaultNormal;
+        buttonStyle.font = Assets.instance.fonts.;
 
         for (int i = 0; i < Dices.instance.currentHandMoves.length; i++) {
             if(Dices.instance.currentHandMoves[i] == 0) {
