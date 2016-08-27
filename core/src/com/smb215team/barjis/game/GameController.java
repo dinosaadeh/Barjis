@@ -258,14 +258,13 @@ public class GameController extends InputAdapter {
             hGroup.addActor(button);// add button to horizontalGroup
             hGroup.wrap();// wrap the data to the next line
             hGroup.left().top();// start writing from the left and the top of the rectangle
-            hGroup.setDebug(true);
         }
         if(currentPlayerIndex == 0) {
-            hGroup.setBounds(5,200,200,100);// set limits for  player 1
+            hGroup.setBounds(5,290,200,100);// set limits for  player 1
 
         } else {
             if(currentPlayerIndex == 1) {//Dino: Needs to be changed if in the case of 4 players the placement is changed.
-                hGroup.setBounds(830,200,200,100); // set limits for  player 1
+                hGroup.setBounds(830,290,200,100); // set limits for  player 1
 
             }
         }
