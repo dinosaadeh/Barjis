@@ -245,9 +245,9 @@ public class GameController extends InputAdapter {
 
             // for example :if the label is just 1 x dest we should see dest without "1x"
             if(Dices.instance.currentHandMoves[i] == 1) {
-                button = new TextButton((i==0?" ":" +") +Dices.movesLabels[i], buttonStyle);
+                button = new TextButton((group.getChildren().size==0?" ":" +") +Dices.movesLabels[i], buttonStyle);
             } else {//greater than 1
-                button = new TextButton((i==0?" ":" +") + Dices.instance.currentHandMoves[i] + "x" + Dices.movesLabels[i], buttonStyle);
+                button = new TextButton((group.getChildren().size==0?" ":" +") + Dices.instance.currentHandMoves[i] + "x" + Dices.movesLabels[i], buttonStyle);
 
             }
             button.setUserObject(i);
