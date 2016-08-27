@@ -62,7 +62,7 @@ public class GameRenderer implements Disposable {
         cameraGUI.setToOrtho(false); // flip y-axis
         cameraGUI.update();
 
-        gameController.stage=new Stage(new ScreenViewport(cameraGUI));
+        gameController.stage=new Stage(new ScreenViewport(cameraGUI));//TODO change it , and understand all about viewPort
         Gdx.input.setInputProcessor(gameController.stage);
 
     }

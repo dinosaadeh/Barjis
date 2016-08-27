@@ -62,8 +62,7 @@ public class GameController extends InputAdapter {
     private int selectedIndexInTable;
 
     public Stage stage;
-    private Table table;
-
+    public HorizontalGroup hGroup;// put the button in it
     public GameController (Game game) {
         this.game = game;
         init();
@@ -92,7 +91,6 @@ public class GameController extends InputAdapter {
 
         // initialize stage
 
-        table = new Table();
 
 
     }
@@ -231,8 +229,7 @@ public class GameController extends InputAdapter {
 
     public void fillDiceButtonText(){
         stage.clear();
-        table.clear();
-        HorizontalGroup group=new HorizontalGroup();
+        hGroup=new HorizontalGroup();
         // create button style
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.font= Assets.instance.fonts.defaultSmall;;
@@ -245,9 +242,9 @@ public class GameController extends InputAdapter {
 
             // for example :if the label is just 1 x dest we should see dest without "1x"
             if(Dices.instance.currentHandMoves[i] == 1) {
-                button = new TextButton((group.getChildren().size==0?" ":" +") +Dices.movesLabels[i], buttonStyle);
+                button = new TextButton((hGroup.getChildren().size==0?" ":" +") +Dices.movesLabels[i], buttonStyle);
             } else {//greater than 1
-                button = new TextButton((group.getChildren().size==0?" ":" +") + Dices.instance.currentHandMoves[i] + "x" + Dices.movesLabels[i], buttonStyle);
+                button = new TextButton((hGroup.getChildren().size==0?" ":" +") + Dices.instance.currentHandMoves[i] + "x" + Dices.movesLabels[i], buttonStyle);
 
             }
             button.setUserObject(i);
@@ -258,22 +255,22 @@ public class GameController extends InputAdapter {
                 }
             });
 
-            group.addActor(button);
-            group.wrap();
-            group.left().top();
-
+            hGroup.addActor(button);// add button to horizontalGroup
+            hGroup.wrap();// wrap the data to the next line
+            hGroup.left().top();// start writing from the left and the top of the rectangle
+            hGroup.setDebug(true);
         }
         if(currentPlayerIndex == 0) {
-            group.setBounds(5,290,200,100);
+            hGroup.setBounds(5,200,200,100);// set limits for  player 1
 
         } else {
             if(currentPlayerIndex == 1) {//Dino: Needs to be changed if in the case of 4 players the placement is changed.
-                group.setBounds(830,290,200,100);
+                hGroup.setBounds(830,200,200,100); // set limits for  player 1
 
             }
         }
 
-        stage.addActor(group);
+        stage.addActor(hGroup);
     }
 
     /**
@@ -324,7 +321,6 @@ public class GameController extends InputAdapter {
     }
     
     private void interpretPlayerMoves(float deltaTime) {
-        players[currentPlayerIndex].updateAvailableMoves();
         //If the current player has nothing to play, switch to next player.
         if(!players[currentPlayerIndex].hasMovesToPlay()) {
             handlePlayerWithNoPossibleMoves(deltaTime);
@@ -368,7 +364,8 @@ public class GameController extends InputAdapter {
             for(Pawn pawn : players[currentPlayerIndex].pawns) {
                 if(pawn.bounds.contains(translatedTouchedRegion.x, translatedTouchedRegion.y)){
                     currentSelectedPawnForPlay = pawn;
-                    enableButtonPawnCanPlay(); 
+                    players[currentPlayerIndex].updateAvailableMoves();
+                    enableButtonPawnCanPlay();
                     break;
                 }
             }
@@ -389,6 +386,7 @@ public class GameController extends InputAdapter {
             }
             Dices.instance.currentHandMoves[selectedIndexInTable]--;
             //re-create the button Table
+            players[currentPlayerIndex].updateAvailableMoves();
             fillDiceButtonText();
             enableButtonPawnCanPlay();
         }
@@ -397,7 +395,7 @@ public class GameController extends InputAdapter {
     private void enableButtonPawnCanPlay() {
         if(currentSelectedPawnForPlay != null) {
 
-                for(Actor button:table.getChildren()) {
+                for(Actor button:hGroup.getChildren()) {
                     Integer indexForButton = (Integer) button.getUserObject();
                     boolean indexIsFindInTable=false;
                     for (Integer EnabledIndex : currentSelectedPawnForPlay.currentPossibleMoves) {//start inner for
@@ -421,7 +419,7 @@ public class GameController extends InputAdapter {
     }
 
     private void diableAllButtonStyle() {
-        for (Actor button : table.getChildren()) {
+        for (Actor button : hGroup.getChildren()) {
             button.setColor(1, 1, 1, 0.5f);
             ((TextButton) (button)).setDisabled(true);
         }
@@ -478,9 +476,9 @@ public class GameController extends InputAdapter {
     //WIP: Naji
     private void hintTriangle() {
         if (currentSelectedPawnForPlay != null) {
-            for (Actor button : table.getChildren()) {
+            for (Actor button : hGroup.getChildren()) {
                 Integer indexForButton = (Integer) button.getUserObject();
-                boolean indexIsFindInTable = false;
+                boolean indexIsFindInHGroup = false;
                 for (Integer EnabledIndex : currentSelectedPawnForPlay.currentPossibleMoves) {
                     if (EnabledIndex == indexForButton) {
                         Vector2 hintPosition = currentSelectedPawnForPlay.move(Dices.movesValues[selectedIndexInTable]);
