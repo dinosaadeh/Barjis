@@ -65,17 +65,20 @@ public class MenuScreen extends AbstractGameScreen {
         Label barjisLabel = new Label("Barjis", skin);
         firstRow.add(barjisLabel).padLeft(39.0625f);
 
-        mainTable.addActor(firstRow);
-        //mainTable.row();
+        mainTable.add(firstRow);
+        mainTable.row();
         
         //Second row for the main image and the menu
         Table secondRow = new Table();
-        secondRow.setWidth(426);
-        secondRow.setHeight(433.75f);
+        secondRow.setWidth(326);
+        secondRow.setHeight(277.75f);
+        secondRow.debug();
         mainScreenLogo = new Image(Assets.instance.assetMainScreenLogo.assetMainScreenLogo);
+        mainScreenLogo.setWidth(332.03125f);
+        mainScreenLogo.setHeight(277.6f);
         secondRow.add(mainScreenLogo).padLeft(10);
         
-        mainTable.addActor(secondRow);
+        mainTable.add(secondRow);
         mainTable.row();
         
         //Third row is for libgdx and sound configuration
@@ -85,7 +88,7 @@ public class MenuScreen extends AbstractGameScreen {
         thirdRow.setWidth(426);
         thirdRow.setHeight(433.75f);
         
-        thirdRow.add(mainScreenLogo).padLeft(10);
+        //thirdRow.add(mainScreenLogo).padLeft(10);
         
         stage.addActor(mainTable);
     }
