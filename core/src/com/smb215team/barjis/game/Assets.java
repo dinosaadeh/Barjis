@@ -30,6 +30,7 @@ public class Assets implements Disposable, AssetErrorListener {
     public static final Assets instance = new Assets();
     private AssetManager assetManager;
 
+    public AssetHint hint;
     public AssetDice dice;
     public AssetBoard board;
     public AssetDeadPawnPlaceholder deadPawnPlaceholder;
@@ -59,8 +60,9 @@ public class Assets implements Disposable, AssetErrorListener {
             t.setFilter(TextureFilter.Linear, TextureFilter.Linear);
         }
         // <editor-fold desc="create game resource objects">
-        fonts = new AssetFonts();
+        fonts = new AssetFonts(); 
         dice = new AssetDice(atlas);
+        hint = new AssetHint(atlas);
         board = new AssetBoard(atlas);
         deadPawnPlaceholder = new AssetDeadPawnPlaceholder(atlas);
         pawn = new AssetPawn(atlas);
@@ -91,7 +93,15 @@ public class Assets implements Disposable, AssetErrorListener {
             diceUp = atlas.findRegion("dice-up");
         }
     }
+    
+    public class AssetHint { 
+        public final AtlasRegion hint;
 
+        public AssetHint (TextureAtlas atlas) { 
+            hint = atlas.findRegion("hint");
+        }
+         
+    }
     public class AssetBoard {
         public final AtlasRegion board;
 
