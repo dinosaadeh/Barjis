@@ -25,10 +25,12 @@ public class Pawn extends AbstractGameObject {
     private TextureRegion pawnImage;
     private TextureRegion phPawnOverlapCounter;
     private TextureRegion pawnHighlightCanMove;
+    private TextureRegion hint;
     PawnState state;
     Vector2 deadPosition;
     private Vector2[] path;
     public ArrayList<Integer> currentPossibleMoves;
+    public boolean isSelected;
 
     /**
      * Reflects the pawn's position index on the player's path
@@ -53,6 +55,7 @@ public class Pawn extends AbstractGameObject {
         deadPosition = new Vector2(0, 0);
         phPawnOverlapCounter = Assets.instance.phPawnOverlapCounter.phPawnOverlapCounter[0];
         pawnHighlightCanMove = Assets.instance.pawnHighlightCanMove.pawnHighlightCanMove;
+        hint = Assets.instance.hint.hint;
         init(0, deadPosition, new Vector2[83]);
     }
 
@@ -91,10 +94,22 @@ public class Pawn extends AbstractGameObject {
     
     public void render(SpriteBatch batch, Integer pileCount) {
         this.render(batch);
+        //Render pawns when they pile on one location
         if(pileCount > 1) {
             phPawnOverlapCounter = Assets.instance.phPawnOverlapCounter.phPawnOverlapCounter[pileCount - 2];
             batch.draw(phPawnOverlapCounter.getTexture(), position.x + 0.27f, position.y + 0.25f, origin.x, origin.y, 0.24f, 0.24f, scale.x, scale.y,
     -         rotation, phPawnOverlapCounter.getRegionX(), phPawnOverlapCounter.getRegionY(), phPawnOverlapCounter.getRegionWidth(), phPawnOverlapCounter.getRegionHeight(), false, false);
+        }
+        
+        //Render hints
+        if(isSelected) {
+            for (Integer hintIndex : this.currentPossibleMoves) {
+                //TODO: DELETE THIS COMMENT ONCE DONE - place hints
+//                if (this != null) {
+//                    this.moveHint(Dices.movesValues[hintIndex]);
+//                    batch.draw(hint, path[positionHint].x, path[positionHint].y, 0.15f, 0.15f);//Drawing the Hint         
+//                }
+            }
         }
     }
     
@@ -121,6 +136,8 @@ public class Pawn extends AbstractGameObject {
                 continue;
             currentPossibleMoves.add(i);
         }
+        
+        //TODO: build the addresses of hints
     }
 
     public boolean canMove(){

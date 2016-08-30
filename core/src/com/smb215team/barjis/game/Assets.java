@@ -38,6 +38,7 @@ public class Assets implements Disposable, AssetErrorListener {
     public PawnHighlightCanMove pawnHighlightCanMove;
     public AssetFonts fonts;
     public AssetPlayerLabels playerLabels;
+    public AssetHint hint;
     public AssetMainScreenLogo assetMainScreenLogo;
 
     // singleton: prevent instantiation from other classes
@@ -68,6 +69,7 @@ public class Assets implements Disposable, AssetErrorListener {
         pawnHighlightCanMove = new PawnHighlightCanMove(atlas);
         playerLabels = new AssetPlayerLabels(atlas);
         assetMainScreenLogo = new AssetMainScreenLogo(atlas);
+        hint = new AssetHint(atlas);
         // </editor-fold>
     }
 
@@ -181,6 +183,14 @@ public class Assets implements Disposable, AssetErrorListener {
         
         public AssetMainScreenLogo (TextureAtlas atlas){
             assetMainScreenLogo = atlas.findRegion("main-screen-logo");
+        }
+    }
+    
+    public static class AssetHint {
+        public final AtlasRegion hint;
+
+        public AssetHint(TextureAtlas atlas) {
+            hint = atlas.findRegion("hint");
         }
     }
     

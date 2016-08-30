@@ -54,41 +54,45 @@ public class MenuScreen extends AbstractGameScreen {
     @Override public void show () {
         Table mainTable = new Table();
         mainTable.setFillParent(true);
-        mainTable.setDebug(true);
+        mainTable.setDebug(true, true);
+        mainTable.align(Align.left);
         
         //First row is for Barjis name
         Table firstRow = new Table();
-        firstRow.setHeight(104f);
-        firstRow.setWidth(350f);
         firstRow.align(Align.bottomLeft);
         firstRow.debug();
         Label barjisLabel = new Label("Barjis", skin);
+        barjisLabel.setAlignment(Align.left);
         firstRow.add(barjisLabel).padLeft(39.0625f);
 
-        mainTable.add(firstRow);
+        mainTable.add(firstRow).size(Constants.VIEWPORT_GUI_WIDTH, 104f);
         mainTable.row();
         
-        //Second row for the main image and the menu
+        // <editor-fold desc="Second row for the main image and the menu">
         Table secondRow = new Table();
-        secondRow.setWidth(326);
-        secondRow.setHeight(277.75f);
-        secondRow.debug();
+        //secondRow.setHeight(277.75f);
+//        secondRow.debug();
+        secondRow.align(Align.bottomLeft);
         mainScreenLogo = new Image(Assets.instance.assetMainScreenLogo.assetMainScreenLogo);
-        mainScreenLogo.setWidth(332.03125f);
-        mainScreenLogo.setHeight(277.6f);
-        secondRow.add(mainScreenLogo).padLeft(10);
+//        mainScreenLogo.setWidth(332.03125f);
+        //mainScreenLogo.setHeight(200.8f);
+        secondRow.add(mainScreenLogo).size(327.34375f, 272.8f).padLeft(69.53125f);
         
-        mainTable.add(secondRow);
+        mainTable.add(secondRow).size(Constants.VIEWPORT_GUI_WIDTH, 308f);
         mainTable.row();
+        // </editor-fold>
         
-        //Third row is for libgdx and sound configuration
+        // <editor-fold desc="Third row is for libgdx and sound configuration">
         Table thirdRow = new Table();
-        //table.setDebug(true);
         //table.setBounds(0, 0, 100, 100);
         thirdRow.setWidth(426);
-        thirdRow.setHeight(433.75f);
+        thirdRow.setHeight(98.25f);
         
         //thirdRow.add(mainScreenLogo).padLeft(10);
+        Label barjisLabel1 = new Label("Barjis 2", skin);
+        thirdRow.add(barjisLabel1);
+        mainTable.add(thirdRow).size(Constants.VIEWPORT_GUI_WIDTH, 67.2f);
+        // </editor-fold>
         
         stage.addActor(mainTable);
     }

@@ -354,9 +354,9 @@ public class GameController extends InputAdapter {
                 clickProtectorPosition = new Vector2(translatedTouchedRegion.x, translatedTouchedRegion.y);
                 clickProtectorTime = deltaTime;
             }
-            for(Pawn pawn : players[currentPlayerIndex].pawns) {
-                if(pawn.bounds.contains(translatedTouchedRegion.x, translatedTouchedRegion.y)){
-                    currentSelectedPawnForPlay = pawn;
+            for(int i = 0; i < players[currentPlayerIndex].pawns.length; i++) {
+                if(players[currentPlayerIndex].pawns[i].bounds.contains(translatedTouchedRegion.x, translatedTouchedRegion.y)){
+                    manageCurrentSelectedPawn(i);
                     enableButtonPawnCanPlay(); 
                     break;
                 }
@@ -384,28 +384,23 @@ public class GameController extends InputAdapter {
     }
 
     private void enableButtonPawnCanPlay() {
-        if(currentSelectedPawnForPlay != null) {
-
-                for(Actor button:table.getChildren()) {
-                    Integer indexForButton = (Integer) button.getUserObject();
-                    boolean indexIsFindInTable=false;
-                    for (Integer EnabledIndex : currentSelectedPawnForPlay.currentPossibleMoves) {//start inner for
-                        if (EnabledIndex == indexForButton) {
-                            button.setColor(1, 1, 1, 1f);
-                            ((TextButton) (button)).setDisabled(false);
-                            indexIsFindInTable=true;
-                            break;// stop inner for
-                        }
-
+        if (currentSelectedPawnForPlay != null) {
+            for (Actor button : table.getChildren()) {
+                Integer indexForButton = (Integer) button.getUserObject();
+                boolean indexIsFindInTable = false;
+                for (Integer EnabledIndex : currentSelectedPawnForPlay.currentPossibleMoves) {//start inner for
+                    if (EnabledIndex == indexForButton) {
+                        button.setColor(1, 1, 1, 1f);
+                        ((TextButton) (button)).setDisabled(false);
+                        indexIsFindInTable = true;
+                        break;// stop inner for
                     }
-                    if(!indexIsFindInTable) {
-                        button.setColor(1, 1, 1, 0.5f);
-                        ((TextButton) (button)).setDisabled(true);
-
-                    }
-
                 }
-
+                if (!indexIsFindInTable) {
+                    button.setColor(1, 1, 1, 0.5f);
+                    ((TextButton) (button)).setDisabled(true);
+                }
+            }
         }
     }
 
@@ -464,19 +459,15 @@ public class GameController extends InputAdapter {
         return false;
     }
     
-    //WIP: Naji
-    private void hintTriangle() {
-        if (currentSelectedPawnForPlay != null) {
-            for (Actor button : table.getChildren()) {
-                Integer indexForButton = (Integer) button.getUserObject();
-                boolean indexIsFindInTable = false;
-                for (Integer EnabledIndex : currentSelectedPawnForPlay.currentPossibleMoves) {
-                    if (EnabledIndex == indexForButton) {
-                        Vector2 hintPosition = currentSelectedPawnForPlay.move(Dices.movesValues[selectedIndexInTable]);
-                    }
-                }
+    public void manageCurrentSelectedPawn(Integer currentPlayerPawnIndex) {
+        //Resetting all pawns as not selected
+        for(Player player : players) {
+            for(Pawn pawn : player.pawns) {
+                pawn.isSelected = false;
             }
         }
+        players[currentPlayerIndex].pawns[currentPlayerPawnIndex].isSelected = true;
+        currentSelectedPawnForPlay = players[currentPlayerIndex].pawns[currentPlayerPawnIndex];
     }
     // </editor-fold>
 }
