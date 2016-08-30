@@ -30,7 +30,6 @@ public class Assets implements Disposable, AssetErrorListener {
     public static final Assets instance = new Assets();
     private AssetManager assetManager;
 
-    public AssetHint hint;
     public AssetDice dice;
     public AssetBoard board;
     public AssetDeadPawnPlaceholder deadPawnPlaceholder;
@@ -60,7 +59,6 @@ public class Assets implements Disposable, AssetErrorListener {
             t.setFilter(TextureFilter.Linear, TextureFilter.Linear);
         }
         // <editor-fold desc="create game resource objects">
-        hint = new AssetHint(atlas);
         fonts = new AssetFonts();
         dice = new AssetDice(atlas);
         board = new AssetBoard(atlas);
@@ -82,15 +80,6 @@ public class Assets implements Disposable, AssetErrorListener {
     @Override
     public void error(AssetDescriptor asset, Throwable throwable) {
         Gdx.app.error(TAG, "Couldn't load asset '" + asset.fileName + "'", (Exception)throwable);
-    }
-
-    public class AssetHint {
-        public final AtlasRegion hint; 
-
-        public AssetHint(TextureAtlas atlas) {
-            hint = atlas.findRegion("hint");
-        }
- 
     }
 
     public class AssetDice {
