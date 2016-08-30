@@ -25,7 +25,7 @@ public class ConfigurationController {
             Array<XmlReader.Element> root = element.getChildByName("BoardMap").getChildrenByName("cell");
             for(XmlReader.Element cell : root) {
                 boardMap.add(new Vector2(cell.getFloatAttribute("x"), cell.getFloatAttribute("y")));
-                hintBoardMap.add(new Vector3(cell.getFloatAttribute("hintx"), cell.getFloatAttribute("hinty"),cell.getIntAttribute("rot")));
+                hintBoardMap.add(new Vector3(cell.getFloatAttribute("hintx") , cell.getFloatAttribute("hinty"),cell.getIntAttribute("rot")));
             }
         }
         catch (Exception e){
