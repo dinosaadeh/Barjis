@@ -14,10 +14,12 @@ android {
 
         instrumentTest.setRoot('tests')
     }
-    defaultConfig {
-        applicationId "com.smb215team.barjis"
-        minSdkVersion 8
-        targetSdkVersion 23
+    buildTypes {
+        defaultConfig {
+            applicationId "com.smb215team.barjis"
+            minSdkVersion 8
+            targetSdkVersion 23
+        }
     }
 }
 
