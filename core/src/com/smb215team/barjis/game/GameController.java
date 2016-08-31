@@ -9,15 +9,24 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Container;
+import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
+import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
+import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FillViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.smb215team.barjis.game.enums.GameState;
 import com.smb215team.barjis.game.objects.Dice;
 import com.smb215team.barjis.game.objects.DiceContainer;
@@ -53,8 +62,7 @@ public class GameController extends InputAdapter {
     private int selectedIndexInTable;
 
     public Stage stage;
-    private Table table;
-
+    public HorizontalGroup hGroup;// put the button in it
     public GameController (Game game) {
         this.game = game;
         init();
@@ -80,12 +88,6 @@ public class GameController extends InputAdapter {
             }
         }
         // </editor-fold>
-
-        // initialize stage
-        stage = new Stage(new FillViewport(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT));
-
-        Gdx.input.setInputProcessor(stage);
-        table = new Table();
     }
 
     public void update (float deltaTime) {
@@ -222,22 +224,23 @@ public class GameController extends InputAdapter {
 
     public void fillDiceButtonText(){
         stage.clear();
-        table.clear();
+        hGroup=new HorizontalGroup();
         // create button style
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
-        buttonStyle.font = Assets.instance.fonts.defaultNormal;
-
+        buttonStyle.font= Assets.instance.fonts.defaultSmall;;
+        // create button
         for (int i = 0; i < Dices.instance.currentHandMoves.length; i++) {
             if(Dices.instance.currentHandMoves[i] == 0) {
                 continue;
             }
-            // create button
             TextButton button;
+
             // for example :if the label is just 1 x dest we should see dest without "1x"
             if(Dices.instance.currentHandMoves[i] == 1) {
-                button = new TextButton(Dices.movesLabels[i], buttonStyle);
+                button = new TextButton((hGroup.getChildren().size==0?" ":" +") +Dices.movesLabels[i], buttonStyle);
             } else {//greater than 1
-                button = new TextButton(Dices.instance.currentHandMoves[i] + "x" + Dices.movesLabels[i], buttonStyle);
+                button = new TextButton((hGroup.getChildren().size ==0?" ":" +") + Dices.instance.currentHandMoves[i] + "x" + Dices.movesLabels[i], buttonStyle);
+
             }
             button.setUserObject(i);
             //listener on every button
@@ -247,22 +250,21 @@ public class GameController extends InputAdapter {
                 }
             });
 
-            table.add(button).pad(1, 2, 1, 2);
-
-            if(table.getChildren().size % 2 == 0) {
-                // new line
-                table.row();
-            }
+            hGroup.addActor(button);// add button to horizontalGroup
+            hGroup.wrap();// wrap the data to the next line
+            hGroup.left().top();// start writing from the left and the top of the rectangle
         }
         if(currentPlayerIndex == 0) {
-            table.setPosition(5, 345);
+            hGroup.setBounds(5,290,200,100);// set limits for  player 1
+
         } else {
             if(currentPlayerIndex == 1) {//Dino: Needs to be changed if in the case of 4 players the placement is changed.
-                table.setPosition(642, 345);
+                hGroup.setBounds(830,290,200,100); // set limits for  player 1
+
             }
         }
-        table.left().top();
-        stage.addActor(table);
+
+        stage.addActor(hGroup);
     }
 
     /**
@@ -313,7 +315,6 @@ public class GameController extends InputAdapter {
     }
     
     private void interpretPlayerMoves(float deltaTime) {
-        players[currentPlayerIndex].updateAvailableMoves();
         //If the current player has nothing to play, switch to next player.
         if(!players[currentPlayerIndex].hasMovesToPlay()) {
             handlePlayerWithNoPossibleMoves(deltaTime);
@@ -378,14 +379,16 @@ public class GameController extends InputAdapter {
             }
             Dices.instance.currentHandMoves[selectedIndexInTable]--;
             //re-create the button Table
+            players[currentPlayerIndex].updateAvailableMoves();
             fillDiceButtonText();
             enableButtonPawnCanPlay();
         }
     }
 
     private void enableButtonPawnCanPlay() {
-        if (currentSelectedPawnForPlay != null) {
-            for (Actor button : table.getChildren()) {
+        if(currentSelectedPawnForPlay != null) {
+
+                for(Actor button:hGroup.getChildren()) {
                 Integer indexForButton = (Integer) button.getUserObject();
                 boolean indexIsFindInTable = false;
                 for (Integer EnabledIndex : currentSelectedPawnForPlay.currentPossibleMoves) {//start inner for
@@ -405,7 +408,7 @@ public class GameController extends InputAdapter {
     }
 
     private void diableAllButtonStyle() {
-        for (Actor button : table.getChildren()) {
+        for (Actor button : hGroup.getChildren()) {
             button.setColor(1, 1, 1, 0.5f);
             ((TextButton) (button)).setDisabled(true);
         }
