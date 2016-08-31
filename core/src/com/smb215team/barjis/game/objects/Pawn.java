@@ -115,11 +115,16 @@ public class Pawn extends AbstractGameObject {
     
     public void updateAvailableMoves(Array<Integer> inaccessibleShireIndexes) {
         currentPossibleMoves.clear();
+
         //Don't bother if the pawn is dead and no Dest or Banj showed up in the combination
         if(this.position == this.deadPosition && Dices.instance.currentHandMoves[1] == 0 &&  Dices.instance.currentHandMoves[5] == 0)
             return;
         //For every available move:
         for(int i = 0; i < Dices.instance.currentHandMoves.length; i++) {
+            //TODO
+            if(position==deadPosition && i!=7){// just enable the Bonus Button
+                continue;
+            }
             // This combination didn't show up to begin with
             if(Dices.instance.currentHandMoves[i] == 0)
                 continue;

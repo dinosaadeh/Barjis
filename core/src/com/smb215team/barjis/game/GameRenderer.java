@@ -41,7 +41,7 @@ public class GameRenderer implements Disposable {
     static private boolean projectionMatrixSet;
     private ShapeRenderer dummyShapeRenderer;
 
-    BitmapFont returnTextFont = Assets.instance.fonts.defaultNormal;///used from wrapping the returnText
+    BitmapFont returnTextFont = Assets.instance.fonts.defaultSmall;///used from wrapping the returnText
     public  GlyphLayout layout = new GlyphLayout(); // Obviously stick this in a field to avoid allocation each frame.
 
     public GameRenderer (GameController gameController) {
@@ -59,13 +59,12 @@ public class GameRenderer implements Disposable {
 
         cameraGUI = new OrthographicCamera(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT);
         cameraGUI.position.set(0, 0, 0);
-        cameraGUI.setToOrtho(true); // flip y-axis
+        cameraGUI.setToOrtho(false); // flip y-axis
         cameraGUI.update();
 
+        gameController.stage=new Stage(new ScreenViewport(cameraGUI));//TODO change it , and understand all about viewPort
+        Gdx.input.setInputProcessor(gameController.stage);
 
-        //TODO check viewport
-//        Viewport viewport=new ScreenViewport();
-//        gameController.stage.setViewport(viewport);
     }
 
     public void render () {
@@ -153,16 +152,13 @@ public class GameRenderer implements Disposable {
         renderGuiFpsCounter(batch);
         batch.end();
     }
-// remove by ammar
-//    private void renderGuiMovesToBePlayed (SpriteBatch batch) {
-//        Assets.instance.fonts.defaultNormal.draw(batch, Dices.instance.getValue(), 50, 222);
-//    }
+
     
     private void renderGuiFpsCounter (SpriteBatch batch) {
-        float x = cameraGUI.viewportWidth - 65;
-        float y = cameraGUI.viewportHeight - 25;
+        float x = cameraGUI.viewportWidth - 110;
+        float y =  35;
         int fps = Gdx.graphics.getFramesPerSecond();
-        BitmapFont fpsFont = Assets.instance.fonts.flippedDefaultNormal;
+        BitmapFont fpsFont = Assets.instance.fonts.defaultSmall;
         if (fps >= 45) {
             // 45 or more FPS show up in green
             fpsFont.setColor(0, 1, 0, 1);

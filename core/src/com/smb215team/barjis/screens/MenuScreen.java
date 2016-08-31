@@ -10,6 +10,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -17,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FillViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.smb215team.barjis.game.Assets;
 import com.smb215team.barjis.util.Constants;
 
@@ -33,7 +35,13 @@ public class MenuScreen extends AbstractGameScreen {
     public MenuScreen (Game game) {
         super(game);
         skin = new Skin(Gdx.files.internal("menuSkin.json"));
-        stage = new Stage(new FillViewport(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT));
+
+        OrthographicCamera cameraGUI = new OrthographicCamera(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT);
+        cameraGUI.position.set(0, 0, 0);
+        cameraGUI.setToOrtho(false); // flip y-axis
+        cameraGUI.update();
+
+        stage = new Stage(new ScreenViewport(cameraGUI));
         Gdx.input.setInputProcessor(stage);
     }
     
