@@ -338,7 +338,7 @@ public class GameController extends InputAdapter {
                 timerForPlayerWithNoMoves -= Constants.TIMER_LIMIT_FOR_PLAYER_WITH_NO_MOVES; // If you reset it to 0 you will loose a few milliseconds every 2 seconds.
         }
         else {//dim all text buttons so that the user knows he cannot play anything
-            diableAllButtonStyle();
+            disableAllButtonStyle();
         }
     }
     
@@ -407,7 +407,7 @@ public class GameController extends InputAdapter {
         }
     }
 
-    private void diableAllButtonStyle() {
+    private void disableAllButtonStyle() {
         for (Actor button : hGroup.getChildren()) {
             button.setColor(1, 1, 1, 0.5f);
             ((TextButton) (button)).setDisabled(true);

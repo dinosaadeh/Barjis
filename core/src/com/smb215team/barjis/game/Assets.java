@@ -209,8 +209,6 @@ public class Assets implements Disposable, AssetErrorListener {
             defaultNormal = new BitmapFont(Gdx.files.internal("Rochester-30.fnt"), true);
             // enable linear texture filtering for smooth fonts
             defaultNormal.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
-
         }
     }
-
 }
