@@ -2,6 +2,7 @@ package com.smb215team.barjis.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
 
@@ -12,9 +13,11 @@ public class ConfigurationController {
     private static final String TAG = ConfigurationController.class.getName();
     
     public static Array<Vector2> boardMap = new Array<Vector2>();
+    public static Array<Vector3> hintBoardMap = new Array<Vector3>();
 
     public static void initCells(){
         boardMap = new Array<Vector2>();
+        hintBoardMap =new Array<Vector3>();
         XmlReader xml = new XmlReader();
         try {
             XmlReader.Element element = xml.parse(Gdx.files.internal("configuration.xml"));
@@ -22,6 +25,7 @@ public class ConfigurationController {
             Array<XmlReader.Element> root = element.getChildByName("BoardMap").getChildrenByName("cell");
             for(XmlReader.Element cell : root) {
                 boardMap.add(new Vector2(cell.getFloatAttribute("x"), cell.getFloatAttribute("y")));
+                hintBoardMap.add(new Vector3(cell.getFloatAttribute("hintx") , cell.getFloatAttribute("hinty"),cell.getIntAttribute("rot")));
             }
         }
         catch (Exception e){

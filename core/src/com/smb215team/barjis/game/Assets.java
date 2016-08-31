@@ -60,8 +60,9 @@ public class Assets implements Disposable, AssetErrorListener {
             t.setFilter(TextureFilter.Linear, TextureFilter.Linear);
         }
         // <editor-fold desc="create game resource objects">
-        fonts = new AssetFonts();
+        fonts = new AssetFonts(); 
         dice = new AssetDice(atlas);
+        hint = new AssetHint(atlas);
         board = new AssetBoard(atlas);
         deadPawnPlaceholder = new AssetDeadPawnPlaceholder(atlas);
         pawn = new AssetPawn(atlas);
