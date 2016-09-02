@@ -8,6 +8,7 @@ package com.smb215team.barjis.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Rectangle;
@@ -18,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -227,7 +229,8 @@ public class GameController extends InputAdapter {
         hGroup=new HorizontalGroup();
         // create button style
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
-        buttonStyle.font= Assets.instance.fonts.defaultSmall;;
+        buttonStyle.font= Assets.instance.fonts.defaultNormal;
+
         // create button
         for (int i = 0; i < Dices.instance.currentHandMoves.length; i++) {
             if(Dices.instance.currentHandMoves[i] == 0) {
@@ -243,23 +246,23 @@ public class GameController extends InputAdapter {
 
             }
             button.setUserObject(i);
+            button.getLabel().setFontScale(0.6f);
             //listener on every button
             button.addListener(new ChangeListener() {
                 public void changed (ChangeEvent e, Actor actor) {
                     textClicked(e, actor);
                 }
             });
-
             hGroup.addActor(button);// add button to horizontalGroup
             hGroup.wrap();// wrap the data to the next line
             hGroup.left().top();// start writing from the left and the top of the rectangle
         }
         if(currentPlayerIndex == 0) {
-            hGroup.setBounds(5,290,200,100);// set limits for  player 1
+            hGroup.setBounds(5,230,180,100);// set limits for  player 1
 
         } else {
             if(currentPlayerIndex == 1) {//Dino: Needs to be changed if in the case of 4 players the placement is changed.
-                hGroup.setBounds(830,290,200,100); // set limits for  player 1
+                hGroup.setBounds(660,230,180,100); // set limits for  player 1
 
             }
         }

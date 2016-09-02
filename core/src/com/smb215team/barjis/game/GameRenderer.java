@@ -8,22 +8,14 @@ package com.smb215team.barjis.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.FillViewport;
-import com.badlogic.gdx.utils.viewport.ScalingViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.smb215team.barjis.util.Constants;
 import com.smb215team.barjis.game.objects.*;
@@ -34,7 +26,6 @@ import com.smb215team.barjis.game.objects.*;
  */
 public class GameRenderer implements Disposable {
     private OrthographicCamera camera;
-    private OrthographicCamera cameraGUI;
     private SpriteBatch batch;
     private GameController gameController;
     ShapeRenderer shapeRenderer;
@@ -43,6 +34,8 @@ public class GameRenderer implements Disposable {
 
     BitmapFont returnTextFont = Assets.instance.fonts.defaultSmall;///used from wrapping the returnText
     public  GlyphLayout layout = new GlyphLayout(); // Obviously stick this in a field to avoid allocation each frame.
+
+    public Viewport extendedViewPort;
 
     public GameRenderer (GameController gameController) {
         this.gameController = gameController;
@@ -57,12 +50,8 @@ public class GameRenderer implements Disposable {
         this.gameController.camera = camera;
         camera.update();
 
-        cameraGUI = new OrthographicCamera(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT);
-        cameraGUI.position.set(0, 0, 0);
-        cameraGUI.setToOrtho(false); // flip y-axis
-        cameraGUI.update();
-
-        gameController.stage=new Stage(new ScreenViewport(cameraGUI));//TODO change it , and understand all about viewPort
+        extendedViewPort =new ExtendViewport(Constants.VIEWPORT_GUI_WIDTH,Constants.VIEWPORT_GUI_HEIGHT);
+        gameController.stage=new Stage(extendedViewPort);
         Gdx.input.setInputProcessor(gameController.stage);
 
     }
@@ -79,10 +68,11 @@ public class GameRenderer implements Disposable {
         camera.viewportWidth = (Constants.VIEWPORT_HEIGHT / height) * width;
         camera.update();
 
-        cameraGUI.viewportHeight = Constants.VIEWPORT_GUI_HEIGHT;
-        cameraGUI.viewportWidth = (Constants.VIEWPORT_GUI_HEIGHT / (float)height) * (float)width;
-        cameraGUI.position.set(cameraGUI.viewportWidth / 2, cameraGUI.viewportHeight / 2, 0);
-        cameraGUI.update();
+        extendedViewPort.getCamera().viewportHeight = Constants.VIEWPORT_GUI_HEIGHT;
+        extendedViewPort.getCamera().viewportWidth = (Constants.VIEWPORT_GUI_HEIGHT / height) * width;
+        extendedViewPort.getCamera().position.set(extendedViewPort.getCamera().viewportWidth / 2, extendedViewPort.getCamera().viewportHeight / 2, 0);
+        extendedViewPort.getCamera().update();
+        gameController.stage.getViewport().update(width,height,true);
     }
 
     @Override public void dispose () {
@@ -146,7 +136,7 @@ public class GameRenderer implements Disposable {
         player1Label.draw(batch);
         // </editor-fold>
 
-        batch.setProjectionMatrix(cameraGUI.combined);
+        batch.setProjectionMatrix(extendedViewPort.getCamera().combined);
 //        renderGuiMovesToBePlayed(batch); removed by ammar
         // draw FPS text (anchored to bottom right edge)
         renderGuiFpsCounter(batch);
@@ -155,10 +145,10 @@ public class GameRenderer implements Disposable {
 
     
     private void renderGuiFpsCounter (SpriteBatch batch) {
-        float x = cameraGUI.viewportWidth - 110;
+        float x = extendedViewPort.getCamera().viewportWidth - 110;
         float y =  35;
         int fps = Gdx.graphics.getFramesPerSecond();
-        BitmapFont fpsFont = Assets.instance.fonts.defaultSmall;
+        BitmapFont fpsFont = Assets.instance.fonts.rochesterScaled;
         if (fps >= 45) {
             // 45 or more FPS show up in green
             fpsFont.setColor(0, 1, 0, 1);

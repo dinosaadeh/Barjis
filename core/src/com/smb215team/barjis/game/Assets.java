@@ -198,7 +198,7 @@ public class Assets implements Disposable, AssetErrorListener {
     public class AssetFonts {
         public final BitmapFont defaultNormal;
         public final BitmapFont defaultSmall;
-
+        public final BitmapFont rochesterScaled;
         public AssetFonts() {
             // create three fonts using Libgdx's 15px bitmap font
             defaultSmall = new BitmapFont(Gdx.files.internal("Rochester-20.fnt"), false);
@@ -206,9 +206,14 @@ public class Assets implements Disposable, AssetErrorListener {
             // enable linear texture filtering for smooth fonts
             defaultSmall.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
-            defaultNormal = new BitmapFont(Gdx.files.internal("Rochester-30.fnt"), true);
+            defaultNormal = new BitmapFont(Gdx.files.internal("Rochester-30.fnt"), false);
             // enable linear texture filtering for smooth fonts
             defaultNormal.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+
+            rochesterScaled=new BitmapFont(Gdx.files.internal("Rochester-30.fnt"), false);
+            rochesterScaled.getData().setScale(0.6f);
+            rochesterScaled.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+
         }
     }
 }
