@@ -9,8 +9,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.smb215team.barjis.game.Assets;
+import com.smb215team.barjis.game.ConfigurationController;
 import com.smb215team.barjis.game.GameController;
 import com.smb215team.barjis.game.enums.PawnState;
 import com.smb215team.barjis.util.Constants;
@@ -26,9 +28,11 @@ public class Pawn extends AbstractGameObject {
     private TextureRegion phPawnOverlapCounter;
     private TextureRegion pawnHighlightCanMove;
     private TextureRegion hint;
+    private Array<Vector3> boardHint = new Array<Vector3>();  
     PawnState state;
     Vector2 deadPosition;
     private Vector2[] path;
+    private Integer[] hintArray;
     public ArrayList<Integer> currentPossibleMoves;
     public boolean isSelected;
 
@@ -38,7 +42,7 @@ public class Pawn extends AbstractGameObject {
      * - value between 0 and 82, on the board within the player's path
      * - value of 83, the pawn finished its circuit.
      */
-    public int positionOnPath;
+    public int positionOnPath,positionHint,hintIndex;
 
     public Pawn() {
         init();
@@ -56,15 +60,16 @@ public class Pawn extends AbstractGameObject {
         phPawnOverlapCounter = Assets.instance.phPawnOverlapCounter.phPawnOverlapCounter[0];
         pawnHighlightCanMove = Assets.instance.pawnHighlightCanMove.pawnHighlightCanMove;
         hint = Assets.instance.hint.hint;
-        init(0, deadPosition, new Vector2[83]);
+        boardHint = ConfigurationController.hintBoardMap;
+        init(0, deadPosition, new Vector2[83],new Integer[83]);
     }
 
-    public void init(int pawnImageIndex, Vector2 deadPosition, Vector2[] playerPath) {
+    public void init(int pawnImageIndex, Vector2 deadPosition, Vector2[] playerPath,Integer[] hintPlayerArray) {
         Assets.instance.pawn.init(pawnImageIndex);
         pawnImage = Assets.instance.pawn.pawn;
         
         path = playerPath;
-        
+        hintArray = hintPlayerArray;
         dimension.set(0.435f, 0.435f);
         this.setCenter(this.dimension.x / 2, this.dimension.y / 2);
         pawnImage = Assets.instance.pawn.pawn;
@@ -101,18 +106,19 @@ public class Pawn extends AbstractGameObject {
     -         rotation, phPawnOverlapCounter.getRegionX(), phPawnOverlapCounter.getRegionY(), phPawnOverlapCounter.getRegionWidth(), phPawnOverlapCounter.getRegionHeight(), false, false);
         }
         
-        //Render hints
-        if(isSelected) {
-            for (Integer hintIndex : this.currentPossibleMoves) {
-                //TODO: DELETE THIS COMMENT ONCE DONE - place hints
-//                if (this != null) {
-//                    this.moveHint(Dices.movesValues[hintIndex]);
-//                    batch.draw(hint, path[positionHint].x, path[positionHint].y, 0.15f, 0.15f);//Drawing the Hint         
-//                }
+        //Render hints 
+        if(isSelected) { 
+            for (Integer hintPossibleMove : this.currentPossibleMoves) { 
+                    this.moveHint(hintPossibleMove);
+                    batch.draw(hint, boardHint.get(hintIndex).x
+                                    , boardHint.get(hintIndex).y
+                                    , 0.12f /2, 0.14f/2
+                                    , 0.12f   , 0.14f
+                                    ,  1      , 1
+                                    , boardHint.get(hintIndex).z);
             }
         }
     }
-    
     public void updateAvailableMoves(Array<Integer> inaccessibleShireIndexes) {
         currentPossibleMoves.clear();
 
@@ -169,6 +175,28 @@ public class Pawn extends AbstractGameObject {
         }
         return this.position;
     }
+    
+      public void moveHint(Integer hintPossibleMove)
+       {  
+         try { 
+             if(this != null) {              
+             int numberOfSteps =Dices.movesValues[hintPossibleMove];           
+             if(25 == numberOfSteps && 58 < positionOnPath) {             
+                 throw new Exception("Number of steps to add greater than the pawn can move.");
+                                        }  
+             positionHint=positionOnPath;
+             positionHint +=numberOfSteps; 
+             hintIndex = hintArray[positionHint];
+             Gdx.app.log(TAG, "hintindexconfig " + hintIndex  + " pathposition " + positionHint);
+             }
+             } 
+         catch(Exception e) {
+             Gdx.app.debug(TAG, e.getMessage());
+                            }   
+         
+     
+       }
+
     
     public boolean isOnShire() {
         for(int i = 0; i < Constants.SHIRE_INDEXES.length; i++) {
