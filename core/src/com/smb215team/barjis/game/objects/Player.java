@@ -28,6 +28,8 @@ public class Player {
 
     public Pawn[] pawns;
     public Vector2[] path;
+    public Integer[] hintPlayerArray;////hintPlayerArray[IndexOnPath]=IndexInConfigFile
+    private Integer hintPathCounter ;    
     private Array<Vector2> boardMap = new Array<Vector2>();
     /**
      * This array is populated every time a player wants to play. This makes sure a player cannot move to
@@ -42,6 +44,8 @@ public class Player {
     private void init(int branch, int pawnImageIndex, Array<Vector2> deadPositions) {
         // <editor-fold desc="Dino: Getting the full path">
         path = new Vector2[84];
+        hintPlayerArray = new Integer[84];//this array is a transition between index on path and index in config file.
+        hintPathCounter =0;
         int pathBuilderPointer = 0;
         ConfigurationController.initCells();
         boardMap = ConfigurationController.boardMap;
@@ -79,13 +83,13 @@ public class Player {
         for(int i = 0; i < lastBranchPath.length; i++) {
             path[i + pathBuilderPointer] = lastBranchPath[i];
         }
-        path[83]=ConfigurationController.getFinishCell(branch);
+        path[83]=ConfigurationController.getFinishCell(branch);  
         // </editor-fold>
         // <editor-fold desc="Initialising pawns">
         pawns = new Pawn[4];
         for(int i = 0; i < pawns.length; i++) {
             pawns[i] = new Pawn();
-            pawns[i].init(pawnImageIndex, deadPositions.get(i), this.path);
+            pawns[i].init(pawnImageIndex, deadPositions.get(i), this.path,this.hintPlayerArray);
         }
         // </editor-fold>
     }
@@ -100,6 +104,8 @@ public class Player {
         int indexOfAddressToStartFrom = branch * 24;
         for(int i = 0; i < 16; i++) {
             resultToreturn[i] = new Vector2(boardMap.get(indexOfAddressToStartFrom + i).x, boardMap.get(indexOfAddressToStartFrom + i).y);
+            hintPlayerArray[hintPathCounter]=indexOfAddressToStartFrom + i;
+            hintPathCounter++;
         }
         return resultToreturn;
     }
@@ -111,11 +117,15 @@ public class Player {
         //Get the left line
         for(int i = 0; i < 8; i++) {
             resultToreturn[i] = new Vector2(boardMap.get(indexOfAddressToStartFrom + 16 + i).x, boardMap.get(indexOfAddressToStartFrom + 16 + i).y);
+            hintPlayerArray[hintPathCounter]= indexOfAddressToStartFrom + 16 + i;              
+            hintPathCounter ++;    
         }
         //Get last cell in middle and right line
         int counter = 0;
          for(int i = 8; i < 17; i++) {
             resultToreturn[i] = new Vector2(boardMap.get(indexOfAddressToStartFrom + 7 + counter).x, boardMap.get(indexOfAddressToStartFrom + 7 + counter).y);
+            hintPlayerArray[hintPathCounter]= indexOfAddressToStartFrom + 7 + counter;  
+            hintPathCounter ++;    
             counter++;
         }
         return resultToreturn;
@@ -128,11 +138,13 @@ public class Player {
         //Get the left line
         for(int i = 0; i < 8; i++) {
             resultToreturn[i] = new Vector2(boardMap.get(indexOfAddressToStartFrom + 16 + i).x, boardMap.get(indexOfAddressToStartFrom + 16 + i).y);
+            hintPlayerArray[82-15 +i]= indexOfAddressToStartFrom + 16 + i;  
         }
         //Get the middle line going back home
         int counter = 0;
          for(int i = 8; i < 16; i++) {
             resultToreturn[i] = new Vector2(boardMap.get(indexOfAddressToStartFrom + 7 - counter).x, boardMap.get(indexOfAddressToStartFrom + 7 - counter).y);
+            hintPlayerArray[82-7 +counter]= indexOfAddressToStartFrom + 7 - counter;  
             counter++;
         }
         return resultToreturn;
