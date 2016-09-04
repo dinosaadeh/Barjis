@@ -21,7 +21,7 @@ import java.util.ArrayList;
  */
 public class Pawn extends AbstractGameObject {
     private static final String TAG = Dices.class.getName();
-    
+
     private TextureRegion pawnImage;
     private TextureRegion phPawnOverlapCounter;
     private TextureRegion pawnHighlightCanMove;
@@ -130,10 +130,10 @@ public class Pawn extends AbstractGameObject {
                 continue;
             // <editor-fold desc="Pawn shouldn't get out of the path">
             // taking into account we're not evaluation the case of Banj
-            if(positionOnPath + Dices.instance.movesValues[i] > 82 && i != 6)
+            if(positionOnPath + Dices.instance.movesValues[i] > 83 && i != 6)
                 continue;
             // Pawn shouldn't get out of the path (taking into account we're not evaluation the case of Banj
-            if(6 == i && 58 < positionOnPath && positionOnPath + 8 > 82)
+            if(6 == i && 58 < positionOnPath && positionOnPath + 8 > 83)
                 continue;
             // </editor-fold>
             // Pawn cannot stand on a Shire if occupied by opponent
@@ -153,10 +153,10 @@ public class Pawn extends AbstractGameObject {
         try {
             //Accounting for Banj: 
             //If a pawn is at the position > 58, it can move the 8 steps and NOT the 17 extra steps
-            if(25 == numberOfSteps && 58 < positionOnPath) {
+            if(25 == numberOfSteps && 59 < positionOnPath) {
                     numberOfSteps = 8;
             }
-            if(positionOnPath + numberOfSteps > 82) {
+            if(positionOnPath + numberOfSteps > 83) {
                 throw new Exception("Number of steps to add greater than the pawn can move.");
             }
             

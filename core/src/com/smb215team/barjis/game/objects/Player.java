@@ -8,7 +8,9 @@ package com.smb215team.barjis.game.objects;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.XmlReader;
 import com.smb215team.barjis.game.ConfigurationController;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,6 +21,10 @@ import java.util.Map;
  */
 public class Player {
     private static final String TAG = Player.class.getName();
+
+    public final static int PLAYER_RIGHT_BRANCH=1;
+
+    public final static int PLAYER_LEFT_BRANCH=3;
 
     public Pawn[] pawns;
     public Vector2[] path;
@@ -35,7 +41,7 @@ public class Player {
     
     private void init(int branch, int pawnImageIndex, Array<Vector2> deadPositions) {
         // <editor-fold desc="Dino: Getting the full path">
-        path = new Vector2[83];
+        path = new Vector2[84];
         int pathBuilderPointer = 0;
         ConfigurationController.initCells();
         boardMap = ConfigurationController.boardMap;
@@ -73,6 +79,7 @@ public class Player {
         for(int i = 0; i < lastBranchPath.length; i++) {
             path[i + pathBuilderPointer] = lastBranchPath[i];
         }
+        path[83]=ConfigurationController.getFinishCell(branch);
         // </editor-fold>
         // <editor-fold desc="Initialising pawns">
         pawns = new Pawn[4];

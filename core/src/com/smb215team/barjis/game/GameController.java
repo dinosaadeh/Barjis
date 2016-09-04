@@ -81,8 +81,8 @@ public class GameController extends InputAdapter {
         players = new Player[2]; //TODO: account for variable number of players (1 (AI), 2, 4)
         currentPlayerIndex = -1;
         if(2 == players.length) {
-            players[0] = new Player(3, 0, ConfigurationController.GetPawnInitialPlaceholder(0));
-            players[1] = new Player(1, 1, ConfigurationController.GetPawnInitialPlaceholder(1));
+            players[0] = new Player(Player.PLAYER_LEFT_BRANCH, 0, ConfigurationController.GetPawnInitialPlaceholder(0));
+            players[1] = new Player(Player.PLAYER_RIGHT_BRANCH, 1, ConfigurationController.GetPawnInitialPlaceholder(1));
         }
         else {
             for(int i = 0; i < players.length; i++) {

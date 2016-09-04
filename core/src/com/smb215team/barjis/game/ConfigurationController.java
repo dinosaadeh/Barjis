@@ -33,6 +33,23 @@ public class ConfigurationController {
         }
     }
 
+    public static Vector2 getFinishCell(int numberAfterFinishWord){
+
+        Vector2 resultToReturn = new Vector2();
+        XmlReader xml = new XmlReader();
+        try {
+            XmlReader.Element element = xml.parse(Gdx.files.internal("configuration.xml"));
+
+            XmlReader.Element playerElement = element.getChildByName("BoardMap").getChildByName("finish"+numberAfterFinishWord);
+            resultToReturn=new Vector2(playerElement.getFloatAttribute("x"), playerElement.getFloatAttribute("y"));
+        }
+        catch (Exception e){
+            Gdx.app.debug(TAG, e.getMessage());
+        }
+        return resultToReturn;
+
+    }
+
     public static Array<Vector2> GetPawnInitialPlaceholder(int playerIndex) {
         Array<Vector2> resultToReturn = new Array<Vector2>();
         XmlReader xml = new XmlReader();

@@ -42,8 +42,7 @@ public class Constants {
     // </editor-fold>
     
     public static final Integer[] SHIRE_INDEXES = {10, 21, 27, 38, 44, 55, 61, 72};
-//TODO to check
-    public static final Integer DiceNumber = 83;
+
     // <editor-fold desc="Timer limits">
     public static final float TIMER_LIMIT_FOR_THROWING_DICES_AT_GAME_START = 3f;//2 seconds
     public static final float TIMER_LIMIT_FOR_THROWING_DICES = 5f;//5 seconds
