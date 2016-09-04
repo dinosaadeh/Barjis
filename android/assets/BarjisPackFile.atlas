@@ -6,191 +6,254 @@ filter: Nearest,Nearest
 repeat: none
 board
   rotate: false
-  xy: 2, 422
+  xy: 2, 417
   size: 661, 600
   orig: 661, 600
   offset: 0, 0
   index: -1
-btn-back
+btn-close
   rotate: false
-  xy: 2, 13
-  size: 132, 58
-  orig: 132, 58
+  xy: 193, 34
+  size: 28, 28
+  orig: 28, 28
+  offset: 0, 0
+  index: -1
+btn-credits
+  rotate: false
+  xy: 665, 941
+  size: 263, 76
+  orig: 263, 76
+  offset: 0, 0
+  index: -1
+btn-how-to-play
+  rotate: false
+  xy: 665, 863
+  size: 263, 76
+  orig: 263, 76
+  offset: 0, 0
+  index: -1
+btn-play-solo
+  rotate: false
+  xy: 665, 785
+  size: 263, 76
+  orig: 263, 76
+  offset: 0, 0
+  index: -1
+btn-pvp
+  rotate: false
+  xy: 665, 707
+  size: 263, 76
+  orig: 263, 76
+  offset: 0, 0
+  index: -1
+btn-sound-off
+  rotate: false
+  xy: 854, 632
+  size: 47, 40
+  orig: 47, 40
+  offset: 0, 0
+  index: -1
+btn-sound-on
+  rotate: false
+  xy: 429, 82
+  size: 47, 40
+  orig: 47, 40
   offset: 0, 0
   index: -1
 dice-down
   rotate: false
-  xy: 618, 364
+  xy: 930, 928
   size: 44, 56
   orig: 44, 56
   offset: 0, 0
   index: -1
 dice-up
   rotate: false
-  xy: 665, 779
+  xy: 665, 462
   size: 44, 56
   orig: 44, 56
   offset: 0, 0
   index: -1
 disabled-text-overlay
   rotate: false
-  xy: 212, 41
+  xy: 618, 279
   size: 4, 30
   orig: 4, 30
   offset: 0, 0
   index: -1
 hint
   rotate: false
-  xy: 898, 974
+  xy: 1010, 1002
   size: 7, 15
   orig: 7, 15
   offset: 0, 0
   index: -1
 lbl-player-off-0
   rotate: false
-  xy: 429, 235
+  xy: 854, 674
   size: 74, 31
   orig: 74, 31
   offset: 0, 0
   index: -1
 lbl-player-off-1
   rotate: false
-  xy: 854, 991
+  xy: 930, 986
   size: 78, 31
   orig: 78, 31
   offset: 0, 0
   index: -1
 lbl-player-on-0
   rotate: false
-  xy: 136, 40
+  xy: 429, 124
   size: 74, 31
   orig: 74, 31
   offset: 0, 0
   index: -1
 lbl-player-on-1
   rotate: false
-  xy: 665, 837
+  xy: 665, 520
   size: 78, 31
   orig: 78, 31
   offset: 0, 0
   index: -1
 lblph-player-off-0
   rotate: false
-  xy: 665, 946
+  xy: 665, 629
   size: 187, 76
   orig: 187, 76
   offset: 0, 0
   index: -1
 lblph-player-off-1
   rotate: false
-  xy: 665, 870
+  xy: 665, 553
   size: 186, 74
   orig: 186, 74
   offset: 0, 0
   index: -1
 lblph-player-on-0
   rotate: false
-  xy: 429, 344
+  xy: 429, 233
   size: 187, 76
   orig: 187, 76
   offset: 0, 0
   index: -1
 lblph-player-on-1
   rotate: false
-  xy: 429, 268
+  xy: 429, 157
   size: 186, 74
   orig: 186, 74
   offset: 0, 0
   index: -1
+main-screen-buttons-separator
+  rotate: false
+  xy: 2, 64
+  size: 225, 2
+  orig: 225, 2
+  offset: 0, 0
+  index: -1
 main-screen-logo
   rotate: false
-  xy: 2, 73
+  xy: 2, 68
   size: 425, 347
   orig: 425, 347
   offset: 0, 0
   index: -1
+main-screen-name
+  rotate: false
+  xy: 429, 311
+  size: 201, 104
+  orig: 201, 104
+  offset: 0, 0
+  index: -1
 path-overlay-pawn-going-home
   rotate: false
-  xy: 2, 10
+  xy: 229, 65
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 path-overlay-pawns-that-can-move
   rotate: false
-  xy: 429, 190
+  xy: 854, 629
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 pawn-0
   rotate: false
-  xy: 934, 993
+  xy: 632, 386
   size: 29, 29
   orig: 29, 29
   offset: 0, 0
   index: -1
 pawn-1
   rotate: false
-  xy: 745, 839
+  xy: 2, 2
   size: 29, 29
   orig: 29, 29
   offset: 0, 0
   index: -1
 pawn-highlight-can-move
   rotate: false
-  xy: 429, 193
+  xy: 665, 420
   size: 40, 40
   orig: 40, 40
   offset: 0, 0
   index: -1
 pawn-highlight-can-move-on-board
   rotate: false
-  xy: 854, 947
+  xy: 930, 884
   size: 42, 42
   orig: 42, 42
   offset: 0, 0
   index: -1
 pawn-highlight-finished
   rotate: false
-  xy: 505, 243
+  xy: 745, 528
   size: 25, 23
   orig: 25, 23
   offset: 0, 0
   index: -1
 pawn-overlap-counter-2
   rotate: false
-  xy: 618, 346
+  xy: 505, 139
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 pawn-overlap-counter-3
   rotate: false
-  xy: 665, 761
+  xy: 976, 968
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 pawn-overlap-counter-4
   rotate: false
-  xy: 711, 819
+  xy: 711, 502
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 ph-dead-pawn
   rotate: false
-  xy: 136, 2
+  xy: 930, 846
   size: 36, 36
   orig: 36, 36
   offset: 0, 0
   index: -1
 ph-pawn-overlap-counter
   rotate: false
-  xy: 174, 22
+  xy: 903, 656
   size: 16, 16
   orig: 16, 16
+  offset: 0, 0
+  index: -1
+powered-by-libgdx
+  rotate: false
+  xy: 2, 33
+  size: 189, 29
+  orig: 189, 29
   offset: 0, 0
   index: -1
 

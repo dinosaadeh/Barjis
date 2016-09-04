@@ -11,7 +11,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetErrorListener;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
@@ -39,7 +38,8 @@ public class Assets implements Disposable, AssetErrorListener {
     public AssetFonts fonts;
     public AssetPlayerLabels playerLabels;
     public AssetHint hint;
-    public AssetMainScreenLogo assetMainScreenLogo;
+    public AssetMainScreenLogo mainScreenLogo;
+    public AssetMainScreenButtons mainScreenButtons;
 
     // singleton: prevent instantiation from other classes
     private Assets () {}
@@ -69,8 +69,9 @@ public class Assets implements Disposable, AssetErrorListener {
         phPawnOverlapCounter = new PHPawnOverlapCounter(atlas);
         pawnHighlightCanMove = new PawnHighlightCanMove(atlas);
         playerLabels = new AssetPlayerLabels(atlas);
-        assetMainScreenLogo = new AssetMainScreenLogo(atlas);
         hint = new AssetHint(atlas);
+        mainScreenLogo = new AssetMainScreenLogo(atlas);
+        mainScreenButtons = new AssetMainScreenButtons(atlas);
         // </editor-fold>
     }
 
@@ -178,14 +179,6 @@ public class Assets implements Disposable, AssetErrorListener {
             pawnHighlightCanMove = atlas.findRegion("pawn-highlight-can-move");
         }
     }
-
-    public class AssetMainScreenLogo {
-        public final AtlasRegion assetMainScreenLogo;
-
-        public AssetMainScreenLogo (TextureAtlas atlas){
-            assetMainScreenLogo = atlas.findRegion("main-screen-logo");
-        }
-    }
     
     public static class AssetHint {
         public final AtlasRegion hint;
@@ -216,4 +209,38 @@ public class Assets implements Disposable, AssetErrorListener {
 
         }
     }
+    
+    // <editor-fold desc="Main screen assets">
+    public class AssetMainScreenLogo {
+        public final AtlasRegion assetMainScreenLogo;
+        public final AtlasRegion assetMainScreenName;
+
+        public AssetMainScreenLogo (TextureAtlas atlas){
+            assetMainScreenLogo = atlas.findRegion("main-screen-logo");
+            assetMainScreenName = atlas.findRegion("main-screen-name");
+        }
+    }
+
+    public class AssetMainScreenButtons {
+        public final AtlasRegion btnPlaySolo;
+        public final AtlasRegion btnPvp;
+        public final AtlasRegion btnHowToPlay;
+        public final AtlasRegion btnCredits;
+        public final AtlasRegion btnSoundOff;
+        public final AtlasRegion btnSoundOn;
+        public final AtlasRegion btnClose;
+        public final AtlasRegion btnsSeparator;
+
+        public AssetMainScreenButtons (TextureAtlas atlas){
+            btnPlaySolo = atlas.findRegion("btn-play-solo");
+            btnPvp = atlas.findRegion("btn-pvp");
+            btnHowToPlay = atlas.findRegion("btn-how-to-play");
+            btnCredits = atlas.findRegion("btn-credits");
+            btnSoundOff = atlas.findRegion("btn-sound-off");
+            btnSoundOn = atlas.findRegion("btn-sound-on");
+            btnClose = atlas.findRegion("btn-close");
+            btnsSeparator = atlas.findRegion("main-screen-buttons-separator");
+        }
+    }
+    // </editor-fold>
 }
