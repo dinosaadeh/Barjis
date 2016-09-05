@@ -42,7 +42,7 @@ public class Pawn extends AbstractGameObject {
      * - value between 0 and 82, on the board within the player's path
      * - value of 83, the pawn finished its circuit.
      */
-    public int positionOnPath,positionHint,hintIndex;
+    public int positionOnPath,positionHint,hintIndex,rotationOnFinish;
 
     public Pawn() {
         init();
@@ -115,7 +115,7 @@ public class Pawn extends AbstractGameObject {
                                     , 0.12f /2, 0.14f/2
                                     , 0.12f   , 0.14f
                                     ,  1      , 1
-                                    , boardHint.get(hintIndex).z);
+                                    , boardHint.get(hintIndex).z +rotationOnFinish);
             }
         }
     }
@@ -187,7 +187,10 @@ public class Pawn extends AbstractGameObject {
              positionHint=positionOnPath;
              positionHint +=numberOfSteps; 
              hintIndex = hintArray[positionHint];
-             Gdx.app.log(TAG, "hintindexconfig " + hintIndex  + " pathposition " + positionHint);
+             rotationOnFinish = positionHint > 75 ? 180 : 0;
+             Gdx.app.log(TAG, "hintindexconfig " + hintIndex  
+                              + " pathposition " + positionHint
+                              + " Rotation "     + rotationOnFinish);
              }
              } 
          catch(Exception e) {
