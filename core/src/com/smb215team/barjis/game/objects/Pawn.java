@@ -42,7 +42,7 @@ public class Pawn extends AbstractGameObject {
      * - value between 0 and 82, on the board within the player's path
      * - value of 83, the pawn finished its circuit.
      */
-    public int positionOnPath,positionHint,hintIndex,rotationOnFinish;
+    public int positionOnPath, positionHint, hintIndex, rotationOnFinish;
 
     public Pawn() {
         init();
@@ -115,7 +115,7 @@ public class Pawn extends AbstractGameObject {
                                     , 0.12f /2, 0.14f/2
                                     , 0.12f   , 0.14f
                                     ,  1      , 1
-                                    , boardHint.get(hintIndex).z +rotationOnFinish);
+                                    , boardHint.get(hintIndex).z + rotationOnFinish);
             }
         }
     }
@@ -176,29 +176,23 @@ public class Pawn extends AbstractGameObject {
         return this.position;
     }
     
-      public void moveHint(Integer hintPossibleMove)
-       {  
-         try { 
-             if(this != null) {              
-             int numberOfSteps =Dices.movesValues[hintPossibleMove];           
-             if(25 == numberOfSteps && 58 < positionOnPath) {             
-                 throw new Exception("Number of steps to add greater than the pawn can move.");
-                                        }  
-             positionHint=positionOnPath;
-             positionHint +=numberOfSteps; 
-             hintIndex = hintArray[positionHint];
-             rotationOnFinish = positionHint > 75 ? 180 : 0;
-             Gdx.app.log(TAG, "hintindexconfig " + hintIndex  
-                              + " pathposition " + positionHint
-                              + " Rotation "     + rotationOnFinish);
-             }
-             } 
-         catch(Exception e) {
-             Gdx.app.debug(TAG, e.getMessage());
-                            }   
-         
-     
-       }
+      public void moveHint(Integer hintPossibleMove) {
+        try {
+            if (this != null) {
+                int numberOfSteps = Dices.movesValues[hintPossibleMove];
+                if (25 == numberOfSteps && 58 < positionOnPath) {
+                    throw new Exception("Number of steps to add greater than the pawn can move.");
+                }
+                positionHint = positionOnPath;
+                positionHint += numberOfSteps;
+                hintIndex = hintArray[positionHint];
+                rotationOnFinish = positionHint > 75 ? 180 : 0;
+                Gdx.app.log(TAG, "hintindexconfig " + hintIndex + " pathposition " + positionHint + " Rotation " + rotationOnFinish);
+            }
+        } catch (Exception e) {
+            Gdx.app.debug(TAG, e.getMessage());
+        }
+    }
 
     
     public boolean isOnShire() {
