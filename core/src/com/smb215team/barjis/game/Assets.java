@@ -214,10 +214,12 @@ public class Assets implements Disposable, AssetErrorListener {
     public class AssetMainScreenLogo {
         public final AtlasRegion assetMainScreenLogo;
         public final AtlasRegion assetMainScreenName;
+        public final AtlasRegion assetPoweredByLibgdx;
 
         public AssetMainScreenLogo (TextureAtlas atlas){
             assetMainScreenLogo = atlas.findRegion("main-screen-logo");
             assetMainScreenName = atlas.findRegion("main-screen-name");
+            assetPoweredByLibgdx = atlas.findRegion("powered-by-libgdx");
         }
     }
 

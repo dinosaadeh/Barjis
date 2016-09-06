@@ -8,7 +8,6 @@ package com.smb215team.barjis.screens;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -18,11 +17,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.smb215team.barjis.game.Assets;
 import com.smb215team.barjis.util.Constants;
@@ -31,21 +28,14 @@ import com.smb215team.barjis.util.Constants;
  *
  * @author dinosaadeh
  */
-public class MenuScreen extends AbstractGameScreen {
+public class CreditsScreen extends AbstractGameScreen {
     private static final String TAG = MenuScreen.class.getName();
     private Stage stage;
     private Skin skin;
     private Image mainScreenName;
     private Image mainScreenLogo;
-    private ImageButton btnPlaySolo;
-    private ImageButton btnPvp;
-    private Image mainScreenButtonsSeparator;
-    private ImageButton btnHowToPlay;
-    private ImageButton btnCredits;
-    private Image poweredByLibgdx;
-    private ImageButton btnSound;
 
-    public MenuScreen (Game game) {
+    public CreditsScreen (Game game) {
         super(game);
         skin = new Skin(Gdx.files.internal("menuSkin.json"));
 
@@ -86,80 +76,16 @@ public class MenuScreen extends AbstractGameScreen {
         mainTable.row();
         // </editor-fold>
 
-        // <editor-fold desc="Second row for the main image and the menu">
+        // <editor-fold desc="Second row for the main image and the text">
         Table secondRow = new Table();
         mainScreenLogo = new Image(Assets.instance.mainScreenLogo.assetMainScreenLogo);
         secondRow.add(mainScreenLogo).minWidth(332.03125f).padLeft(115f);//.size(327.34375f, 277.6f);
         //secondRow.debug();
-        // <editor-fold desc="Buttons">
-        Table buttonsTable = new Table();
-        
-        btnPlaySolo = new ImageButton(new TextureRegionDrawable(Assets.instance.mainScreenButtons.btnPlaySolo));
-        btnPlaySolo.addListener(new ChangeListener() {
-                public void changed (ChangeEvent e, Actor actor) {
-                    game.setScreen(new GameScreen(game));
-                }
-            });
-        buttonsTable.add(btnPlaySolo);
-        buttonsTable.row();
-        
-        btnPvp = new ImageButton(new TextureRegionDrawable(Assets.instance.mainScreenButtons.btnPvp));
-        btnPvp.addListener(new ChangeListener() {
-                public void changed (ChangeEvent e, Actor actor) {
-                    game.setScreen(new GameScreen(game));
-                }
-            });
-        buttonsTable.add(btnPvp);
-        buttonsTable.row();
-        
-        mainScreenButtonsSeparator = new Image(Assets.instance.mainScreenButtons.btnsSeparator);
-//        mainScreenButtonsSeparator.setSize(175.78125f, 1);
-        buttonsTable.add(mainScreenButtonsSeparator).padBottom(20).padTop(10);//.size(175.78125f, 28f);
-        buttonsTable.row();
-
-        btnHowToPlay = new ImageButton(new TextureRegionDrawable(Assets.instance.mainScreenButtons.btnHowToPlay));
-        btnHowToPlay.addListener(new ChangeListener() {
-                public void changed (ChangeEvent e, Actor actor) {
-                    game.setScreen(new GameScreen(game));
-                }
-            });
-        buttonsTable.add(btnHowToPlay);
-        buttonsTable.row();
-        
-        btnCredits = new ImageButton(new TextureRegionDrawable(Assets.instance.mainScreenButtons.btnCredits));
-        btnCredits.addListener(new ChangeListener() {
-                public void changed (ChangeEvent e, Actor actor) {
-                    game.setScreen(new CreditsScreen(game));
-                }
-            });
-        buttonsTable.add(btnCredits);
-        buttonsTable.row();
-        
-        secondRow.add(buttonsTable).minWidth(425.96875f).right();//.size(400f, 272.8f);
-        // </editor-fold>
 
         mainTable.add(secondRow).expandX().left().top();//.size(Constants.VIEWPORT_GUI_WIDTH, 308f);
         mainTable.row();
         // </editor-fold>
         
-        // <editor-fold desc="Third row is for libgdx and sound configuration">
-        Table thirdRow = new Table();
-        poweredByLibgdx = new Image(Assets.instance.mainScreenLogo.assetPoweredByLibgdx);
-        thirdRow.add(poweredByLibgdx).padLeft(39.0625f).padBottom(43);
-
-        btnSound = new ImageButton(new TextureRegionDrawable(Assets.instance.mainScreenButtons.btnSoundOn));
-        btnSound.addListener(new ChangeListener() {
-                public void changed (ChangeEvent e, Actor actor) {
-                    //btnSound.
-                    game.setScreen(new GameScreen(game));
-                }
-            });
-        thirdRow.add().width(610);
-        thirdRow.add(btnSound);
-        
-        mainTable.add(thirdRow).expand().left().bottom();
-        // </editor-fold>
-
         stage.addActor(mainTable);
     }
     
