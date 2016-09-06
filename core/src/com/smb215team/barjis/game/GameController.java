@@ -168,6 +168,24 @@ public class GameController extends InputAdapter {
             if (diceContainerLeft.borderRight.overlaps(dice.bounds) && dice.canCollideBorderRight){
                 dice.collideWithWall(true, 'r');
             }
+         ////limitations to reduce borders bypassing
+          if (dice.position.x < diceContainerLeft.borderLeft.x)
+             {dice.position.x = diceContainerLeft.borderLeft.x+0.25f;
+             dice.velocity.x = dice.velocity.x /3 ;} 
+          
+          if (dice.position.x > diceContainerLeft.borderRight.x)
+             {dice.position.x = diceContainerLeft.borderRight.x;
+             dice.velocity.x = dice.velocity.x /3 ;}
+         
+          if (dice.position.y > diceContainerLeft.borderTop.y)
+             {dice.position.y = diceContainerLeft.borderTop.y;
+             dice.velocity.y = dice.velocity.y /3 ;}    
+
+          if (dice.position.y < diceContainerLeft.borderBottom.y)
+             {dice.position.y = diceContainerLeft.borderBottom.y+0.25f;
+             dice.velocity.y = dice.velocity.y /3 ;} 
+                   
+          //////limitations to reduce borders bypassing   
         }
         // </editor-fold>
         // <editor-fold desc="Test collision: Dice <-> Dice borders Right Side">
@@ -194,6 +212,24 @@ public class GameController extends InputAdapter {
             if (diceContainerRight.borderRight.overlaps(dice.bounds) && dice.canCollideBorderRight){
                 dice.collideWithWall(true, 'r');
             }
+          //////limitations to reduce borders bypassing
+          if (dice.position.x < diceContainerRight.borderLeft.x)
+             {dice.position.x = diceContainerRight.borderLeft.x;
+             dice.velocity.x = dice.velocity.x /3 ;} 
+          
+          if (dice.position.x > diceContainerRight.borderRight.x)
+             {dice.position.x = diceContainerRight.borderRight.x-0.25f;
+             dice.velocity.x = dice.velocity.x /3 ;}
+         
+          if (dice.position.y > diceContainerRight.borderTop.y)
+             {dice.position.y = diceContainerRight.borderTop.y;
+             dice.velocity.y = dice.velocity.y /3 ;}    
+
+          if (dice.position.y < diceContainerRight.borderBottom.y)
+             {dice.position.y = diceContainerRight.borderBottom.y+0.25f;
+             dice.velocity.y = dice.velocity.y /3 ;}           
+           //////limitations to reduce borders bypassing   
+            
         }
         // </editor-fold>
     }
@@ -297,6 +333,24 @@ public class GameController extends InputAdapter {
             if (diceContainer.borderRight.overlaps(dice.bounds) && dice.canCollideBorderRight){
                 dice.collideWithWall(true, 'r');
             }
+          //////limitations to reduce borders bypassing
+          if (dice.position.x < diceContainer.borderLeft.x)
+             {dice.position.x = diceContainer.borderLeft.x;
+             dice.velocity.x = dice.velocity.x /3 ;} 
+          
+          if (dice.position.x > diceContainer.borderRight.x)
+             {dice.position.x = diceContainer.borderRight.x-0.25f;
+             dice.velocity.x = dice.velocity.x /3 ;}
+         
+          if (dice.position.y > diceContainer.borderTop.y)
+             {dice.position.y = diceContainer.borderTop.y;
+             dice.velocity.y = dice.velocity.y /3 ;}    
+
+          if (dice.position.y < diceContainer.borderBottom.y)
+             {dice.position.y = diceContainer.borderBottom.y+0.25f;
+             dice.velocity.y = dice.velocity.y /3 ;}           
+            //////limitations to reduce borders bypassing   
+       
         }
         // </editor-fold>
     }
