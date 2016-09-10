@@ -38,7 +38,7 @@ public class Assets implements Disposable, AssetErrorListener {
     public AssetFonts fonts;
     public AssetPlayerLabels playerLabels;
     public AssetHint hint;
-    public AssetMainScreenLogo mainScreenLogo;
+    public AssetMenuScreenImages menuScreenImages;
     public AssetMainScreenButtons mainScreenButtons;
 
     // singleton: prevent instantiation from other classes
@@ -70,7 +70,7 @@ public class Assets implements Disposable, AssetErrorListener {
         pawnHighlightCanMove = new PawnHighlightCanMove(atlas);
         playerLabels = new AssetPlayerLabels(atlas);
         hint = new AssetHint(atlas);
-        mainScreenLogo = new AssetMainScreenLogo(atlas);
+        menuScreenImages = new AssetMenuScreenImages(atlas);
         mainScreenButtons = new AssetMainScreenButtons(atlas);
         // </editor-fold>
     }
@@ -211,15 +211,17 @@ public class Assets implements Disposable, AssetErrorListener {
     }
     
     // <editor-fold desc="Main screen assets">
-    public class AssetMainScreenLogo {
+    public class AssetMenuScreenImages {
         public final AtlasRegion assetMainScreenLogo;
         public final AtlasRegion assetMainScreenName;
         public final AtlasRegion assetPoweredByLibgdx;
+        public final AtlasRegion textContainer;
 
-        public AssetMainScreenLogo (TextureAtlas atlas){
+        public AssetMenuScreenImages (TextureAtlas atlas){
             assetMainScreenLogo = atlas.findRegion("main-screen-logo");
             assetMainScreenName = atlas.findRegion("main-screen-name");
             assetPoweredByLibgdx = atlas.findRegion("powered-by-libgdx");
+            textContainer = atlas.findRegion("text-container");
         }
     }
 

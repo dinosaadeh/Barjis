@@ -14,9 +14,11 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
+import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
@@ -34,6 +36,9 @@ public class CreditsScreen extends AbstractGameScreen {
     private Skin skin;
     private Image mainScreenName;
     private Image mainScreenLogo;
+    private Image textContainer;
+    private TextArea textArea;
+    private ImageButton btnClose;
 
     public CreditsScreen (Game game) {
         super(game);
@@ -65,26 +70,35 @@ public class CreditsScreen extends AbstractGameScreen {
         mainTable.setFillParent(true);
         //mainTable.setDebug(true, true);
         mainTable.align(Align.topLeft);
+       
+        Table leftSide = new Table();
+        mainScreenName = new Image(Assets.instance.menuScreenImages.assetMainScreenName);
+        leftSide.add(mainScreenName).padLeft(39.0625f).padTop(24f).left();
+        leftSide.row();
+        mainScreenLogo = new Image(Assets.instance.menuScreenImages.assetMainScreenLogo);
+        leftSide.add(mainScreenLogo).minWidth(332.03125f).padLeft(115f);//.size(327.34375f, 277.6f);
+
+        mainTable.add(leftSide).left().top();
         
-        // <editor-fold desc="First row is for Barjis name">
-        Table firstRow = new Table();
-        firstRow.align(Align.bottomLeft);
-        mainScreenName = new Image(Assets.instance.mainScreenLogo.assetMainScreenName);
-        firstRow.add(mainScreenName).padLeft(39.0625f).padTop(24f);
-
-        mainTable.add(firstRow).left();//.size(Constants.VIEWPORT_GUI_WIDTH, 144f);
-        mainTable.row();
-        // </editor-fold>
-
-        // <editor-fold desc="Second row for the main image and the text">
-        Table secondRow = new Table();
-        mainScreenLogo = new Image(Assets.instance.mainScreenLogo.assetMainScreenLogo);
-        secondRow.add(mainScreenLogo).minWidth(332.03125f).padLeft(115f);//.size(327.34375f, 277.6f);
-        //secondRow.debug();
-
-        mainTable.add(secondRow).expandX().left().top();//.size(Constants.VIEWPORT_GUI_WIDTH, 308f);
-        mainTable.row();
-        // </editor-fold>
+        Stack stack = new Stack();
+        
+        textContainer = new Image(Assets.instance.menuScreenImages.textContainer);
+        stack.add(textContainer);
+        
+        textArea = new TextArea("bla bla", skin);
+        //textArea.
+        //stack.add(textArea);
+        
+        btnClose = new ImageButton(new TextureRegionDrawable(Assets.instance.mainScreenButtons.btnClose));
+        btnClose.addListener(new ChangeListener() {
+                public void changed (ChangeEvent e, Actor actor) {
+                    game.setScreen(new MenuScreen(game));
+                }
+            });
+        btnClose.align(Align.topRight).pad(50, 0, 0, 65);
+        stack.add(btnClose);
+        
+        mainTable.add(stack).height(550).top().padTop(11);
         
         stage.addActor(mainTable);
     }

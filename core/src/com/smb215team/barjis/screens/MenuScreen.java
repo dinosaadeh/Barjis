@@ -8,21 +8,17 @@ package com.smb215team.barjis.screens;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.smb215team.barjis.game.Assets;
 import com.smb215team.barjis.util.Constants;
@@ -79,7 +75,7 @@ public class MenuScreen extends AbstractGameScreen {
         // <editor-fold desc="First row is for Barjis name">
         Table firstRow = new Table();
         firstRow.align(Align.bottomLeft);
-        mainScreenName = new Image(Assets.instance.mainScreenLogo.assetMainScreenName);
+        mainScreenName = new Image(Assets.instance.menuScreenImages.assetMainScreenName);
         firstRow.add(mainScreenName).padLeft(39.0625f).padTop(24f);
 
         mainTable.add(firstRow).left();//.size(Constants.VIEWPORT_GUI_WIDTH, 144f);
@@ -88,7 +84,7 @@ public class MenuScreen extends AbstractGameScreen {
 
         // <editor-fold desc="Second row for the main image and the menu">
         Table secondRow = new Table();
-        mainScreenLogo = new Image(Assets.instance.mainScreenLogo.assetMainScreenLogo);
+        mainScreenLogo = new Image(Assets.instance.menuScreenImages.assetMainScreenLogo);
         secondRow.add(mainScreenLogo).minWidth(332.03125f).padLeft(115f);//.size(327.34375f, 277.6f);
         //secondRow.debug();
         // <editor-fold desc="Buttons">
@@ -144,7 +140,7 @@ public class MenuScreen extends AbstractGameScreen {
         
         // <editor-fold desc="Third row is for libgdx and sound configuration">
         Table thirdRow = new Table();
-        poweredByLibgdx = new Image(Assets.instance.mainScreenLogo.assetPoweredByLibgdx);
+        poweredByLibgdx = new Image(Assets.instance.menuScreenImages.assetPoweredByLibgdx);
         thirdRow.add(poweredByLibgdx).padLeft(39.0625f).padBottom(43);
 
         btnSound = new ImageButton(new TextureRegionDrawable(Assets.instance.mainScreenButtons.btnSoundOn));
