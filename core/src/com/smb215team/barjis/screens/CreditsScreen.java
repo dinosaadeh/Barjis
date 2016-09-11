@@ -14,11 +14,10 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
-import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
@@ -36,9 +35,15 @@ public class CreditsScreen extends AbstractGameScreen {
     private Skin skin;
     private Image mainScreenName;
     private Image mainScreenLogo;
+    private Table creditsTable;
     private Image textContainer;
-    private TextArea textArea;
     private ImageButton btnClose;
+    private Label mainTitle;
+    private Label paragraph01;
+    private Label subTitle01;
+    private Label paragraph02;
+    private Label subTitle02;
+    private Label paragraph03;
 
     public CreditsScreen (Game game) {
         super(game);
@@ -84,10 +89,51 @@ public class CreditsScreen extends AbstractGameScreen {
         
         textContainer = new Image(Assets.instance.menuScreenImages.textContainer);
         stack.add(textContainer);
+        creditsTable = new Table();
+        creditsTable.align(Align.top);
+
+        mainTitle = new Label("Credits", skin);
+        mainTitle.setFontScale(1.2f);
+        creditsTable.add(mainTitle).height(100f).padTop(10f);
+        creditsTable.row();
+       
+        paragraph01 = new Label("This project was realised as part of a university project."
+                + " The choice was open and I, @dinosaadeh, wanted to dive into the world of game development. "
+                + "I’ve been wanting to develop this traditional game for a while now. So I suggested the game, "
+                + "created a team and this is the outcome. I hope you all enjoy it.\n\n"
+                + "Thanks to all who collaborated on realising this game:", skin, "philosopher");
+        paragraph01.setFontScale(0.55f);
+        paragraph01.setWrap(true);
+        paragraph01.setAlignment(Align.center);
         
-        textArea = new TextArea("bla bla", skin);
-        //textArea.
-        //stack.add(textArea);
+        creditsTable.add(paragraph01).width(450);
+        creditsTable.row();
+        
+        subTitle01 = new Label("Design", skin, "philosopher-pink");
+        creditsTable.add(subTitle01);
+        creditsTable.row();
+        
+        paragraph02 = new Label("Vanessa BITAR", skin, "philosopher");
+        paragraph02.setFontScale(0.55f);
+        paragraph02.setWrap(true);
+        paragraph02.setAlignment(Align.center);
+        creditsTable.add(paragraph02).width(450);
+        creditsTable.row();
+        
+        subTitle02 = new Label("Coding", skin, "philosopher-pink");
+        creditsTable.add(subTitle02);
+        creditsTable.row();
+        
+        paragraph03 = new Label("Mohieddine SAADEH (Dino)\n"
+                + "Ali AMMAR\n"
+                + "Naji DAGHER", skin, "philosopher");
+        paragraph03.setFontScale(0.55f);
+        paragraph03.setWrap(true);
+        paragraph03.setAlignment(Align.center);
+        creditsTable.add(paragraph03).width(450);
+        creditsTable.row();
+        
+        stack.add(creditsTable);
         
         btnClose = new ImageButton(new TextureRegionDrawable(Assets.instance.mainScreenButtons.btnClose));
         btnClose.addListener(new ChangeListener() {

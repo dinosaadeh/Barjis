@@ -1,11 +1,13 @@
 {
-    com.badlogic.gdx.graphics.g2d.BitmapFont: { default-font: { file: "Rochester-30.fnt" } },
+    com.badlogic.gdx.graphics.g2d.BitmapFont: { 
+        default-font: { file: "Rochester-30.fnt" }, 
+        philosopher: { file : "Philosopher.fnt"},
+        philosopher-pink: { file : "Philosopher.fnt"}
+    },
     
     com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
-        default: { font: default-font }
-    }
-    
-    com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
-	default: { font: default-font}
+        default: { font: default-font },
+        philosopher: { font: philosopher },
+        philosopher-pink: { font: philosopher-pink }
     }
 }
