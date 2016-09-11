@@ -276,9 +276,9 @@ public class GameController extends InputAdapter {
 
             // for example :if the label is just 1 x dest we should see dest without "1x"
             if(Dices.instance.currentHandMoves[i] == 1) {
-                button = new TextButton((hGroup.getChildren().size==0?" ":" +") +Dices.movesLabels[i], buttonStyle);
+                button = new TextButton((hGroup.getChildren().size==0?" ":" + ") +Dices.movesLabels[i], buttonStyle);
             } else {//greater than 1
-                button = new TextButton((hGroup.getChildren().size ==0?" ":" +") + Dices.instance.currentHandMoves[i] + "x" + Dices.movesLabels[i], buttonStyle);
+                button = new TextButton((hGroup.getChildren().size ==0?" ":" + ") + Dices.instance.currentHandMoves[i] + "x" + Dices.movesLabels[i], buttonStyle);
 
             }
             button.setUserObject(i);
@@ -369,6 +369,7 @@ public class GameController extends InputAdapter {
 
         timerForPlayerWithNoMoves = 0f;
         currentSelectedPawnForPlay = null;
+        disableAllButtonStyle();
     }
     
     private void interpretPlayerMoves(float deltaTime) {
