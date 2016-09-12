@@ -51,17 +51,15 @@ public class GameRenderer implements Disposable {
         camera.update();
 
         extendedViewPort =new ExtendViewport(Constants.VIEWPORT_GUI_WIDTH,Constants.VIEWPORT_GUI_HEIGHT);
-        gameController.stage=new Stage(extendedViewPort);
+        gameController.stage = new Stage(extendedViewPort);
         Gdx.input.setInputProcessor(gameController.stage);
-
     }
 
     public void render () {
         renderGui(batch);
-        renderTestObjects();
+        renderObjects();
         renderPlayer(batch);
         gameController.stage.draw();
-
     }
 
     public void resize (int width, int height) {
@@ -79,7 +77,7 @@ public class GameRenderer implements Disposable {
         batch.dispose();
     }
 
-    private void renderTestObjects() {
+    private void renderObjects() {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
 
@@ -142,8 +140,7 @@ public class GameRenderer implements Disposable {
         renderGuiFpsCounter(batch);
         batch.end();
     }
-
-    
+  
     private void renderGuiFpsCounter (SpriteBatch batch) {
         float x = extendedViewPort.getCamera().viewportWidth - 110;
         float y =  35;

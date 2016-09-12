@@ -45,12 +45,12 @@ public class MenuScreen extends AbstractGameScreen {
         super(game);
         skin = new Skin(Gdx.files.internal("menuSkin.json"));
 
-        OrthographicCamera cameraGUI = new OrthographicCamera(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT);
-        cameraGUI.position.set(0, 0, 0);
-        cameraGUI.setToOrtho(false); // flip y-axis
-        cameraGUI.update();
+//        OrthographicCamera cameraGUI = new OrthographicCamera(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT);
+//        cameraGUI.position.set(0, 0, 0);
+//        cameraGUI.setToOrtho(false); // flip y-axis
+//        cameraGUI.update();
 
-        stage = new Stage(new ScreenViewport(cameraGUI));
+        stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
     }
     
@@ -64,12 +64,14 @@ public class MenuScreen extends AbstractGameScreen {
         stage.draw();
     }
     
-    @Override public void resize (int width, int height) { }
+    @Override public void resize (int width, int height) {
+        
+    }
     
     @Override public void show () {
         Table mainTable = new Table();
         mainTable.setFillParent(true);
-        //mainTable.setDebug(true, true);
+        mainTable.setDebug(true, true);
         mainTable.align(Align.topLeft);
         
         // <editor-fold desc="First row is for Barjis name">
@@ -84,8 +86,9 @@ public class MenuScreen extends AbstractGameScreen {
 
         // <editor-fold desc="Second row for the main image and the menu">
         Table secondRow = new Table();
+        secondRow.setWidth(Gdx.graphics.getWidth());
         mainScreenLogo = new Image(Assets.instance.menuScreenImages.assetMainScreenLogo);
-        secondRow.add(mainScreenLogo).minWidth(332.03125f).padLeft(115f);//.size(327.34375f, 277.6f);
+        secondRow.add(mainScreenLogo).size(850, 694).padLeft(115f);//.size(327.34375f, 277.6f);
         //secondRow.debug();
         // <editor-fold desc="Buttons">
         Table buttonsTable = new Table();
@@ -134,7 +137,7 @@ public class MenuScreen extends AbstractGameScreen {
         secondRow.add(buttonsTable).minWidth(425.96875f).right();//.size(400f, 272.8f);
         // </editor-fold>
 
-        mainTable.add(secondRow).expandX().left().top();//.size(Constants.VIEWPORT_GUI_WIDTH, 308f);
+        mainTable.add(secondRow).expand().left().top();
         mainTable.row();
         // </editor-fold>
         
@@ -153,7 +156,7 @@ public class MenuScreen extends AbstractGameScreen {
         thirdRow.add().width(610);
         thirdRow.add(btnSound);
         
-        mainTable.add(thirdRow).expand().left().bottom();
+        mainTable.add(thirdRow).expandX().left().bottom();
         // </editor-fold>
 
         stage.addActor(mainTable);
