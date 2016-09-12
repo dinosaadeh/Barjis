@@ -116,7 +116,7 @@ public class MenuScreen extends AbstractGameScreen {
         btnHowToPlay = new ImageButton(new TextureRegionDrawable(Assets.instance.mainScreenButtons.btnHowToPlay));
         btnHowToPlay.addListener(new ChangeListener() {
                 public void changed (ChangeEvent e, Actor actor) {
-                    game.setScreen(new GameScreen(game));
+                    game.setScreen(new HowToScreen(game));
                 }
             });
         buttonsTable.add(btnHowToPlay);

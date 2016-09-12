@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -29,7 +30,7 @@ import com.smb215team.barjis.util.Constants;
  *
  * @author dinosaadeh
  */
-public class CreditsScreen extends AbstractGameScreen {
+public class HowToScreen extends AbstractGameScreen {
     private static final String TAG = MenuScreen.class.getName();
     private Stage stage;
     private Skin skin;
@@ -40,12 +41,8 @@ public class CreditsScreen extends AbstractGameScreen {
     private ImageButton btnClose;
     private Label mainTitle;
     private Label paragraph01;
-    private Label subTitle01;
-    private Label paragraph02;
-    private Label subTitle02;
-    private Label paragraph03;
 
-    public CreditsScreen (Game game) {
+    public HowToScreen (Game game) {
         super(game);
         skin = new Skin(Gdx.files.internal("menuSkin.json"));
 
@@ -73,7 +70,6 @@ public class CreditsScreen extends AbstractGameScreen {
     @Override public void show () {
         Table mainTable = new Table();
         mainTable.setFillParent(true);
-        //mainTable.setDebug(true, true);
         mainTable.align(Align.topLeft);
        
         Table leftSide = new Table();
@@ -81,7 +77,7 @@ public class CreditsScreen extends AbstractGameScreen {
         leftSide.add(mainScreenName).padLeft(39.0625f).padTop(24f).left();
         leftSide.row();
         mainScreenLogo = new Image(Assets.instance.menuScreenImages.assetMainScreenLogo);
-        leftSide.add(mainScreenLogo).minWidth(332.03125f).padLeft(115f);//.size(327.34375f, 277.6f);
+        leftSide.add(mainScreenLogo).minWidth(332.03125f).padLeft(115f);
 
         mainTable.add(leftSide).left().top();
         
@@ -102,46 +98,28 @@ public class CreditsScreen extends AbstractGameScreen {
         creditsTable = new Table();
         creditsTable.align(Align.top);
 
-        mainTitle = new Label("Credits", skin);
+        mainTitle = new Label("How to Play", skin);
         mainTitle.setFontScale(1.2f);
         creditsTable.add(mainTitle).height(100f).padTop(10f);
         creditsTable.row();
        
-        paragraph01 = new Label("This project was realised as part of a university project."
-                + " The choice was open and I, @dinosaadeh, wanted to dive into the world of game development. "
-                + "I’ve been wanting to develop this traditional game for a while now. So I suggested the game, "
-                + "created a team and this is the outcome. I hope you all enjoy it.\n\n"
-                + "Thanks to all who collaborated on realising this game:", skin, "philosopher");
+        paragraph01 = new Label("- The objective is to get pawns on the board, run the circuit & return back home.\n" +
+                        "- The first to reach home with all his pawns is the winner\n" +
+                        "- Dices of the game are special shells thrown on the board. Different combinations with shells facing down or up imply a certain number of moves.\n" +
+                        "- 4 dice combination allow for dices replay (Dest, Banj, Shakki, Bara)\n" +
+                        "- Dest = 1 dice closed and the rest is open. This allows for 10 moves\n" +
+                        "- Banj = 1 dice open and the rest is closed. 8 moves with a jump booster of 17 steps if feasible\n" +
+                        "- Shakki = all dices are open. 6 moves\n" +
+                        "- Bara = all dices are closed. 12 moves\n" +
+                        "- 2, 3, 4 = these have respectively the same number of closed pawns and have the same number of moves.\n" +
+                        "- Two dice combinations include a bonus Dest & Banj. The bonus move is used to allow a pawn into the board.\n" +
+                        "- A pawn is safe from being killed by opponent if it is on the home path (the middle path of player’s initial branch) or on cells marked with an X.", skin, "philosopher");
         paragraph01.setFontScale(0.55f);
         paragraph01.setWrap(true);
-        paragraph01.setAlignment(Align.center);
         
-        creditsTable.add(paragraph01).width(450);
-        creditsTable.row();
-        
-        subTitle01 = new Label("Design", skin, "philosopher-pink");
-        creditsTable.add(subTitle01);
-        creditsTable.row();
-        
-        paragraph02 = new Label("Vanessa BITAR", skin, "philosopher");
-        paragraph02.setFontScale(0.55f);
-        paragraph02.setWrap(true);
-        paragraph02.setAlignment(Align.center);
-        creditsTable.add(paragraph02).width(450);
-        creditsTable.row();
-        
-        subTitle02 = new Label("Coding", skin, "philosopher-pink");
-        creditsTable.add(subTitle02);
-        creditsTable.row();
-        
-        paragraph03 = new Label("Mohieddine SAADEH (Dino)\n"
-                + "Ali AMMAR\n"
-                + "Naji DAGHER", skin, "philosopher");
-        paragraph03.setFontScale(0.55f);
-        paragraph03.setWrap(true);
-        paragraph03.setAlignment(Align.center);
-        creditsTable.add(paragraph03).width(450);
-        creditsTable.row();
+        ScrollPane scrollPane = new ScrollPane(paragraph01);
+        scrollPane.debug();
+        creditsTable.add(scrollPane).width(400).height(390);
         
         stack.add(creditsTable);
         
