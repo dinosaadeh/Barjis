@@ -100,6 +100,7 @@ project(":core") {
         compile "com.badlogicgames.gdx:gdx-bullet:$gdxVersion"
         compile "com.badlogicgames.ashley:ashley:$ashleyVersion"
         compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
+        compile "io.socket:socket.io-client:0.6.2"////added by ND 120916
     }
 }
 
