@@ -10,8 +10,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -22,6 +25,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.smb215team.barjis.game.Assets;
 import com.smb215team.barjis.util.Constants;
@@ -33,7 +37,6 @@ import com.smb215team.barjis.util.Constants;
 public class HowToScreen extends AbstractGameScreen {
     private static final String TAG = MenuScreen.class.getName();
     private Stage stage;
-    private Skin skin;
     private Image mainScreenName;
     private Image mainScreenLogo;
     private Table creditsTable;
@@ -41,17 +44,12 @@ public class HowToScreen extends AbstractGameScreen {
     private ImageButton btnClose;
     private Label mainTitle;
     private Label paragraph01;
-
+    private FitViewport fitViewport;
     public HowToScreen (Game game) {
         super(game);
-        skin = new Skin(Gdx.files.internal("menuSkin.json"));
+        fitViewport=new FitViewport(Constants.VIEWPORT_GUI_WIDTH,Constants.VIEWPORT_GUI_HEIGHT);
 
-        OrthographicCamera cameraGUI = new OrthographicCamera(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT);
-        cameraGUI.position.set(0, 0, 0);
-        cameraGUI.setToOrtho(false); // flip y-axis
-        cameraGUI.update();
-
-        stage = new Stage(new ScreenViewport(cameraGUI));
+        stage = new Stage(fitViewport);
         Gdx.input.setInputProcessor(stage);
     }
     
@@ -77,7 +75,7 @@ public class HowToScreen extends AbstractGameScreen {
         leftSide.add(mainScreenName).padLeft(39.0625f).padTop(24f).left();
         leftSide.row();
         mainScreenLogo = new Image(Assets.instance.menuScreenImages.assetMainScreenLogo);
-        leftSide.add(mainScreenLogo).minWidth(332.03125f).padLeft(115f);
+        leftSide.add(mainScreenLogo).minWidth(300f).padLeft(115f);
 
         mainTable.add(leftSide).left().top();
         
@@ -92,17 +90,23 @@ public class HowToScreen extends AbstractGameScreen {
                     game.setScreen(new MenuScreen(game));
                 }
             });
-        btnClose.align(Align.topRight).pad(50, 0, 0, 65);
+        btnClose.align(Align.topRight).pad(50, 0, 0, 50);
         stack.add(btnClose);
         
         creditsTable = new Table();
         creditsTable.align(Align.top);
 
-        mainTitle = new Label("How to Play", skin);
-        mainTitle.setFontScale(1.2f);
+        Label.LabelStyle rochesterFont=new Label.LabelStyle();
+        rochesterFont.font= Assets.instance.fonts.defaultBig;
+
+        mainTitle = new Label("How to Play", rochesterFont);
+        mainTitle.setFontScale(0.7f);
         creditsTable.add(mainTitle).height(100f).padTop(10f);
         creditsTable.row();
-       
+
+        Label.LabelStyle lucidiaFont=new Label.LabelStyle();
+        lucidiaFont.font=Assets.instance.fonts.LucidiaBig;
+
         paragraph01 = new Label("- The objective is to get pawns on the board, run the circuit & return back home.\n" +
                         "- The first to reach home with all his pawns is the winner\n" +
                         "- Dices of the game are special shells thrown on the board. Different combinations with shells facing down or up imply a certain number of moves.\n" +
@@ -113,17 +117,17 @@ public class HowToScreen extends AbstractGameScreen {
                         "- Bara = all dices are closed. 12 moves\n" +
                         "- 2, 3, 4 = these have respectively the same number of closed pawns and have the same number of moves.\n" +
                         "- Two dice combinations include a bonus Dest & Banj. The bonus move is used to allow a pawn into the board.\n" +
-                        "- A pawn is safe from being killed by opponent if it is on the home path (the middle path of player’s initial branch) or on cells marked with an X.", skin, "philosopher");
-        paragraph01.setFontScale(0.55f);
+                        "- A pawn is safe from being killed by opponent if it is on the home path (the middle path of player’s initial branch) or on cells marked with an X.", lucidiaFont);
+        paragraph01.setFontScale(0.25f);
         paragraph01.setWrap(true);
-        
+
         ScrollPane scrollPane = new ScrollPane(paragraph01);
         scrollPane.debug();
-        creditsTable.add(scrollPane).width(400).height(390);
+        creditsTable.add(scrollPane).width(280).height(300);
         
         stack.add(creditsTable);
         
-        mainTable.add(stack).height(550).top().padTop(11);
+        mainTable.add(stack).minWidth(280).height(Constants.VIEWPORT_GUI_HEIGHT-30).top().padTop(11);
         
         stage.addActor(mainTable);
     }

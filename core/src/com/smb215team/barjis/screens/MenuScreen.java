@@ -19,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.smb215team.barjis.game.Assets;
 import com.smb215team.barjis.util.Constants;
@@ -30,7 +31,6 @@ import com.smb215team.barjis.util.Constants;
 public class MenuScreen extends AbstractGameScreen {
     private static final String TAG = MenuScreen.class.getName();
     private Stage stage;
-    private Skin skin;
     private Image mainScreenName;
     private Image mainScreenLogo;
     private ImageButton btnPlaySolo;
@@ -40,17 +40,11 @@ public class MenuScreen extends AbstractGameScreen {
     private ImageButton btnCredits;
     private Image poweredByLibgdx;
     private ImageButton btnSound;
-
+    private FitViewport fitViewport;// in case we need it or the camera GUI
     public MenuScreen (Game game) {
         super(game);
-        skin = new Skin(Gdx.files.internal("menuSkin.json"));
-
-//        OrthographicCamera cameraGUI = new OrthographicCamera(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT);
-//        cameraGUI.position.set(0, 0, 0);
-//        cameraGUI.setToOrtho(false); // flip y-axis
-//        cameraGUI.update();
-
-        stage = new Stage(new ScreenViewport());
+        fitViewport =new FitViewport(Constants.VIEWPORT_GUI_WIDTH,Constants.VIEWPORT_GUI_HEIGHT);
+        stage = new Stage(fitViewport);
         Gdx.input.setInputProcessor(stage);
     }
     
@@ -71,7 +65,6 @@ public class MenuScreen extends AbstractGameScreen {
     @Override public void show () {
         Table mainTable = new Table();
         mainTable.setFillParent(true);
-        mainTable.setDebug(true, true);
         mainTable.align(Align.topLeft);
         
         // <editor-fold desc="First row is for Barjis name">
@@ -88,7 +81,7 @@ public class MenuScreen extends AbstractGameScreen {
         Table secondRow = new Table();
         secondRow.setWidth(Gdx.graphics.getWidth());
         mainScreenLogo = new Image(Assets.instance.menuScreenImages.assetMainScreenLogo);
-        secondRow.add(mainScreenLogo).size(850, 694).padLeft(115f);//.size(327.34375f, 277.6f);
+        secondRow.add(mainScreenLogo).padLeft(115f);//.size(327.34375f, 277.6f);
         //secondRow.debug();
         // <editor-fold desc="Buttons">
         Table buttonsTable = new Table();
@@ -134,7 +127,7 @@ public class MenuScreen extends AbstractGameScreen {
         buttonsTable.add(btnCredits);
         buttonsTable.row();
         
-        secondRow.add(buttonsTable).minWidth(425.96875f).right();//.size(400f, 272.8f);
+        secondRow.add(buttonsTable).right();//.size(400f, 272.8f);
         // </editor-fold>
 
         mainTable.add(secondRow).expand().left().top();
