@@ -37,6 +37,11 @@ import com.smb215team.barjis.game.objects.Pawn;
 import com.smb215team.barjis.game.objects.Player;
 import com.smb215team.barjis.screens.MenuScreen;
 import com.smb215team.barjis.util.Constants;
+import com.smb215team.barjis.game.UpdateServer;
+import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
@@ -51,6 +56,8 @@ public class GameController extends InputAdapter {
     Player[] players;
     public int currentPlayerIndex;
     DiceContainer diceContainer;
+    UpdateServer updateServer;  
+    public int playerPawnUpdateIndex =0,pawnUpdateIndex=0;
     // <editor-fold desc="Timers">
     public float timerForThrowingDicesAtGameStart = 0.0f;
     public float timerForThrowingDices = 0.0f;
@@ -72,14 +79,16 @@ public class GameController extends InputAdapter {
 
     private void init () {
         state = GameState.gameStart;
-
         Dices.instance.init();
         timerForThrowingDices = 0.0f;
         ConfigurationController.initCells();
 
         // <editor-fold desc="Initialising players' pawns">
+        updateServer = new UpdateServer(this);
+         
         players = new Player[2]; //TODO: account for variable number of players (1 (AI), 2, 4)
-        currentPlayerIndex = -1;
+        currentPlayerIndex = -1; 
+                
         if(2 == players.length) {
             players[0] = new Player(Player.PLAYER_LEFT_BRANCH, 0, ConfigurationController.GetPawnInitialPlaceholder(0));
             players[1] = new Player(Player.PLAYER_RIGHT_BRANCH, 1, ConfigurationController.GetPawnInitialPlaceholder(1));
@@ -88,6 +97,7 @@ public class GameController extends InputAdapter {
             for(int i = 0; i < players.length; i++) {
                 players[i] = new Player(i, i, ConfigurationController.GetPawnInitialPlaceholder(i));
             }
+            
         }
         // </editor-fold>
     }
@@ -430,6 +440,7 @@ public class GameController extends InputAdapter {
                 return;// if the
             }
             Vector2 newPawnPosition = currentSelectedPawnForPlay.move(Dices.movesValues[selectedIndexInTable]);
+          
             killPawnsOnPosition(newPawnPosition);
             if(players[currentPlayerIndex].hasWonTheGame()) {
                 this.state = state.gameOver;
@@ -440,6 +451,9 @@ public class GameController extends InputAdapter {
             players[currentPlayerIndex].updateAvailableMoves();
             fillDiceButtonText();
             enableButtonPawnCanPlay();
+            updateServer.updatePawns(currentPlayerIndex, pawnUpdateIndex, selectedIndexInTable);
+            
+         //   UpdateServer.instance.updatePawns(Gdx.graphics.getDeltaTime(), currentPlayerIndex, 0,newPawnPosition); 
         }
     }
 
@@ -525,10 +539,20 @@ public class GameController extends InputAdapter {
         for(Player player : players) {
             for(Pawn pawn : player.pawns) {
                 pawn.isSelected = false;
+               
             }
         }
         players[currentPlayerIndex].pawns[currentPlayerPawnIndex].isSelected = true;
         currentSelectedPawnForPlay = players[currentPlayerIndex].pawns[currentPlayerPawnIndex];
+        playerPawnUpdateIndex = currentPlayerIndex ;
+        pawnUpdateIndex = currentPlayerPawnIndex;
     }
     // </editor-fold>
+    public void movePawnByServer (int playerIndex,int pawnIndex,int selectedIndexFromTable)
+    {
+    } 
+      
+    
+
+
 }
