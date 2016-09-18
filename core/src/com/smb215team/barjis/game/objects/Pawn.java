@@ -6,6 +6,7 @@
 package com.smb215team.barjis.game.objects;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -35,7 +36,12 @@ public class Pawn extends AbstractGameObject {
     private Integer[] hintArray;
     public ArrayList<Integer> currentPossibleMoves;
     public boolean isSelected;
-
+    Sound horseSound = Gdx.audio.newSound(Gdx.files.internal("horse.wav"));
+    Sound soldierSound = Gdx.audio.newSound(Gdx.files.internal("sir-yes-sir.mp3"));
+    Sound jumpSound= Gdx.audio.newSound(Gdx.files.internal("jump.mp3"));
+    Sound stompSound= Gdx.audio.newSound(Gdx.files.internal("stomp.mp3"));
+    Sound baDaDumSound= Gdx.audio.newSound(Gdx.files.internal("ba-da-dum.wav"));
+    Sound largeCheeringSound=Gdx.audio.newSound(Gdx.files.internal("large-cheering.mp3"));
     /**
      * Reflects the pawn's position index on the player's path
      * - value of -1 means the pawn is dead (out of the board)
@@ -206,9 +212,28 @@ public class Pawn extends AbstractGameObject {
     public int getPositionOnPath(){
         return this.positionOnPath;
     }
-    
+
+    public boolean isDead(){
+        return this.position==this.deadPosition;
+    }
+
     public void die() {
         this.position = deadPosition;
         this.bounds.set(position.x, position.y, dimension.x, dimension.y);
+        stompSound.play();
+
     }
+
+    public void playHorseSound(){
+
+        horseSound.play();
+    }
+    public void playMilitarySound(){
+        soldierSound.play();
+    }
+    public void playJumpSound(){
+        jumpSound.play();
+    }
+    public void playBadaDump(){baDaDumSound.play();}
+    public void playLargeCheering(){largeCheeringSound.play();}
 }

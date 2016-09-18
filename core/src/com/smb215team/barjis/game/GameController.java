@@ -436,26 +436,53 @@ public class GameController extends InputAdapter {
     public void textClicked(ChangeListener.ChangeEvent e, Actor actor){
         if(currentSelectedPawnForPlay!= null) {
             selectedIndexInTable = ((Integer) actor.getUserObject());
-            if(Dices.movesValues[selectedIndexInTable] < 1){
-                return;// if the
-            }
-            Vector2 newPawnPosition = currentSelectedPawnForPlay.move(Dices.movesValues[selectedIndexInTable]);
-          
-            killPawnsOnPosition(newPawnPosition);
-            if(players[currentPlayerIndex].hasWonTheGame()) {
-                this.state = state.gameOver;
-                return;
-            }
-            Dices.instance.currentHandMoves[selectedIndexInTable]--;
-            //re-create the button Table
-            players[currentPlayerIndex].updateAvailableMoves();
-            fillDiceButtonText();
-            enableButtonPawnCanPlay();
+            movePawnByServer(currentPlayerIndex,pawnUpdateIndex,selectedIndexInTable);
             updateServer.updatePawns(currentPlayerIndex, pawnUpdateIndex, selectedIndexInTable);
             
-         //   UpdateServer.instance.updatePawns(Gdx.graphics.getDeltaTime(), currentPlayerIndex, 0,newPawnPosition); 
         }
     }
+
+    public void movePawnByServer (int playerIndex,int pawnIndex,int selectedIndexFromTable)
+    {
+        if(Dices.movesValues[selectedIndexFromTable] < 1){
+            return;// if the
+        }
+        if(players[playerIndex].pawns[pawnIndex].isDead()){// the selected is Bonus
+
+            if(currentPlayerIndex==1){
+                players[playerIndex].pawns[pawnIndex].playMilitarySound();
+
+            }else{
+                players[playerIndex].pawns[pawnIndex].playHorseSound();
+            }
+
+        }
+        if(selectedIndexFromTable==5){// Banj is selected
+            players[playerIndex].pawns[pawnIndex].playJumpSound();
+        }
+        Vector2 newPawnPosition = players[playerIndex].pawns[pawnIndex].move(Dices.movesValues[selectedIndexFromTable]);
+
+        killPawnsOnPosition(newPawnPosition);
+
+        if(players[playerIndex].pawns[pawnIndex].positionOnPath==83){
+            players[playerIndex].pawns[pawnIndex].playBadaDump();
+        }
+
+        if(players[playerIndex].hasWonTheGame()) {
+            this.state = state.gameOver;
+            players[playerIndex].pawns[0].playLargeCheering();
+            return;
+        }
+        Dices.instance.currentHandMoves[selectedIndexFromTable]--;
+        //re-create the button Table
+        players[playerIndex].updateAvailableMoves();
+        fillDiceButtonText();
+        enableButtonPawnCanPlay();
+
+    }
+
+
+
 
     private void enableButtonPawnCanPlay() {
         if(currentSelectedPawnForPlay != null) {
@@ -548,11 +575,7 @@ public class GameController extends InputAdapter {
         pawnUpdateIndex = currentPlayerPawnIndex;
     }
     // </editor-fold>
-    public void movePawnByServer (int playerIndex,int pawnIndex,int selectedIndexFromTable)
-    {
-    } 
-      
-    
+
 
 
 }
