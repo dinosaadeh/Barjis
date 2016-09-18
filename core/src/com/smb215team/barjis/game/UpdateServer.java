@@ -5,16 +5,13 @@
  */
 package com.smb215team.barjis.game;
 
-import com.badlogic.gdx.Gdx;  
-import com.badlogic.gdx.math.Vector2;
-import com.smb215team.barjis.game.objects.Pawn;
+import com.badlogic.gdx.Gdx;   
 import com.smb215team.barjis.game.GameController;
 import io.socket.client.IO; 
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 import org.json.JSONException;
-import org.json.JSONObject;
-import com.smb215team.barjis.game.objects.Player;
+import org.json.JSONObject; 
 
 /**
  *
@@ -22,15 +19,15 @@ import com.smb215team.barjis.game.objects.Player;
  */
 public class UpdateServer {
     private static final String TAG = UpdateServer.class.getName();
-    public static final UpdateServer instance = new UpdateServer();  
+  //  public static final UpdateServer instance = new UpdateServer(GameController gameController);  
     private final float UPDATE_TIME = 1/30f;   
     boolean multiPlayerGame;
     float timer; 
-    public Socket socket;  
-    Player [] players; 
-    
-    public UpdateServer() {   
+    public Socket socket;   
+    GameController gameController;
+    public UpdateServer(GameController gameController) {   
             init();
+            this.gameController =gameController;
     }
  
     public void init() {      
@@ -80,51 +77,35 @@ public class UpdateServer {
             } 
         }).once("pawnMoved" , new Emitter.Listener() {
             @Override
-            public void call(Object... args) {                
-
+            public void call(Object... args) {
                 JSONObject data = (JSONObject) args[0];
                 try {
                     String pawnId = data.getString("id");
-                    Double positionX  = data.getDouble("x"); 
-                    Double positionY  = data.getDouble("y");
+                    int selectedIndexFromTable = data.getInt("selectedIndexFromTable");
                     int playerIndex = data.getInt("playerIndex");
-                    int pawnIndex   = data.getInt("pawnIndex");                    
-                
-                            for(Player player : players) {
-            for(Pawn pawn : player.pawns) {  
-//here we should call the function that updates the pawn position
-            }
-        }
-   /*                 
-if (players[0].pawns[0] != null) {
-              
-                  players[0].pawns[0].pawnUpdatePosition(x.floatValue(), y.floatValue());
- 
-}*/     
-                   
+                    int pawnIndex = data.getInt("pawnIndex");
+                    gameController.movePawnByServer(playerIndex, pawnIndex, selectedIndexFromTable);
                 } catch (JSONException e) {
                     Gdx.app.log(TAG, " configSocket Error moving Pawn");
                 }
             }
 
         }); 
-    }
+    } 
 
-    public void updatePawns(float dt,int playerIndex, int pawnIndex, Vector2 pawnNewPosition) {
-        timer += dt;
-   
+    public void updatePawns(int playerIndex, int pawnIndex, int selectedIndexFromTable) {
+        timer += Gdx.graphics.getDeltaTime();
+
         //if (timer > UPDATE_TIME) {
-            JSONObject data = new JSONObject();
-   Gdx.app.log(TAG, "pawnmove" + dt + playerIndex + pawnIndex +"");
-            try {
-                data.put("x",pawnNewPosition.x );
-                data.put("y",pawnNewPosition.y );
-                data.put("playerIndex",playerIndex);
-                data.put("pawnIndex", pawnIndex);
-                socket.emit("pawnMoved", data);
-            } catch (JSONException e) {
-                Gdx.app.log(TAG, "" + e);
-            }
-      //  }
-    }    
-}
+        JSONObject data = new JSONObject(); 
+        try {
+            data.put("selectedIndexFromTable", selectedIndexFromTable);
+            data.put("playerIndex", playerIndex);
+            data.put("pawnIndex", pawnIndex);
+            socket.emit("pawnMoved", data);
+        } catch (JSONException e) {
+            Gdx.app.log(TAG, "" + e);
+        }
+        //  }
+    }   
+} 
