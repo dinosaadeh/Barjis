@@ -7,6 +7,7 @@ package com.smb215team.barjis.game;
 
 import com.badlogic.gdx.Gdx;   
 import com.smb215team.barjis.game.GameController;
+import com.smb215team.barjis.game.objects.Player;
 import io.socket.client.IO; 
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
@@ -23,7 +24,8 @@ public class UpdateServer {
     private final float UPDATE_TIME = 1/30f;   
     boolean multiPlayerGame;
     float timer; 
-    public Socket socket;   
+    public Socket socket;       
+    public static int playerOrder ;
     GameController gameController;
     public UpdateServer(GameController gameController) {   
             init();
@@ -59,8 +61,9 @@ public class UpdateServer {
                 JSONObject data = (JSONObject) args[0];
                 try {
                     String id = data.getString("id");
-                    Gdx.app.log(TAG, " My id is " + id);     
-                } catch (JSONException e) {
+                    playerOrder = data.getInt("playerOrder");
+                    Gdx.app.log(TAG, "I am player" + playerOrder);  
+                 } catch (JSONException e) {
                     Gdx.app.log(TAG, " configSocket Error in getting ID");
                 }
             }
@@ -70,21 +73,23 @@ public class UpdateServer {
                 JSONObject data = (JSONObject) args[0];
                 try {         
                     String id = data.getString("id"); 
-                    Gdx.app.log(TAG, " New Player connected " + id ) ;    
+                    Gdx.app.log(TAG, " New Player connected  " + id ) ;    
+      
                 } catch (JSONException e) {
                     Gdx.app.log(TAG, " configSocket Error getting newPlayer ID");
                 }
             } 
-        }).once("pawnMoved" , new Emitter.Listener() {
+        }).on("pawnMoved" , new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 JSONObject data = (JSONObject) args[0];
                 try {
                     String pawnId = data.getString("id");
-                    int selectedIndexFromTable = data.getInt("selectedIndexFromTable");
+                    int selectedIndexInTable = data.getInt("selectedIndexInTable");
                     int playerIndex = data.getInt("playerIndex");
                     int pawnIndex = data.getInt("pawnIndex");
-                    gameController.movePawnByServer(playerIndex, pawnIndex, selectedIndexFromTable);
+                    Gdx.app.log(TAG, "player " + playerIndex + " pawn " + pawnIndex + " IndexInTable " + selectedIndexInTable);
+                    gameController.movePawnByServer(playerIndex, pawnIndex, selectedIndexInTable,false);
                 } catch (JSONException e) {
                     Gdx.app.log(TAG, " configSocket Error moving Pawn");
                 }
@@ -93,13 +98,13 @@ public class UpdateServer {
         }); 
     } 
 
-    public void updatePawns(int playerIndex, int pawnIndex, int selectedIndexFromTable) {
+    public void updatePawns(int playerIndex, int pawnIndex, int selectedIndexInTable) {
         timer += Gdx.graphics.getDeltaTime();
 
         //if (timer > UPDATE_TIME) {
         JSONObject data = new JSONObject(); 
         try {
-            data.put("selectedIndexFromTable", selectedIndexFromTable);
+            data.put("selectedIndexInTable", selectedIndexInTable);
             data.put("playerIndex", playerIndex);
             data.put("pawnIndex", pawnIndex);
             socket.emit("pawnMoved", data);
