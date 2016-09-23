@@ -23,9 +23,15 @@ io.on('connection', function (socket) {
         data.id =socket.id;
         socket.broadcast.emit("pawnMoved",data);
     });
+    socket.on("switchPlayer", function (data){
+    data.id =socket.id;
+    //socket.emit("switchPlayer",data);  when running it pawnMoved is not working
+    socket.broadcast.emit("switchPlayer",data);
+    });    
     socket.on('disconnect', function () {
         connections.splice(connections.indexOf(socket), 1);
         console.log("player diconnected");
         console.log('disconnected: %s sockets', connections.length);
     });
+
 });
