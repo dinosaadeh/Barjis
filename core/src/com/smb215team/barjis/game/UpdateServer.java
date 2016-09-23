@@ -25,7 +25,7 @@ public class UpdateServer {
     boolean multiPlayerGame;
     float timer; 
     public Socket socket;       
-    public static int playerOrder ;
+    public static  int playerOrder ; ///playerOrder by Session
     GameController gameController;
     public UpdateServer(GameController gameController) {   
             init();
@@ -95,6 +95,17 @@ public class UpdateServer {
                 }
             }
 
+        }).on("switchPlayer" , new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                JSONObject data = (JSONObject) args[0];
+                try { 
+                    int playerIndexToSwitch = data.getInt("playerIndexToSwitch"); 
+                    gameController.switchPlayerByServer(playerIndexToSwitch);    
+                } catch (JSONException e) {
+                    Gdx.app.log(TAG, " configSocket Error gettin playerIndexToSwitch");
+                }
+            } 
         }); 
     } 
 
@@ -112,5 +123,17 @@ public class UpdateServer {
             Gdx.app.log(TAG, "" + e);
         }
         //  }
-    }   
+    }
+    
+    public void switchPlayerServer(int playerIndexToSwitch) {
+           JSONObject data = new JSONObject(); 
+        try { 
+            data.put("playerIndexToSwitch", playerIndexToSwitch); 
+            socket.emit("switchPlayer", data);
+        } catch (JSONException e) {
+            Gdx.app.log(TAG, "" + e);
+        }
+        //  }
+    }
+     
 } 
