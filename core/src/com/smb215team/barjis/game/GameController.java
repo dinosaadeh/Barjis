@@ -58,6 +58,7 @@ public class GameController extends InputAdapter {
     DiceContainer diceContainer;
     UpdateServer updateServer;  
     public int playerPawnUpdateIndex =0,pawnUpdateIndex=0;
+    public int currentPlayerIndexByServer =0 ;/// 0 --> Player1      1 -->Player2
     // <editor-fold desc="Timers">
     public float timerForThrowingDicesAtGameStart = 0.0f;
     public float timerForThrowingDices = 0.0f;
@@ -85,10 +86,9 @@ public class GameController extends InputAdapter {
 
         // <editor-fold desc="Initialising players' pawns">
         updateServer = new UpdateServer(this);
-         
         players = new Player[2]; //TODO: account for variable number of players (1 (AI), 2, 4)
-        currentPlayerIndex = -1; 
-                
+        currentPlayerIndex = -1;
+  
         if(2 == players.length) {
             players[0] = new Player(Player.PLAYER_LEFT_BRANCH, 0, ConfigurationController.GetPawnInitialPlaceholder(0));
             players[1] = new Player(Player.PLAYER_RIGHT_BRANCH, 1, ConfigurationController.GetPawnInitialPlaceholder(1));
@@ -98,7 +98,7 @@ public class GameController extends InputAdapter {
                 players[i] = new Player(i, i, ConfigurationController.GetPawnInitialPlaceholder(i));
             }
             
-        }
+        }    
         // </editor-fold>
     }
 
@@ -254,20 +254,22 @@ public class GameController extends InputAdapter {
         // Once dices are fully rolled, let the player do his moves
         if(!Dices.instance.canPlayerThrowDices && Dices.instance.dicesReachedAFullStop()) {
             prepareForStatePlayerTurnPlayPawns();
-            this.state = state.playerTurnPlayPawns;
+            this.state = state.playerTurnPlayPawns; 
         }
     }
-
+ 
     private void playDices(float deltaTime) {
-        Dices.instance.update(deltaTime); //commentToDelete: later on this will be called only when needed
-
+        Dices.instance.update(deltaTime); //commentToDelete: later on this will be called only when needed 
         timerForThrowingDices += deltaTime;
         if(timerForThrowingDices >= Constants.TIMER_LIMIT_FOR_THROWING_DICES && Dices.instance.canPlayerThrowDices) {
             Dices.instance.throwDices(diceContainer.diceMarginFromX, diceContainer.diceMarginToX, diceContainer.diceMarginFromY, diceContainer.diceMarginToY);
             timerForThrowingDices -= Constants.TIMER_LIMIT_FOR_THROWING_DICES; // If you reset it to 0 you will loose a few milliseconds every 2 seconds.
-
+                  
+        Gdx.app.log(TAG, "playerOrder "+updateServer.playerOrder  + " currentPlayer " + currentPlayerIndex);
+            
             fillDiceButtonText();
-        }
+        
+        } 
     }
 
     public void fillDiceButtonText(){
@@ -436,15 +438,17 @@ public class GameController extends InputAdapter {
     public void textClicked(ChangeListener.ChangeEvent e, Actor actor){
         if(currentSelectedPawnForPlay!= null) {
             selectedIndexInTable = ((Integer) actor.getUserObject());
-            movePawnByServer(currentPlayerIndex,pawnUpdateIndex,selectedIndexInTable);
-            updateServer.updatePawns(currentPlayerIndex, pawnUpdateIndex, selectedIndexInTable);
-            
+  
+       movePawnByServer(currentPlayerIndex,pawnUpdateIndex,selectedIndexInTable,true);    
+       updateServer.updatePawns(currentPlayerIndex, pawnUpdateIndex, selectedIndexInTable);  
         }
+        
     }
-
-    public void movePawnByServer (int playerIndex,int pawnIndex,int selectedIndexFromTable)
+ 
+ 
+    public void movePawnByServer (int playerIndex,int pawnIndex,int selectedIndexInTable,boolean playerHimSelf)
     {
-        if(Dices.movesValues[selectedIndexFromTable] < 1){
+        if(Dices.movesValues[selectedIndexInTable] < 1){ 
             return;// if the
         }
         if(players[playerIndex].pawns[pawnIndex].isDead()){// the selected is Bonus
@@ -457,10 +461,10 @@ public class GameController extends InputAdapter {
             }
 
         }
-        if(selectedIndexFromTable==5){// Banj is selected
+        if(selectedIndexInTable==5){// Banj is selected
             players[playerIndex].pawns[pawnIndex].playJumpSound();
         }
-        Vector2 newPawnPosition = players[playerIndex].pawns[pawnIndex].move(Dices.movesValues[selectedIndexFromTable]);
+        Vector2 newPawnPosition = players[playerIndex].pawns[pawnIndex].move(Dices.movesValues[selectedIndexInTable]);
 
         killPawnsOnPosition(newPawnPosition);
 
@@ -473,16 +477,17 @@ public class GameController extends InputAdapter {
             players[playerIndex].pawns[0].playLargeCheering();
             return;
         }
-        Dices.instance.currentHandMoves[selectedIndexFromTable]--;
-        //re-create the button Table
-        players[playerIndex].updateAvailableMoves();
-        fillDiceButtonText();
-        enableButtonPawnCanPlay();
+       if (playerHimSelf)        
+       {
+      Dices.instance.currentHandMoves[selectedIndexInTable]--;
+        }
+     //re-create the button Table
+      players[playerIndex].updateAvailableMoves();
+      fillDiceButtonText();
+      enableButtonPawnCanPlay();
 
     }
-
-
-
+ 
 
     private void enableButtonPawnCanPlay() {
         if(currentSelectedPawnForPlay != null) {
@@ -528,16 +533,34 @@ public class GameController extends InputAdapter {
     // <editor-fold desc="Helper Methods">
     private void switchToNextPlayer() {
         if(currentPlayerIndex == players.length-1) {
-            currentPlayerIndex = 0;
+            currentPlayerIndex = 0;  
             diceContainer.init("SIDE01");
         }
         else {
-            currentPlayerIndex++;
+            currentPlayerIndex++;         
+            
             diceContainer.init("SIDE02");
-        }
+        }   
+         if ( currentPlayerIndexByServer ==0)  ////currentPlayerIndexByServer should replace currentPlayerIndex later on 
+            {
+            updateServer.switchPlayerServer(1);  
+            currentPlayerIndexByServer ++;
+                            
+      Gdx.app.log(TAG,"switchPlayerIndex " + currentPlayerIndexByServer + " playerOder " + updateServer.playerOrder );
+            }
+            else   {
+            updateServer.switchPlayerServer(0);
+            currentPlayerIndexByServer --;
+      Gdx.app.log(TAG,"switchPlayerIndex " + currentPlayerIndexByServer + " playerOder " + updateServer.playerOrder );            
+                    } 
         Dices.instance.reset();
         currentSelectedPawnForPlay = null;
         this.state = GameState.playerTurnThrowDice;
+    }
+    public void switchPlayerByServer (int switchPlayerToIndex) {
+        currentPlayerIndexByServer =switchPlayerToIndex;
+      Gdx.app.log(TAG,"switchPlayerIndex " + currentPlayerIndexByServer + " playerOder " + updateServer.playerOrder );                    
+    
     }
     
     /**
