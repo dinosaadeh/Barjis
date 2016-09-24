@@ -8,27 +8,14 @@ package com.smb215team.barjis.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Stack;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
-import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.viewport.FillViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.smb215team.barjis.game.enums.GameState;
 import com.smb215team.barjis.game.objects.Dice;
 import com.smb215team.barjis.game.objects.DiceContainer;
@@ -38,10 +25,6 @@ import com.smb215team.barjis.game.objects.Player;
 import com.smb215team.barjis.screens.MenuScreen;
 import com.smb215team.barjis.util.Constants;
 import com.smb215team.barjis.game.UpdateServer;
-import io.socket.client.Socket;
-import io.socket.emitter.Emitter;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  *
@@ -545,13 +528,10 @@ public class GameController extends InputAdapter {
             {
             updateServer.switchPlayerServer(1);  
             currentPlayerIndexByServer ++;
-                            
-      Gdx.app.log(TAG,"switchPlayerIndex " + currentPlayerIndexByServer + " playerOder " + updateServer.playerOrder );
             }
             else   {
             updateServer.switchPlayerServer(0);
-            currentPlayerIndexByServer --;
-      Gdx.app.log(TAG,"switchPlayerIndex " + currentPlayerIndexByServer + " playerOder " + updateServer.playerOrder );            
+            currentPlayerIndexByServer --;           
                     } 
         Dices.instance.reset();
         currentSelectedPawnForPlay = null;
@@ -559,8 +539,6 @@ public class GameController extends InputAdapter {
     }
     public void switchPlayerByServer (int switchPlayerToIndex) {
         currentPlayerIndexByServer =switchPlayerToIndex;
-      Gdx.app.log(TAG,"switchPlayerIndex " + currentPlayerIndexByServer + " playerOder " + updateServer.playerOrder );                    
-    
     }
     
     /**
@@ -598,7 +576,4 @@ public class GameController extends InputAdapter {
         pawnUpdateIndex = currentPlayerPawnIndex;
     }
     // </editor-fold>
-
-
-
 }
