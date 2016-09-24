@@ -14,9 +14,9 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.smb215team.barjis.game.Assets;
 import com.smb215team.barjis.game.ConfigurationController;
-import com.smb215team.barjis.game.GameController;
 import com.smb215team.barjis.game.enums.PawnState;
 import com.smb215team.barjis.util.Constants;
+
 import java.util.ArrayList;
 
 /**
@@ -219,6 +219,7 @@ public class Pawn extends AbstractGameObject {
 
     public void die() {
         this.position = deadPosition;
+        this.positionOnPath=0;
         this.bounds.set(position.x, position.y, dimension.x, dimension.y);
         stompSound.play();
 

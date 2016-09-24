@@ -98,7 +98,7 @@ public class MenuScreen extends AbstractGameScreen {
         btnPvp = new ImageButton(new TextureRegionDrawable(Assets.instance.mainScreenButtons.btnPvp));
         btnPvp.addListener(new ChangeListener() {
                 public void changed (ChangeEvent e, Actor actor) {
-                    game.setScreen(new GameScreen(game));
+                    game.setScreen(new MultiplayerGameScreen(game));
                 }
             });
         buttonsTable.add(btnPvp);
