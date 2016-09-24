@@ -421,21 +421,20 @@ public class GameController extends InputAdapter {
 
     public void movePawn(int playerIndex, int pawnIndex, int selectedIndexFromTable) {
         if (Dices.movesValues[selectedIndexFromTable] < 1) {
-            return;// if the
+            return;
         }
         if (players[playerIndex].pawns[pawnIndex].isDead()) {// the selected is Bonus
-
             if (currentPlayerIndex == 1) {
                 players[playerIndex].pawns[pawnIndex].playMilitarySound();
-
             } else {
                 players[playerIndex].pawns[pawnIndex].playHorseSound();
             }
-
         }
+        
         if (selectedIndexFromTable == 5) {// Banj is selected
             players[playerIndex].pawns[pawnIndex].playJumpSound();
         }
+        
         Vector2 newPawnPosition = players[playerIndex].pawns[pawnIndex].move(Dices.movesValues[selectedIndexFromTable]);
 
         killPawnsOnPosition(newPawnPosition);
