@@ -8,27 +8,14 @@ package com.smb215team.barjis.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Stack;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
-import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.viewport.FillViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.smb215team.barjis.game.enums.GameState;
 import com.smb215team.barjis.game.objects.Dice;
 import com.smb215team.barjis.game.objects.DiceContainer;
@@ -37,11 +24,6 @@ import com.smb215team.barjis.game.objects.Pawn;
 import com.smb215team.barjis.game.objects.Player;
 import com.smb215team.barjis.screens.MenuScreen;
 import com.smb215team.barjis.util.Constants;
-import com.smb215team.barjis.game.UpdateServer;
-import io.socket.client.Socket;
-import io.socket.emitter.Emitter;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  *
@@ -50,26 +32,24 @@ import org.json.JSONObject;
 public class GameController extends InputAdapter {
     private static final String TAG = GameController.class.getName();
 
-    private Game game;
+    protected Game game;
     public OrthographicCamera camera;
     GameState state;
     Player[] players;
     public int currentPlayerIndex;
     DiceContainer diceContainer;
-    UpdateServer updateServer;  
     public int playerPawnUpdateIndex =0,pawnUpdateIndex=0;
-    public int currentPlayerIndexByServer =0 ;/// 0 --> Player1      1 -->Player2
     // <editor-fold desc="Timers">
     public float timerForThrowingDicesAtGameStart = 0.0f;
     public float timerForThrowingDices = 0.0f;
     public float timerForPlayerWithNoMoves = 0.0f;//when a player has no moves, disable buttons and wait for an enough amount of time for the player to realise what happened
     // </editor-fold>
     // <editor-fold desc="click protector variables. When a click takes place, click position and deltatime are saved to compare and make sure nothing else interacts to one click">
-    private Vector2 clickProtectorPosition;
-    private float clickProtectorTime;
+    protected Vector2 clickProtectorPosition;
+    protected float clickProtectorTime;
     // </editor-fold>
-    private Pawn currentSelectedPawnForPlay;
-    private int selectedIndexInTable;
+    protected Pawn currentSelectedPawnForPlay;
+    protected int selectedIndexInTable;
 
     public Stage stage;
     public HorizontalGroup hGroup;// put the button in it
@@ -78,14 +58,13 @@ public class GameController extends InputAdapter {
         init();
     }
 
-    private void init () {
+    protected void init () {
         state = GameState.gameStart;
         Dices.instance.init();
         timerForThrowingDices = 0.0f;
         ConfigurationController.initCells();
 
         // <editor-fold desc="Initialising players' pawns">
-        updateServer = new UpdateServer(this);
         players = new Player[2]; //TODO: account for variable number of players (1 (AI), 2, 4)
         currentPlayerIndex = -1;
   
@@ -264,9 +243,7 @@ public class GameController extends InputAdapter {
         if(timerForThrowingDices >= Constants.TIMER_LIMIT_FOR_THROWING_DICES && Dices.instance.canPlayerThrowDices) {
             Dices.instance.throwDices(diceContainer.diceMarginFromX, diceContainer.diceMarginToX, diceContainer.diceMarginFromY, diceContainer.diceMarginToY);
             timerForThrowingDices -= Constants.TIMER_LIMIT_FOR_THROWING_DICES; // If you reset it to 0 you will loose a few milliseconds every 2 seconds.
-                  
-        Gdx.app.log(TAG, "playerOrder "+updateServer.playerOrder  + " currentPlayer " + currentPlayerIndex);
-            
+
             fillDiceButtonText();
         
         } 
@@ -440,7 +417,6 @@ public class GameController extends InputAdapter {
             selectedIndexInTable = ((Integer) actor.getUserObject());
   
        movePawnByServer(currentPlayerIndex,pawnUpdateIndex,selectedIndexInTable,true);    
-       updateServer.updatePawns(currentPlayerIndex, pawnUpdateIndex, selectedIndexInTable);  
         }
         
     }
@@ -541,27 +517,27 @@ public class GameController extends InputAdapter {
             
             diceContainer.init("SIDE02");
         }   
-         if ( currentPlayerIndexByServer ==0)  ////currentPlayerIndexByServer should replace currentPlayerIndex later on 
-            {
-            updateServer.switchPlayerServer(1);  
-            currentPlayerIndexByServer ++;
-                            
-      Gdx.app.log(TAG,"switchPlayerIndex " + currentPlayerIndexByServer + " playerOder " + updateServer.playerOrder );
-            }
-            else   {
-            updateServer.switchPlayerServer(0);
-            currentPlayerIndexByServer --;
-      Gdx.app.log(TAG,"switchPlayerIndex " + currentPlayerIndexByServer + " playerOder " + updateServer.playerOrder );            
-                    } 
+//         if ( currentPlayerIndexByServer ==0)  ////currentPlayerIndexByServer should replace currentPlayerIndex later on
+//            {
+//            updateServer.switchPlayerServer(1);
+//            currentPlayerIndexByServer ++;
+//
+//      Gdx.app.log(TAG,"switchPlayerIndex " + currentPlayerIndexByServer + " playerOder " + updateServer.playerOrder );
+//            }
+//            else   {
+//            updateServer.switchPlayerServer(0);
+//            currentPlayerIndexByServer --;
+//      Gdx.app.log(TAG,"switchPlayerIndex " + currentPlayerIndexByServer + " playerOder " + updateServer.playerOrder );
+//                    }
         Dices.instance.reset();
         currentSelectedPawnForPlay = null;
         this.state = GameState.playerTurnThrowDice;
     }
-    public void switchPlayerByServer (int switchPlayerToIndex) {
-        currentPlayerIndexByServer =switchPlayerToIndex;
-      Gdx.app.log(TAG,"switchPlayerIndex " + currentPlayerIndexByServer + " playerOder " + updateServer.playerOrder );                    
-    
-    }
+//    public void switchPlayerByServer (int switchPlayerToIndex) {
+//        currentPlayerIndexByServer =switchPlayerToIndex;
+//      Gdx.app.log(TAG,"switchPlayerIndex " + currentPlayerIndexByServer + " playerOder " + updateServer.playerOrder );
+//
+//    }
     
     /**
      * This method returns true of the position on a pawn's path is a shire. Shire positions are set 

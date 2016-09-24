@@ -101,7 +101,7 @@ public class UpdateServer {
                 JSONObject data = (JSONObject) args[0];
                 try { 
                     int playerIndexToSwitch = data.getInt("playerIndexToSwitch"); 
-                    gameController.switchPlayerByServer(playerIndexToSwitch);    
+//                    gameController.switchPlayerByServer(playerIndexToSwitch);
                 } catch (JSONException e) {
                     Gdx.app.log(TAG, " configSocket Error gettin playerIndexToSwitch");
                 }
