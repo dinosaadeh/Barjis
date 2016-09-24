@@ -419,30 +419,25 @@ public class GameController extends InputAdapter {
     }
 
     public void textClicked(ChangeListener.ChangeEvent e, Actor actor){
-        if(currentSelectedPawnForPlay!= null) {
+        if (currentSelectedPawnForPlay != null) {
             selectedIndexInTable = ((Integer) actor.getUserObject());
-  
-       movePawnByServer(currentPlayerIndex,pawnUpdateIndex,selectedIndexInTable,true);    
-       updateServer.updatePawns(currentPlayerIndex, pawnUpdateIndex, selectedIndexInTable);  
-        }
-        
+
+            movePawnByServer(currentPlayerIndex, pawnUpdateIndex, selectedIndexInTable, true);
+            updateServer.updatePawns(currentPlayerIndex, pawnUpdateIndex, selectedIndexInTable);
+        }   
     }
  
- 
-    public void movePawnByServer (int playerIndex,int pawnIndex,int selectedIndexInTable,boolean playerHimSelf)
-    {
+    public void movePawnByServer (int playerIndex,int pawnIndex,int selectedIndexInTable,boolean playerHimSelf) {
         if(Dices.movesValues[selectedIndexInTable] < 1){ 
             return;// if the
         }
         if(players[playerIndex].pawns[pawnIndex].isDead()){// the selected is Bonus
-
-            if(currentPlayerIndex==1){
+            if(currentPlayerIndex==1) {
                 players[playerIndex].pawns[pawnIndex].playMilitarySound();
 
             }else{
                 players[playerIndex].pawns[pawnIndex].playHorseSound();
             }
-
         }
         if(selectedIndexInTable==5){// Banj is selected
             players[playerIndex].pawns[pawnIndex].playJumpSound();
