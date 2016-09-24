@@ -23,7 +23,7 @@ import java.util.ArrayList;
  * @author dinosaadeh
  */
 public class Pawn extends AbstractGameObject {
-    private static final String TAG = Dices.class.getName();
+    private static final String TAG = Pawn.class.getName();
 
     private TextureRegion pawnImage;
     private TextureRegion phPawnOverlapCounter;
@@ -193,7 +193,7 @@ public class Pawn extends AbstractGameObject {
                 positionHint += numberOfSteps;
                 hintIndex = hintArray[positionHint];
                 rotationOnFinish = positionHint > 75 ? 180 : 0;
-                Gdx.app.log(TAG, "hintindexconfig " + hintIndex + " pathposition " + positionHint + " Rotation " + rotationOnFinish);
+                //Gdx.app.log(TAG, "hintindexconfig " + hintIndex + " pathposition " + positionHint + " Rotation " + rotationOnFinish);
             }
         } catch (Exception e) {
             Gdx.app.debug(TAG, e.getMessage());
