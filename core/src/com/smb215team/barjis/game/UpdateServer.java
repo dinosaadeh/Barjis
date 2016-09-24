@@ -5,10 +5,9 @@
  */
 package com.smb215team.barjis.game;
 
-import com.badlogic.gdx.Gdx;   
-import com.smb215team.barjis.game.GameController;
-import com.smb215team.barjis.game.objects.Player;
-import io.socket.client.IO; 
+import com.badlogic.gdx.Gdx;
+
+import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 import org.json.JSONException;
@@ -89,7 +88,7 @@ public class UpdateServer {
                     int playerIndex = data.getInt("playerIndex");
                     int pawnIndex = data.getInt("pawnIndex");
                     Gdx.app.log(TAG, "player " + playerIndex + " pawn " + pawnIndex + " IndexInTable " + selectedIndexInTable);
-                    gameController.movePawnByServer(playerIndex, pawnIndex, selectedIndexInTable,false);
+                    gameController.movePawn(playerIndex, pawnIndex, selectedIndexInTable);
                 } catch (JSONException e) {
                     Gdx.app.log(TAG, " configSocket Error moving Pawn");
                 }

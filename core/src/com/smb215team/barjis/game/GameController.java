@@ -8,27 +8,14 @@ package com.smb215team.barjis.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Stack;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
-import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.viewport.FillViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.smb215team.barjis.game.enums.GameState;
 import com.smb215team.barjis.game.objects.Dice;
 import com.smb215team.barjis.game.objects.DiceContainer;
@@ -429,53 +416,50 @@ public class GameController extends InputAdapter {
         if(currentSelectedPawnForPlay!= null) {
             selectedIndexInTable = ((Integer) actor.getUserObject());
   
-       movePawnByServer(currentPlayerIndex,pawnUpdateIndex,selectedIndexInTable,true);
+       movePawn(currentPlayerIndex,pawnUpdateIndex,selectedIndexInTable);
         }
         
     }
- 
- 
-    public void movePawnByServer (int playerIndex,int pawnIndex,int selectedIndexInTable,boolean playerHimSelf)
-    {
-        if(Dices.movesValues[selectedIndexInTable] < 1){ 
-            return;// if the
-        }
-        if(players[playerIndex].pawns[pawnIndex].isDead()){// the selected is Bonus
 
-            if(currentPlayerIndex==1){
-                players[playerIndex].pawns[pawnIndex].playMilitarySound();
 
-            }else{
-                players[playerIndex].pawns[pawnIndex].playHorseSound();
-            }
-
-        }
-        if(selectedIndexInTable==5){// Banj is selected
-            players[playerIndex].pawns[pawnIndex].playJumpSound();
-        }
-        Vector2 newPawnPosition = players[playerIndex].pawns[pawnIndex].move(Dices.movesValues[selectedIndexInTable]);
-
-        killPawnsOnPosition(newPawnPosition);
-
-        if(players[playerIndex].pawns[pawnIndex].positionOnPath==83){
-            players[playerIndex].pawns[pawnIndex].playBadaDump();
-        }
-
-        if(players[playerIndex].hasWonTheGame()) {
-            this.state = state.gameOver;
-            players[playerIndex].pawns[0].playLargeCheering();
-            return;
-        }
-       if (playerHimSelf)        
-       {
-      Dices.instance.currentHandMoves[selectedIndexInTable]--;
-        }
-     //re-create the button Table
-      players[playerIndex].updateAvailableMoves();
-      fillDiceButtonText();
-      enableButtonPawnCanPlay();
-
-    }
+    public void movePawn(int playerIndex, int pawnIndex, int selectedIndexFromTable)
+        {
+                if(Dices.movesValues[selectedIndexFromTable] < 1){
+                        return;// if the
+                    }
+                if(players[playerIndex].pawns[pawnIndex].isDead()){// the selected is Bonus
+            
+                                if(currentPlayerIndex==1){
+                                players[playerIndex].pawns[pawnIndex].playMilitarySound();
+                
+                                    }else{
+                                players[playerIndex].pawns[pawnIndex].playHorseSound();
+                            }
+            
+                            }
+                if(selectedIndexFromTable==5){// Banj is selected
+                        players[playerIndex].pawns[pawnIndex].playJumpSound();
+                    }
+                Vector2 newPawnPosition = players[playerIndex].pawns[pawnIndex].move(Dices.movesValues[selectedIndexFromTable]);
+        
+                        killPawnsOnPosition(newPawnPosition);
+        
+                        if(players[playerIndex].pawns[pawnIndex].positionOnPath==83){
+                        players[playerIndex].pawns[pawnIndex].playBadaDump();
+                    }
+        
+                        if(players[playerIndex].hasWonTheGame()) {
+                        this.state = state.gameOver;
+                        players[playerIndex].pawns[0].playLargeCheering();
+                        return;
+                    }
+                Dices.instance.currentHandMoves[selectedIndexFromTable]--;
+                //re-create the button Table
+                        players[playerIndex].updateAvailableMoves();
+                fillDiceButtonText();
+                enableButtonPawnCanPlay();
+        
+                    }
  
 
     private void enableButtonPawnCanPlay() {
