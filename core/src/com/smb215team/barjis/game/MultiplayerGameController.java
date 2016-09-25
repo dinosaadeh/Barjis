@@ -9,11 +9,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
  */
 public class MultiplayerGameController extends GameController {
 
-    public int currentPlayerIndexByServer =0 ;/// 0 --> Player1      1 -->Player2
+    public int myPlayerIndex ;/// 0 --> Player1      1 -->Player2
+
+
     UpdateServer updateServer;
 
-    public MultiplayerGameController(Game game) {
-        super(game);
+    public MultiplayerGameController(Game game,boolean mute) {
+        super(game,mute);
     }
 
 

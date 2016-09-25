@@ -23,6 +23,7 @@ public class Dices {
     public boolean canPlayerThrowDices;
     Sound diceSound = Gdx.audio.newSound(Gdx.files.internal("diceSound.mp3"));
 
+
     private Dices() {
         init();
     }
@@ -86,9 +87,9 @@ public class Dices {
             dices[i].bounds.set(randomX, randomY, 0.45f, 0.45f);
             dices[i].dimension.set(0.45f, 0.45f);
             dices[i].setSize(0.45f, 0.45f);
-        } 
+        }
 
-        diceSound.play();
+        playSound();
 
         // Setting the value of the current throw
         currentHandMoves[currentThrowValue]++;
@@ -135,8 +136,7 @@ public class Dices {
             dices[i].bounds.set(randomX, randomY, 0.45f, 0.45f);
             dices[i].dimension.set(0.45f, 0.45f);
         }
-
-        diceSound.play();
+        playSound();
         if (currentThrowValueLeft == currentThrowValueRight) return -1;
         return (currentThrowValueLeft > currentThrowValueRight) ? 0 : 1;
     }
@@ -183,5 +183,8 @@ public class Dices {
                 }
             }
         }
+    }
+    public void playSound(){
+        diceSound.play();
     }
 }

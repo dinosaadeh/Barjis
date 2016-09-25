@@ -51,10 +51,13 @@ public class GameController extends InputAdapter {
     protected Pawn currentSelectedPawnForPlay;
     protected int selectedIndexInTable;
 
+    protected boolean mute;
+
     public Stage stage;
     public HorizontalGroup hGroup;// put the button in it
-    public GameController (Game game) {
+    public GameController (Game game,boolean mute) {
         this.game = game;
+        this.mute=mute;
         init();
     }
 

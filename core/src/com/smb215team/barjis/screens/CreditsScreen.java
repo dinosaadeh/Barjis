@@ -131,7 +131,6 @@ public class CreditsScreen extends AbstractGameScreen {
         creditsTable.row();
         
         paragraph02 = new Label("Vanessa BITAR", pinkStyle);
-        paragraph02.setColor(Color.PINK);
         paragraph02.setFontScale(0.28f);
         paragraph02.setWrap(true);
         paragraph02.setAlignment(Align.center);

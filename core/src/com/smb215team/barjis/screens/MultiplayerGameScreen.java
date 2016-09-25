@@ -11,13 +11,15 @@ import com.smb215team.barjis.game.MultiplayerGameController;
  */
 public class MultiplayerGameScreen extends GameScreen{
 
-    public MultiplayerGameScreen(Game game) {
-        super(game);
+
+
+    public MultiplayerGameScreen(Game game,boolean mute) {
+        super(game,mute);
     }
 
     @Override
     public void show() {
-        gameController = new MultiplayerGameController(game);
+        gameController = new MultiplayerGameController(game,mute);
         gameRenderer = new GameRenderer(gameController);
         Gdx.input.setCatchBackKey(true);
     }
