@@ -174,9 +174,11 @@ public class Assets implements Disposable, AssetErrorListener {
 
     public class PawnHighlightCanMove {
         public final AtlasRegion pawnHighlightCanMove;
+        public final AtlasRegion pawnHighlightCanMoveInGame;
 
         public PawnHighlightCanMove (TextureAtlas atlas){
             pawnHighlightCanMove = atlas.findRegion("pawn-highlight-can-move");
+            pawnHighlightCanMoveInGame=atlas.findRegion("pawn-highlight-can-move-on-board");
         }
     }
     

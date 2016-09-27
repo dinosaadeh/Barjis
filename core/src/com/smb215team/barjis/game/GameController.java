@@ -8,14 +8,21 @@ package com.smb215team.barjis.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.smb215team.barjis.game.enums.GameState;
 import com.smb215team.barjis.game.objects.Dice;
 import com.smb215team.barjis.game.objects.DiceContainer;
@@ -24,6 +31,7 @@ import com.smb215team.barjis.game.objects.Pawn;
 import com.smb215team.barjis.game.objects.Player;
 import com.smb215team.barjis.screens.MenuScreen;
 import com.smb215team.barjis.util.Constants;
+import com.smb215team.barjis.util.GamePreferences;
 
 /**
  *
@@ -51,13 +59,17 @@ public class GameController extends InputAdapter {
     protected Pawn currentSelectedPawnForPlay;
     protected int selectedIndexInTable;
 
-    protected boolean mute;
+
+    private ImageButton btnMuteSound;
+    private Container<ImageButton> btnSoundcontainer=new Container<ImageButton>();
 
     public Stage stage;
+    protected Label winnerLabel;
+    protected Label.LabelStyle labelStyle =new Label.LabelStyle();
+
     public HorizontalGroup hGroup;// put the button in it
-    public GameController (Game game,boolean mute) {
+    public GameController (Game game) {
         this.game = game;
-        this.mute=mute;
         init();
     }
 
@@ -66,6 +78,8 @@ public class GameController extends InputAdapter {
         Dices.instance.init();
         timerForThrowingDices = 0.0f;
         ConfigurationController.initCells();
+
+        initWinnerLabel();
 
         // <editor-fold desc="Initialising players' pawns">
         players = new Player[2]; //TODO: account for variable number of players (1 (AI), 2, 4)
@@ -82,6 +96,28 @@ public class GameController extends InputAdapter {
             
         }    
         // </editor-fold>
+
+
+    }
+
+    public void createBtnSound(){
+
+        btnMuteSound = new ImageButton(new TextureRegionDrawable(Assets.instance.mainScreenButtons.btnSoundOn),new TextureRegionDrawable(Assets.instance.mainScreenButtons.btnSoundOn),new TextureRegionDrawable(Assets.instance.mainScreenButtons.btnSoundOff));
+
+        // read the value from the setting maps (GamePreferences)
+        btnMuteSound.setChecked(GamePreferences.instance.soundMute);
+        // set listener to save settings when click on button and the sound settings changed
+        btnMuteSound.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                GamePreferences.instance.soundMute =btnMuteSound.isChecked();
+                GamePreferences.instance.save();
+            }
+        } );
+        btnSoundcontainer.setActor(btnMuteSound);
+        btnSoundcontainer.setPosition(Constants.VIEWPORT_GUI_WIDTH-30,70);
+
+        stage.addActor(btnSoundcontainer);
     }
 
     public void update (float deltaTime) {
@@ -96,6 +132,7 @@ public class GameController extends InputAdapter {
                 interpretPlayerMoves(deltaTime);
                 break;
             case gameOver:
+                announceTheWinner(deltaTime);
                 break;
             default:
                 throw new AssertionError(state.name());
@@ -255,7 +292,7 @@ public class GameController extends InputAdapter {
     public void fillDiceButtonText(){
         stage.clear();
         hGroup=new HorizontalGroup();
-        // create button style
+        // create button labelStyle
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.font= Assets.instance.fonts.defaultNormal;
 
@@ -296,6 +333,9 @@ public class GameController extends InputAdapter {
         }
 
         stage.addActor(hGroup);
+        // because i've clear the stage first
+        stage.addActor(btnSoundcontainer);
+
     }
 
     /**
@@ -426,13 +466,7 @@ public class GameController extends InputAdapter {
         if (Dices.movesValues[selectedIndexFromTable] < 1) {
             return;
         }
-        if (players[playerIndex].pawns[pawnIndex].isDead()) {// the selected is Bonus
-            if (currentPlayerIndex == 1) {
-                players[playerIndex].pawns[pawnIndex].playMilitarySound();
-            } else {
-                players[playerIndex].pawns[pawnIndex].playHorseSound();
-            }
-        }
+
         
         if (selectedIndexFromTable == 5) {// Banj is selected
             players[playerIndex].pawns[pawnIndex].playJumpSound();
@@ -456,6 +490,7 @@ public class GameController extends InputAdapter {
         players[playerIndex].updateAvailableMoves();
         fillDiceButtonText();
         enableButtonPawnCanPlay();
+
     }
  
     private void enableButtonPawnCanPlay() {
@@ -498,7 +533,33 @@ public class GameController extends InputAdapter {
         }
     }
     // </editor-fold>
-    
+
+    public void initWinnerLabel(){
+        labelStyle.font= Assets.instance.fonts.defaultNormal;
+        winnerLabel=new Label("The Winner", labelStyle);
+        winnerLabel.setFontScale(0.8f);
+
+    }
+
+    public void announceTheWinner(float deltaTime){
+        if(deltaTime<1) {
+            stage.clear();
+
+            if (players[0].hasWonTheGame()) {
+                winnerLabel.setPosition(20, 200);
+                stage.addActor(winnerLabel);
+            } else {
+                if (players[1].hasWonTheGame()) {
+                    winnerLabel.setPosition(680, 200);
+                    stage.addActor(winnerLabel);
+                }
+
+            }
+
+            stage.addActor(btnSoundcontainer);
+        }
+    }
+
     // <editor-fold desc="Helper Methods">
     private void switchToNextPlayer() {
         if(currentPlayerIndex == players.length-1) {

@@ -8,7 +8,12 @@ package com.smb215team.barjis.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Container;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -19,6 +24,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.smb215team.barjis.util.Constants;
 import com.smb215team.barjis.game.objects.*;
+import com.smb215team.barjis.util.GamePreferences;
 
 /**
  *
@@ -53,6 +59,8 @@ public class GameRenderer implements Disposable {
         extendedViewPort =new ExtendViewport(Constants.VIEWPORT_GUI_WIDTH,Constants.VIEWPORT_GUI_HEIGHT);
         gameController.stage = new Stage(extendedViewPort);
         Gdx.input.setInputProcessor(gameController.stage);
+        gameController.createBtnSound();
+
     }
 
     public void render () {

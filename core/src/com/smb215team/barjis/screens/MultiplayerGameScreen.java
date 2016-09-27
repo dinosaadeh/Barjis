@@ -13,13 +13,13 @@ public class MultiplayerGameScreen extends GameScreen{
 
 
 
-    public MultiplayerGameScreen(Game game,boolean mute) {
-        super(game,mute);
+    public MultiplayerGameScreen(Game game) {
+        super(game);
     }
 
     @Override
     public void show() {
-        gameController = new MultiplayerGameController(game,mute);
+        gameController = new MultiplayerGameController(game);
         gameRenderer = new GameRenderer(gameController);
         Gdx.input.setCatchBackKey(true);
     }

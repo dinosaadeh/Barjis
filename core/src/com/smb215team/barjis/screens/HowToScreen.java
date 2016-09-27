@@ -45,7 +45,7 @@ public class HowToScreen extends AbstractGameScreen {
     private Label mainTitle;
     private Label paragraph01;
     private FitViewport fitViewport;
-    public HowToScreen (Game game,boolean mute) {
+    public HowToScreen (Game game) {
         super(game);
         fitViewport=new FitViewport(Constants.VIEWPORT_GUI_WIDTH,Constants.VIEWPORT_GUI_HEIGHT);
 

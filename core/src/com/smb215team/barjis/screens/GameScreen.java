@@ -22,11 +22,9 @@ public class GameScreen extends AbstractGameScreen {
     protected GameController gameController;
     protected GameRenderer gameRenderer;
     private boolean paused;
-    protected boolean mute;
 
-    public GameScreen(Game game,boolean mute) {
+    public GameScreen(Game game) {
         super(game);
-        this.mute=mute;
     }
 
     @Override
@@ -52,7 +50,7 @@ public class GameScreen extends AbstractGameScreen {
 
     @Override
     public void show() {
-        gameController = new GameController(game,mute);
+        gameController = new GameController(game);
         gameRenderer = new GameRenderer(gameController);
         Gdx.input.setCatchBackKey(true);
     }

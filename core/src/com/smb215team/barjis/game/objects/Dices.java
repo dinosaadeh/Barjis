@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.smb215team.barjis.util.GamePreferences;
 
 /**
  * This is a singleton class that takes care of throwing the dice over and over
@@ -185,6 +186,8 @@ public class Dices {
         }
     }
     public void playSound(){
-        diceSound.play();
+        if(!GamePreferences.instance.soundMute) {
+            diceSound.play();
+        }
     }
 }

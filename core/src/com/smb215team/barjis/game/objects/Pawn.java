@@ -16,6 +16,7 @@ import com.smb215team.barjis.game.Assets;
 import com.smb215team.barjis.game.ConfigurationController;
 import com.smb215team.barjis.game.enums.PawnState;
 import com.smb215team.barjis.util.Constants;
+import com.smb215team.barjis.util.GamePreferences;
 
 import java.util.ArrayList;
 
@@ -36,8 +37,7 @@ public class Pawn extends AbstractGameObject {
     private Integer[] hintArray;
     public ArrayList<Integer> currentPossibleMoves;
     public boolean isSelected;
-    Sound horseSound = Gdx.audio.newSound(Gdx.files.internal("horse.wav"));
-    Sound soldierSound = Gdx.audio.newSound(Gdx.files.internal("sir-yes-sir.mp3"));
+
     Sound jumpSound= Gdx.audio.newSound(Gdx.files.internal("jump.mp3"));
     Sound stompSound= Gdx.audio.newSound(Gdx.files.internal("stomp.mp3"));
     Sound baDaDumSound= Gdx.audio.newSound(Gdx.files.internal("ba-da-dum.wav"));
@@ -64,7 +64,6 @@ public class Pawn extends AbstractGameObject {
         currentPossibleMoves = new ArrayList();
         deadPosition = new Vector2(0, 0);
         phPawnOverlapCounter = Assets.instance.phPawnOverlapCounter.phPawnOverlapCounter[0];
-        pawnHighlightCanMove = Assets.instance.pawnHighlightCanMove.pawnHighlightCanMove;
         hint = Assets.instance.hint.hint;
         boardHint = ConfigurationController.hintBoardMap;
         init(0, deadPosition, new Vector2[83],new Integer[83]);
@@ -91,6 +90,9 @@ public class Pawn extends AbstractGameObject {
         
         // Set bounding box for collision detection
         bounds.set(position.x, position.y, dimension.x, dimension.y);
+
+        pawnHighlightCanMove = Assets.instance.pawnHighlightCanMove.pawnHighlightCanMove;
+
     }
 
     @Override
@@ -175,6 +177,9 @@ public class Pawn extends AbstractGameObject {
             positionOnPath += numberOfSteps;
             this.position = path[positionOnPath];
             this.bounds.set(position.x, position.y, dimension.x, dimension.y);
+
+            // make the highlite white
+            pawnHighlightCanMove=Assets.instance.pawnHighlightCanMove.pawnHighlightCanMoveInGame;
         }
         catch(Exception e) {
             Gdx.app.debug(TAG, e.getMessage());
@@ -219,22 +224,30 @@ public class Pawn extends AbstractGameObject {
 
     public void die() {
         this.position = deadPosition;
-        this.positionOnPath=0;
+        this.positionOnPath=-1;
+        // make the highlite black again
+        pawnHighlightCanMove=Assets.instance.pawnHighlightCanMove.pawnHighlightCanMove;
         this.bounds.set(position.x, position.y, dimension.x, dimension.y);
         stompSound.play();
 
     }
 
-    public void playHorseSound(){
 
-        horseSound.play();
+    public void playJumpSound() {
+        if (!GamePreferences.instance.soundMute) {
+            jumpSound.play();
+        }
     }
-    public void playMilitarySound(){
-        soldierSound.play();
+
+    public void playBadaDump() {
+        if (!GamePreferences.instance.soundMute) {
+            baDaDumSound.play();
+        }
     }
-    public void playJumpSound(){
-        jumpSound.play();
+
+    public void playLargeCheering() {
+        if (!GamePreferences.instance.soundMute) {
+            largeCheeringSound.play();
+        }
     }
-    public void playBadaDump(){baDaDumSound.play();}
-    public void playLargeCheering(){largeCheeringSound.play();}
 }

@@ -14,8 +14,8 @@ public class MultiplayerGameController extends GameController {
 
     UpdateServer updateServer;
 
-    public MultiplayerGameController(Game game,boolean mute) {
-        super(game,mute);
+    public MultiplayerGameController(Game game) {
+        super(game);
     }
 
 
