@@ -10,6 +10,7 @@ import com.badlogic.gdx.Gdx;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject; 
 
@@ -41,7 +42,7 @@ public class UpdateServer {
     
     public void connectSocket() {
         try {
-            socket = IO.socket("http://0.0.0.0:8082");
+            socket = IO.socket("http://192.168.1.106:8082");
             socket.connect();
         } catch (Exception e) { 
             Gdx.app.log(TAG, e.toString());
@@ -105,9 +106,26 @@ public class UpdateServer {
                     Gdx.app.log(TAG, " configSocket Error gettin playerIndexToSwitch");
                 }
             } 
-        }); 
-    } 
+         }).on("fillDiceButtonText" , new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                JSONObject data = (JSONObject) args[0];
+                try { 
+                    String currentHandMoveServer =data.getString("currentHandMoveServer");    
+                    Integer[] currentHandMoveArray = new Integer[currentHandMoveServer.length()];
 
+                    for (int i = 0; i < currentHandMoveServer.length(); i++){//get the integer value not the ascii value of the char
+                        currentHandMoveArray[i] = currentHandMoveServer.charAt(i) - '0';
+                    }
+
+                   gameController.fillDiceButtonText(currentHandMoveArray, false);
+                    
+                } catch (JSONException e) {
+                    Gdx.app.log(TAG, e.getMessage());
+                }
+            } 
+         }); 
+    }         
     public void updatePawns(int playerIndex, int pawnIndex, int selectedIndexInTable) {
         timer += Gdx.graphics.getDeltaTime();
 
@@ -119,7 +137,7 @@ public class UpdateServer {
             data.put("pawnIndex", pawnIndex);
             socket.emit("pawnMoved", data);
         } catch (JSONException e) {
-            Gdx.app.log(TAG, "" + e);
+            Gdx.app.log(TAG, e.getMessage());
         }
         //  }
     }
@@ -134,5 +152,20 @@ public class UpdateServer {
         }
         //  }
     }
+     public void fillDiceButtonTextByServer(Integer [] currentHandMoveServer) {
+         JSONObject data = new JSONObject ();
+       try { 
+           String currentHandMoveString ="";
+           for (int i=0; i < currentHandMoveServer.length;i++ ){
+      //         currentHandMoveString =currentHandMoveString + (currentHandMoveString==""? "" :",")  + currentHandMoveServer[i];
+               currentHandMoveString =currentHandMoveString + currentHandMoveServer[i];
+           }
+            data.put("currentHandMoveServer",  currentHandMoveString  ); 
+            socket.emit("fillDiceButtonText", data);
+        } catch (JSONException e) {
+            Gdx.app.log(TAG, "" + e);
+        }
+     } 
+
      
 } 
