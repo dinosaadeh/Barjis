@@ -94,7 +94,7 @@ public class CreditsScreen extends AbstractGameScreen {
                     game.setScreen(new MenuScreen(game));
                 }
             });
-        btnClose.align(Align.topRight).pad(30, 0, 0, 65);
+        btnClose.align(Align.topRight).pad(20, 0, 0, 30);
         stack.add(btnClose);
         
         creditsTable = new Table();

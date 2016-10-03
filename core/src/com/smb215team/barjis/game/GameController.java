@@ -8,21 +8,15 @@ package com.smb215team.barjis.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.smb215team.barjis.game.enums.GameState;
 import com.smb215team.barjis.game.objects.Dice;
 import com.smb215team.barjis.game.objects.DiceContainer;
@@ -31,7 +25,6 @@ import com.smb215team.barjis.game.objects.Pawn;
 import com.smb215team.barjis.game.objects.Player;
 import com.smb215team.barjis.screens.MenuScreen;
 import com.smb215team.barjis.util.Constants;
-import com.smb215team.barjis.util.GamePreferences;
 
 /**
  *
@@ -60,8 +53,6 @@ public class GameController extends InputAdapter {
     protected int selectedIndexInTable;
 
 
-    private ImageButton btnMuteSound;
-    private Container<ImageButton> btnSoundcontainer=new Container<ImageButton>();
 
     public Stage stage;
     protected Label winnerLabel;
@@ -100,25 +91,7 @@ public class GameController extends InputAdapter {
 
     }
 
-    public void createBtnSound(){
 
-        btnMuteSound = new ImageButton(new TextureRegionDrawable(Assets.instance.mainScreenButtons.btnSoundOn),new TextureRegionDrawable(Assets.instance.mainScreenButtons.btnSoundOn),new TextureRegionDrawable(Assets.instance.mainScreenButtons.btnSoundOff));
-
-        // read the value from the setting maps (GamePreferences)
-        btnMuteSound.setChecked(GamePreferences.instance.soundMute);
-        // set listener to save settings when click on button and the sound settings changed
-        btnMuteSound.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                GamePreferences.instance.soundMute =btnMuteSound.isChecked();
-                GamePreferences.instance.save();
-            }
-        } );
-        btnSoundcontainer.setActor(btnMuteSound);
-        btnSoundcontainer.setPosition(Constants.VIEWPORT_GUI_WIDTH-30,70);
-
-        stage.addActor(btnSoundcontainer);
-    }
 
     public void update (float deltaTime) {
         switch (state) {
@@ -319,22 +292,19 @@ public class GameController extends InputAdapter {
                 }
             });
             hGroup.addActor(button);// add button to horizontalGroup
-            hGroup.wrap();// wrap the data to the next line
+            hGroup.wrap(true);// wrap the data to the next line
             hGroup.left().top();// start writing from the left and the top of the rectangle
         }
         if(currentPlayerIndex == 0) {
-            hGroup.setBounds(5,230,180,100);// set limits for  player 1
+            hGroup.setBounds(5,230,158,100);// set limits for  player 1
 
         } else {
             if(currentPlayerIndex == 1) {//Dino: Needs to be changed if in the case of 4 players the placement is changed.
-                hGroup.setBounds(660,230,180,100); // set limits for  player 1
+                hGroup.setBounds(660,230,158,100); // set limits for  player 1
 
             }
         }
-
         stage.addActor(hGroup);
-        // because i've clear the stage first
-        stage.addActor(btnSoundcontainer);
 
     }
 
@@ -482,7 +452,7 @@ public class GameController extends InputAdapter {
 
         if (players[playerIndex].hasWonTheGame()) {
             this.state = state.gameOver;
-            players[playerIndex].pawns[0].playLargeCheering();
+            players[playerIndex].pawns[0].playCheering();
             return;
         }
         Dices.instance.currentHandMoves[selectedIndexFromTable]--;
@@ -550,13 +520,12 @@ public class GameController extends InputAdapter {
                 stage.addActor(winnerLabel);
             } else {
                 if (players[1].hasWonTheGame()) {
-                    winnerLabel.setPosition(680, 200);
+                    winnerLabel.setPosition(675, 200);
                     stage.addActor(winnerLabel);
                 }
 
             }
 
-            stage.addActor(btnSoundcontainer);
         }
     }
 
