@@ -245,16 +245,15 @@ public class GameController extends InputAdapter {
             timerForThrowingDices -= Constants.TIMER_LIMIT_FOR_THROWING_DICES; // If you reset it to 0 you will loose a few milliseconds every 2 seconds.
 
             fillDiceButtonText();
-        
         } 
     }
 
     public void fillDiceButtonText(){
         stage.clear();
-        hGroup=new HorizontalGroup();
+        hGroup = new HorizontalGroup();
         // create button style
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
-        buttonStyle.font= Assets.instance.fonts.defaultNormal;
+        buttonStyle.font = Assets.instance.fonts.defaultNormal;
 
         // create button
         for (int i = 0; i < Dices.instance.currentHandMoves.length; i++) {
@@ -265,9 +264,9 @@ public class GameController extends InputAdapter {
 
             // for example :if the label is just 1 x dest we should see dest without "1x"
             if(Dices.instance.currentHandMoves[i] == 1) {
-                button = new TextButton((hGroup.getChildren().size==0?" ":" + ") +Dices.movesLabels[i], buttonStyle);
+                button = new TextButton((hGroup.getChildren().size == 0 ? " " : " + ") + Dices.movesLabels[i], buttonStyle);
             } else {//greater than 1
-                button = new TextButton((hGroup.getChildren().size ==0?" ":" + ") + Dices.instance.currentHandMoves[i] + "x" + Dices.movesLabels[i], buttonStyle);
+                button = new TextButton((hGroup.getChildren().size == 0 ? " " : " + ") + Dices.instance.currentHandMoves[i] + "x" + Dices.movesLabels[i], buttonStyle);
 
             }
             button.setUserObject(i);
@@ -288,7 +287,6 @@ public class GameController extends InputAdapter {
         } else {
             if(currentPlayerIndex == 1) {//Dino: Needs to be changed if in the case of 4 players the placement is changed.
                 hGroup.setBounds(660,230,180,100); // set limits for  player 1
-
             }
         }
 
