@@ -8,10 +8,9 @@ package com.smb215team.barjis.game.objects;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.XmlReader;
 import com.smb215team.barjis.game.ConfigurationController;
+import com.smb215team.barjis.game.enums.PlayerType;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,14 +21,16 @@ import java.util.Map;
 public class Player {
     private static final String TAG = Player.class.getName();
 
-    public final static int PLAYER_RIGHT_BRANCH=1;
-
-    public final static int PLAYER_LEFT_BRANCH=3;
+    // These two variables were created for readability when creating players on the right and left
+    // They should be changed when developing the 4 players mode.
+    public final static int PLAYER_RIGHT_BRANCH = 1;
+    public final static int PLAYER_LEFT_BRANCH = 3;
 
     public Pawn[] pawns;
     public Vector2[] path;
     public Integer[] hintPlayerArray;////hintPlayerArray[IndexOnPath]=IndexInConfigFile
-    private Integer hintPathCounter ;    
+    private Integer hintPathCounter;
+    public PlayerType type;
     private Array<Vector2> boardMap = new Array<Vector2>();
     /**
      * This array is populated every time a player wants to play. This makes sure a player cannot move to
@@ -46,6 +47,7 @@ public class Player {
         path = new Vector2[84];
         hintPlayerArray = new Integer[84];//this array is a transition between index on path and index in config file.
         hintPathCounter =0;
+        type = PlayerType.LocalPlayer;
         int pathBuilderPointer = 0;
         ConfigurationController.initCells();
         boardMap = ConfigurationController.boardMap;

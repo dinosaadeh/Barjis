@@ -241,6 +241,7 @@ public class GameController extends InputAdapter {
         Dices.instance.update(deltaTime); //commentToDelete: later on this will be called only when needed 
         timerForThrowingDices += deltaTime;
         if(timerForThrowingDices >= Constants.TIMER_LIMIT_FOR_THROWING_DICES && Dices.instance.canPlayerThrowDices) {
+            //TODO: take the value from throw dices and pass it to handlers
             Dices.instance.throwDices(diceContainer.diceMarginFromX, diceContainer.diceMarginToX, diceContainer.diceMarginFromY, diceContainer.diceMarginToY);
             timerForThrowingDices -= Constants.TIMER_LIMIT_FOR_THROWING_DICES; // If you reset it to 0 you will loose a few milliseconds every 2 seconds.
 

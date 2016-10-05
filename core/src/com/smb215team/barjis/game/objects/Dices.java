@@ -68,7 +68,16 @@ public class Dices {
         }
     }
 
-    public void throwDices(float diceMarginFromX, float diceMarginToX, float diceMarginFromY, float diceMarginToY) {
+    /**
+     * This method throws the dices, counts the dices that showed the closed side and based on that
+     * increments the times a value showed in the table currentHandMoves
+     * @param diceMarginFromX: the dice will animate from diceMarginFromX
+     * @param diceMarginToX: -- to diceMarginToX
+     * @param diceMarginFromY: -- and from diceMarginFromY
+     * @param diceMarginToY: -- to diceMarginToY
+     * @return 
+     */
+    public int throwDices(float diceMarginFromX, float diceMarginToX, float diceMarginFromY, float diceMarginToY) {
         bringDicesToFullStop();//I used this method to stop dices when by mistake a dice leaves the container. This bug should be solved and with that solved we no longer need this line.
         int currentThrowValue = 0;
         for (int i = 0; i < dices.length; i++) {
@@ -100,6 +109,8 @@ public class Dices {
         if (2 == currentThrowValue || 3 == currentThrowValue || 4 == currentThrowValue) {
              canPlayerThrowDices = false;
         }
+        
+        return currentThrowValue;
     }
 
     /**
