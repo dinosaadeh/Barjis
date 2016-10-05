@@ -7,12 +7,12 @@ package com.smb215team.barjis.game;
 
 import com.badlogic.gdx.Gdx;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject; 
 
 /**
  *
@@ -118,7 +118,7 @@ public class UpdateServer {
                         currentHandMoveArray[i] = currentHandMoveServer.charAt(i) - '0';
                     }
 
-                   gameController.fillDiceButtonText(currentHandMoveArray, false);
+//                   gameController.fillDiceButtonText(currentHandMoveArray, false);
                     
                 } catch (JSONException e) {
                     Gdx.app.log(TAG, e.getMessage());

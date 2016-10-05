@@ -296,11 +296,11 @@ public class GameController extends InputAdapter {
             hGroup.left().top();// start writing from the left and the top of the rectangle
         }
         if(currentPlayerIndex == 0) {
-            hGroup.setBounds(5,230,158,100);// set limits for  player 1
+            hGroup.setBounds(5, 230, 158, 100);// set limits for  player
 
         } else {
             if(currentPlayerIndex == 1) {//Dino: Needs to be changed if in the case of 4 players the placement is changed.
-                hGroup.setBounds(660,230,180,100); // set limits for  player 1
+                hGroup.setBounds(660, 230, 158, 100); // set limits for  player 1
             }
         }
         stage.addActor(hGroup);

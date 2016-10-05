@@ -5,13 +5,19 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.smb215team.barjis.game.Assets;
 import com.smb215team.barjis.screens.MenuScreen;
-import com.smb215team.barjis.game.objects.*;
+
 import io.socket.client.IO;
 import io.socket.client.Socket;
 
 public class Barjis extends Game {
     private static final String TAG = Barjis.class.getName();
     private Socket socket;///socket communicating between Server and Client
+
+    public final com.smb215team.barjis.facebook.FacebookService facebookService;
+
+    public Barjis(com.smb215team.barjis.facebook.FacebookService facebookService) {
+        this.facebookService = facebookService;
+    }
 
     @Override
     public void create () {
@@ -33,4 +39,5 @@ public class Barjis extends Game {
         }
             
     }
+
 }

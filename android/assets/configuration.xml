@@ -122,8 +122,8 @@
   <cell x="-3.74" y="0.7"  hintx="-3.54" hinty="0.8"  hintRotation="0"/>
   <cell x="-4.16" y="0.7"  hintx="-4.06" hinty="0.8"  hintRotation="90"/>
 
-<finish3 x="-0.55" y="-0.2" hintx="-0.55" hinty="-0.2" hintRotation="270"/>
-<finish1 x="10.1"  y="-0.2" hintx="10.1"  hinty="-0.2" hintRotation="270"/>
+      <finish3 x="-0.55" y="-0.2" />
+      <finish1 x="0.1" y="-0.2" />
     </BoardMap>
     <PlayersPawnsPlaceholders>
         <Player>
