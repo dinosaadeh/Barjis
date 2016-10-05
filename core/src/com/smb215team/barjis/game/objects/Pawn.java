@@ -16,6 +16,7 @@ import com.smb215team.barjis.game.Assets;
 import com.smb215team.barjis.game.ConfigurationController;
 import com.smb215team.barjis.game.enums.PawnState;
 import com.smb215team.barjis.util.Constants;
+import com.smb215team.barjis.util.GamePreferences;
 
 import java.util.ArrayList;
 
@@ -36,12 +37,12 @@ public class Pawn extends AbstractGameObject {
     private Integer[] hintArray;
     public ArrayList<Integer> currentPossibleMoves;
     public boolean isSelected;
-    Sound horseSound = Gdx.audio.newSound(Gdx.files.internal("horse.wav"));
-    Sound soldierSound = Gdx.audio.newSound(Gdx.files.internal("sir-yes-sir.mp3"));
+    public boolean collisionOfPawn;
+    private Vector2[] pathWithoutEdit;
     Sound jumpSound= Gdx.audio.newSound(Gdx.files.internal("jump.mp3"));
-    Sound stompSound= Gdx.audio.newSound(Gdx.files.internal("stomp.mp3"));
+    Sound killSound= Gdx.audio.newSound(Gdx.files.internal("glass-smash.wav"));
     Sound baDaDumSound= Gdx.audio.newSound(Gdx.files.internal("ba-da-dum.wav"));
-    Sound largeCheeringSound=Gdx.audio.newSound(Gdx.files.internal("large-cheering.mp3"));
+    Sound cheeringSound =Gdx.audio.newSound(Gdx.files.internal("cheering.wav"));
     /**
      * Reflects the pawn's position index on the player's path
      * - value of -1 means the pawn is dead (out of the board)
@@ -64,7 +65,6 @@ public class Pawn extends AbstractGameObject {
         currentPossibleMoves = new ArrayList();
         deadPosition = new Vector2(0, 0);
         phPawnOverlapCounter = Assets.instance.phPawnOverlapCounter.phPawnOverlapCounter[0];
-        pawnHighlightCanMove = Assets.instance.pawnHighlightCanMove.pawnHighlightCanMove;
         hint = Assets.instance.hint.hint;
         boardHint = ConfigurationController.hintBoardMap;
         init(0, deadPosition, new Vector2[83],new Integer[83]);
@@ -73,8 +73,14 @@ public class Pawn extends AbstractGameObject {
     public void init(int pawnImageIndex, Vector2 deadPosition, Vector2[] playerPath,Integer[] hintPlayerArray) {
         Assets.instance.pawn.init(pawnImageIndex);
         pawnImage = Assets.instance.pawn.pawn;
-        
+        pathWithoutEdit =new Vector2[84];
         path = playerPath;
+        for(int i=0;i<playerPath.length;i++) {
+            if (playerPath[i] != null) {
+                pathWithoutEdit[i] = new Vector2();
+                pathWithoutEdit[i].set(playerPath[i].x, playerPath[i].y);
+            }
+        }
         hintArray = hintPlayerArray;
         dimension.set(0.435f, 0.435f);
         this.setCenter(this.dimension.x / 2, this.dimension.y / 2);
@@ -91,6 +97,9 @@ public class Pawn extends AbstractGameObject {
         
         // Set bounding box for collision detection
         bounds.set(position.x, position.y, dimension.x, dimension.y);
+
+        pawnHighlightCanMove = Assets.instance.pawnHighlightCanMove.pawnHighlightCanMove;
+
     }
 
     @Override
@@ -102,7 +111,7 @@ public class Pawn extends AbstractGameObject {
     -         rotation, pawnHighlightCanMove.getRegionX(), pawnHighlightCanMove.getRegionY(), pawnHighlightCanMove.getRegionWidth(), pawnHighlightCanMove.getRegionHeight(), false, false);
         }
     }
-    
+
     public void render(SpriteBatch batch, Integer pileCount) {
         this.render(batch);
         //Render pawns when they pile on one location
@@ -175,6 +184,9 @@ public class Pawn extends AbstractGameObject {
             positionOnPath += numberOfSteps;
             this.position = path[positionOnPath];
             this.bounds.set(position.x, position.y, dimension.x, dimension.y);
+
+            // make the highlite white
+            pawnHighlightCanMove=Assets.instance.pawnHighlightCanMove.pawnHighlightCanMoveInGame;
         }
         catch(Exception e) {
             Gdx.app.debug(TAG, e.getMessage());
@@ -219,22 +231,174 @@ public class Pawn extends AbstractGameObject {
 
     public void die() {
         this.position = deadPosition;
-        this.positionOnPath=0;
+        this.positionOnPath=-1;
+        // make the highlite black again
+        pawnHighlightCanMove=Assets.instance.pawnHighlightCanMove.pawnHighlightCanMove;
         this.bounds.set(position.x, position.y, dimension.x, dimension.y);
-        stompSound.play();
+       playKillSound();
 
     }
 
-    public void playHorseSound(){
 
-        horseSound.play();
+    public boolean isEntering() {
+        return positionOnPath >= 70;
     }
-    public void playMilitarySound(){
-        soldierSound.play();
+
+    public boolean pathCollision(int positionOnPathParam) {
+        switch (positionOnPathParam) {
+            case 0:
+                if (positionOnPath == 82) {
+                    return true;
+                }
+                ;
+                break;
+            case 1:
+                if (positionOnPath == 81) {
+                    return true;
+                }
+                ;
+                break;
+            case 2:
+                if (positionOnPath == 80) {
+                    return true;
+                }
+                ;
+                break;
+            case 3:
+                if (positionOnPath == 79) {
+                    return true;
+                }
+                ;
+                break;
+            case 4:
+                if (positionOnPath == 78) {
+                    return true;
+                }
+                ;
+                break;
+            case 5:
+                if (positionOnPath == 77) {
+                    return true;
+                }
+                ;
+                break;
+
+            case 6:
+                if (positionOnPath == 76) {
+                    return true;
+                }
+                ;
+                break;
+
+            case 7:
+                if (positionOnPath == 75) {
+                    return true;
+                }
+                ;
+                break;
+            case 82:
+                if (positionOnPath == 0) {
+                    return true;
+                }
+                ;
+                break;
+            case 81:
+                if (positionOnPath == 1) {
+                    return true;
+                }
+                ;
+                break;
+            case 80:
+                if (positionOnPath == 2) {
+                    return true;
+                }
+                ;
+                break;
+            case 79:
+                if (positionOnPath == 3) {
+                    return true;
+                }
+                ;
+                break;
+            case 78:
+                if (positionOnPath == 4) {
+                    return true;
+                }
+                ;
+                break;
+            case 77:
+                if (positionOnPath == 5) {
+                    return true;
+                }
+                ;
+                break;
+
+            case 76:
+                if (positionOnPath == 6) {
+                    return true;
+                }
+                ;
+                break;
+
+            case 75:
+                if (positionOnPath == 7) {
+                    return true;
+                }
+                ;
+                break;
+            default:
+                return false;
+        }
+        return false;
     }
-    public void playJumpSound(){
-        jumpSound.play();
+
+
+    public void collisionOccured(boolean collisionOfPawn) {
+        if(positionOnPath<0){
+            return;
+        }
+        float y=pathWithoutEdit[positionOnPath].y;
+
+
+        if(collisionOfPawn==true ){
+            Gdx.app.log("coll y=",y+"");
+            if(isEntering()){
+
+                position.y=y-0.25f;
+                bounds.y=y-0.25f;
+            }else{
+                position.y=y+0.2f;
+                bounds.y=y+0.2f;
+            }}else{
+            position.y=y;
+            bounds.y=y;
+        }
+        this.collisionOfPawn = collisionOfPawn;
     }
-    public void playBadaDump(){baDaDumSound.play();}
-    public void playLargeCheering(){largeCheeringSound.play();}
+
+
+    public void playKillSound(){
+        if (!GamePreferences.instance.soundMute) {
+            killSound.play();
+        }
+    }
+
+
+    public void playJumpSound() {
+        if (!GamePreferences.instance.soundMute) {
+            jumpSound.play();
+        }
+    }
+
+    public void playBadaDump() {
+        if (!GamePreferences.instance.soundMute) {
+            baDaDumSound.play();
+        }
+    }
+
+    public void playCheering() {
+        if (!GamePreferences.instance.soundMute) {
+            cheeringSound.play();
+        }
+    }
 }

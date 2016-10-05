@@ -94,7 +94,7 @@ public class CreditsScreen extends AbstractGameScreen {
                     game.setScreen(new MenuScreen(game));
                 }
             });
-        btnClose.align(Align.topRight).pad(30, 0, 0, 65);
+        btnClose.align(Align.topRight).pad(20, 0, 0, 30);
         stack.add(btnClose);
         
         creditsTable = new Table();
@@ -131,7 +131,6 @@ public class CreditsScreen extends AbstractGameScreen {
         creditsTable.row();
         
         paragraph02 = new Label("Vanessa BITAR", pinkStyle);
-        paragraph02.setColor(Color.PINK);
         paragraph02.setFontScale(0.28f);
         paragraph02.setWrap(true);
         paragraph02.setAlignment(Align.center);

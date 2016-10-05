@@ -90,7 +90,7 @@ public class HowToScreen extends AbstractGameScreen {
                     game.setScreen(new MenuScreen(game));
                 }
             });
-        btnClose.align(Align.topRight).pad(50, 0, 0, 50);
+        btnClose.align(Align.topRight).pad(20, 0, 0, 30);
         stack.add(btnClose);
         
         creditsTable = new Table();
@@ -100,8 +100,8 @@ public class HowToScreen extends AbstractGameScreen {
         rochesterFont.font= Assets.instance.fonts.defaultBig;
 
         mainTitle = new Label("How to Play", rochesterFont);
-        mainTitle.setFontScale(0.7f);
-        creditsTable.add(mainTitle).height(100f).padTop(10f);
+        mainTitle.setFontScale(0.6f);
+        creditsTable.add(mainTitle).height(70f).padTop(10f);
         creditsTable.row();
 
         Label.LabelStyle lucidiaFont=new Label.LabelStyle();
@@ -123,11 +123,11 @@ public class HowToScreen extends AbstractGameScreen {
 
         ScrollPane scrollPane = new ScrollPane(paragraph01);
         scrollPane.debug();
-        creditsTable.add(scrollPane).width(280).height(300);
+        creditsTable.add(scrollPane).width(290).height(300);
         
         stack.add(creditsTable);
         
-        mainTable.add(stack).minWidth(280).height(Constants.VIEWPORT_GUI_HEIGHT-30).top().padTop(11);
+        mainTable.add(stack).minWidth(290).height(Constants.VIEWPORT_GUI_HEIGHT-30).top().padTop(11);
         
         stage.addActor(mainTable);
     }

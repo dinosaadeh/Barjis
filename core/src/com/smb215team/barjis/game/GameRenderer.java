@@ -7,18 +7,20 @@ package com.smb215team.barjis.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.Disposable;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.smb215team.barjis.game.objects.Dices;
+import com.smb215team.barjis.game.objects.Pawn;
+import com.smb215team.barjis.game.objects.Player;
 import com.smb215team.barjis.util.Constants;
-import com.smb215team.barjis.game.objects.*;
 
 /**
  *
@@ -53,6 +55,7 @@ public class GameRenderer implements Disposable {
         extendedViewPort =new ExtendViewport(Constants.VIEWPORT_GUI_WIDTH,Constants.VIEWPORT_GUI_HEIGHT);
         gameController.stage = new Stage(extendedViewPort);
         Gdx.input.setInputProcessor(gameController.stage);
+
     }
 
     public void render () {

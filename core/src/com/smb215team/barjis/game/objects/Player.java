@@ -5,7 +5,6 @@
  */
 package com.smb215team.barjis.game.objects;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -154,13 +153,27 @@ public class Player {
     // </editor-fold>
     
     public void render(SpriteBatch batch) {
-        Map<Vector2, Integer> pawnAddresses = new HashMap<Vector2, Integer>();
+        Map<Integer, Integer> pawnAddresses = new HashMap<Integer, Integer>();
         for(Pawn pawn : pawns) {
-            if(pawnAddresses.containsKey(pawn.position))
-                pawnAddresses.put(pawn.position, pawnAddresses.get(pawn.position) + 1);
+            pawn.collisionOccured(false);
+            if (pawnAddresses.containsKey(pawn.positionOnPath))
+                pawnAddresses.put(pawn.positionOnPath, pawnAddresses.get(pawn.positionOnPath) + 1);
             else
-                pawnAddresses.put(pawn.position, 1);
-            pawn.render(batch, pawnAddresses.get(pawn.position));
+                pawnAddresses.put(pawn.positionOnPath, 1);
+        }
+        for (Pawn pawn : pawns) {
+            for (Pawn secondPawn : pawns) {
+                if (pawn.pathCollision(secondPawn.positionOnPath)) {
+                    pawn.collisionOccured(true);
+                    secondPawn.collisionOccured(true);
+                }
+            }
+            if (pawn.isDead()) {
+                pawn.render(batch, 1);
+
+            } else {
+                pawn.render(batch, pawnAddresses.get(pawn.positionOnPath));
+            }
         }
     }
     
@@ -200,7 +213,7 @@ public class Player {
         }
         return false;
     }
-    
+
     public boolean hasWonTheGame() {
         for(Pawn pawn : pawns) {
             if(pawn.positionOnPath < 83)

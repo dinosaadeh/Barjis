@@ -11,6 +11,8 @@ import com.smb215team.barjis.game.MultiplayerGameController;
  */
 public class MultiplayerGameScreen extends GameScreen{
 
+
+
     public MultiplayerGameScreen(Game game) {
         super(game);
     }

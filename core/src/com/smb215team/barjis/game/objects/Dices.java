@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.smb215team.barjis.util.GamePreferences;
 
 /**
  * This is a singleton class that takes care of throwing the dice over and over
@@ -22,6 +23,7 @@ public class Dices {
     public static final Integer[] movesValues = {6, 10, 2, 3, 4, 25, 12, 1}; 
     public boolean canPlayerThrowDices;
     Sound diceSound = Gdx.audio.newSound(Gdx.files.internal("diceSound.mp3"));
+
 
     private Dices() {
         init();
@@ -95,9 +97,9 @@ public class Dices {
             dices[i].bounds.set(randomX, randomY, 0.45f, 0.45f);
             dices[i].dimension.set(0.45f, 0.45f);
             dices[i].setSize(0.45f, 0.45f);
-        } 
+        }
 
-        diceSound.play();
+        playSound();
 
         // Setting the value of the current throw
         currentHandMoves[currentThrowValue]++;
@@ -146,8 +148,7 @@ public class Dices {
             dices[i].bounds.set(randomX, randomY, 0.45f, 0.45f);
             dices[i].dimension.set(0.45f, 0.45f);
         }
-
-        diceSound.play();
+        playSound();
         if (currentThrowValueLeft == currentThrowValueRight) return -1;
         return (currentThrowValueLeft > currentThrowValueRight) ? 0 : 1;
     }
@@ -193,6 +194,11 @@ public class Dices {
                     dices[j].friction.y = 0.85f * dices[j].velocity.y;
                 }
             }
+        }
+    }
+    public void playSound(){
+        if(!GamePreferences.instance.soundMute) {
+            diceSound.play();
         }
     }
 }

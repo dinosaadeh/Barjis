@@ -18,6 +18,8 @@ public class Constants {
     // Location of description file for texture atlas
     public static final String TEXTURE_ATLAS_OBJECTS = "BarjisPackFile.atlas";
 
+    public static final String PREFERENCES="Game Settings";
+
     // GUI Width
     public static final float VIEWPORT_GUI_WIDTH = 800.0f;
     // GUI Height

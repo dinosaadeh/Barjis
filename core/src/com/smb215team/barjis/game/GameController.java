@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.smb215team.barjis.game.enums.GameState;
@@ -51,7 +52,12 @@ public class GameController extends InputAdapter {
     protected Pawn currentSelectedPawnForPlay;
     protected int selectedIndexInTable;
 
+
+
     public Stage stage;
+    protected Label winnerLabel;
+    protected Label.LabelStyle labelStyle =new Label.LabelStyle();
+
     public HorizontalGroup hGroup;// put the button in it
     public GameController (Game game) {
         this.game = game;
@@ -63,6 +69,8 @@ public class GameController extends InputAdapter {
         Dices.instance.init();
         timerForThrowingDices = 0.0f;
         ConfigurationController.initCells();
+
+        initWinnerLabel();
 
         // <editor-fold desc="Initialising players' pawns">
         players = new Player[2]; //TODO: account for variable number of players (1 (AI), 2, 4)
@@ -79,7 +87,11 @@ public class GameController extends InputAdapter {
             
         }    
         // </editor-fold>
+
+
     }
+
+
 
     public void update (float deltaTime) {
         switch (state) {
@@ -93,6 +105,7 @@ public class GameController extends InputAdapter {
                 interpretPlayerMoves(deltaTime);
                 break;
             case gameOver:
+                announceTheWinner(deltaTime);
                 break;
             default:
                 throw new AssertionError(state.name());
@@ -279,19 +292,19 @@ public class GameController extends InputAdapter {
                 }
             });
             hGroup.addActor(button);// add button to horizontalGroup
-            hGroup.wrap();// wrap the data to the next line
+            hGroup.wrap(true);// wrap the data to the next line
             hGroup.left().top();// start writing from the left and the top of the rectangle
         }
         if(currentPlayerIndex == 0) {
-            hGroup.setBounds(5,230,180,100);// set limits for  player 1
+            hGroup.setBounds(5,230,158,100);// set limits for  player 1
 
         } else {
             if(currentPlayerIndex == 1) {//Dino: Needs to be changed if in the case of 4 players the placement is changed.
                 hGroup.setBounds(660,230,180,100); // set limits for  player 1
             }
         }
-
         stage.addActor(hGroup);
+
     }
 
     /**
@@ -422,13 +435,7 @@ public class GameController extends InputAdapter {
         if (Dices.movesValues[selectedIndexFromTable] < 1) {
             return;
         }
-        if (players[playerIndex].pawns[pawnIndex].isDead()) {// the selected is Bonus
-            if (currentPlayerIndex == 1) {
-                players[playerIndex].pawns[pawnIndex].playMilitarySound();
-            } else {
-                players[playerIndex].pawns[pawnIndex].playHorseSound();
-            }
-        }
+
         
         if (selectedIndexFromTable == 5) {// Banj is selected
             players[playerIndex].pawns[pawnIndex].playJumpSound();
@@ -444,7 +451,7 @@ public class GameController extends InputAdapter {
 
         if (players[playerIndex].hasWonTheGame()) {
             this.state = state.gameOver;
-            players[playerIndex].pawns[0].playLargeCheering();
+            players[playerIndex].pawns[0].playCheering();
             return;
         }
         Dices.instance.currentHandMoves[selectedIndexFromTable]--;
@@ -452,6 +459,7 @@ public class GameController extends InputAdapter {
         players[playerIndex].updateAvailableMoves();
         fillDiceButtonText();
         enableButtonPawnCanPlay();
+
     }
  
     private void enableButtonPawnCanPlay() {
@@ -494,7 +502,32 @@ public class GameController extends InputAdapter {
         }
     }
     // </editor-fold>
-    
+
+    public void initWinnerLabel(){
+        labelStyle.font= Assets.instance.fonts.defaultNormal;
+        winnerLabel=new Label("The Winner", labelStyle);
+        winnerLabel.setFontScale(0.8f);
+
+    }
+
+    public void announceTheWinner(float deltaTime){
+        if(deltaTime<1) {
+            stage.clear();
+
+            if (players[0].hasWonTheGame()) {
+                winnerLabel.setPosition(20, 200);
+                stage.addActor(winnerLabel);
+            } else {
+                if (players[1].hasWonTheGame()) {
+                    winnerLabel.setPosition(675, 200);
+                    stage.addActor(winnerLabel);
+                }
+
+            }
+
+        }
+    }
+
     // <editor-fold desc="Helper Methods">
     private void switchToNextPlayer() {
         if(currentPlayerIndex == players.length-1) {

@@ -9,20 +9,20 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.smb215team.barjis.game.Assets;
 import com.smb215team.barjis.util.Constants;
+import com.smb215team.barjis.util.GamePreferences;
 
 /**
  *
@@ -39,7 +39,7 @@ public class MenuScreen extends AbstractGameScreen {
     private ImageButton btnHowToPlay;
     private ImageButton btnCredits;
     private Image poweredByLibgdx;
-    private ImageButton btnSound;
+    private ImageButton btnMuteSound;
     private FitViewport fitViewport;// in case we need it or the camera GUI
     public MenuScreen (Game game) {
         super(game);
@@ -63,6 +63,7 @@ public class MenuScreen extends AbstractGameScreen {
     }
     
     @Override public void show () {
+        GamePreferences.instance.load();
         Table mainTable = new Table();
         mainTable.setFillParent(true);
         mainTable.align(Align.topLeft);
@@ -81,7 +82,7 @@ public class MenuScreen extends AbstractGameScreen {
         Table secondRow = new Table();
         secondRow.setWidth(Gdx.graphics.getWidth());
         mainScreenLogo = new Image(Assets.instance.menuScreenImages.assetMainScreenLogo);
-        secondRow.add(mainScreenLogo).padLeft(115f);//.size(327.34375f, 277.6f);
+        secondRow.add(mainScreenLogo).padLeft(115f).size(327.34375f, 277.6f);
         //secondRow.debug();
         // <editor-fold desc="Buttons">
         Table buttonsTable = new Table();
@@ -92,7 +93,7 @@ public class MenuScreen extends AbstractGameScreen {
                     game.setScreen(new GameScreen(game));
                 }
             });
-        buttonsTable.add(btnPlaySolo);
+        buttonsTable.add(btnPlaySolo).size(250,70);
         buttonsTable.row();
         
         btnPvp = new ImageButton(new TextureRegionDrawable(Assets.instance.mainScreenButtons.btnPvp));
@@ -101,7 +102,7 @@ public class MenuScreen extends AbstractGameScreen {
                     game.setScreen(new MultiplayerGameScreen(game));
                 }
             });
-        buttonsTable.add(btnPvp);
+        buttonsTable.add(btnPvp).size(250,70);
         buttonsTable.row();
         
         mainScreenButtonsSeparator = new Image(Assets.instance.mainScreenButtons.btnsSeparator);
@@ -115,7 +116,7 @@ public class MenuScreen extends AbstractGameScreen {
                     game.setScreen(new HowToScreen(game));
                 }
             });
-        buttonsTable.add(btnHowToPlay);
+        buttonsTable.add(btnHowToPlay).size(250,70);
         buttonsTable.row();
         
         btnCredits = new ImageButton(new TextureRegionDrawable(Assets.instance.mainScreenButtons.btnCredits));
@@ -124,10 +125,10 @@ public class MenuScreen extends AbstractGameScreen {
                     game.setScreen(new CreditsScreen(game));
                 }
             });
-        buttonsTable.add(btnCredits);
+        buttonsTable.add(btnCredits).size(250,70);
         buttonsTable.row();
         
-        secondRow.add(buttonsTable).right();//.size(400f, 272.8f);
+        secondRow.add(buttonsTable).right().padLeft(60);//.size(400f, 272.8f);
         // </editor-fold>
 
         mainTable.add(secondRow).expand().left().top();
@@ -139,22 +140,30 @@ public class MenuScreen extends AbstractGameScreen {
         poweredByLibgdx = new Image(Assets.instance.menuScreenImages.assetPoweredByLibgdx);
         thirdRow.add(poweredByLibgdx).padLeft(39.0625f).padBottom(43);
 
-        btnSound = new ImageButton(new TextureRegionDrawable(Assets.instance.mainScreenButtons.btnSoundOn));
-        btnSound.addListener(new ChangeListener() {
-                public void changed (ChangeEvent e, Actor actor) {
-                    //btnSound.
-                    game.setScreen(new GameScreen(game));
-                }
-            });
-        thirdRow.add().width(610);
-        thirdRow.add(btnSound);
-        
+        btnMuteSound = new ImageButton(new TextureRegionDrawable(Assets.instance.mainScreenButtons.btnSoundOn),new TextureRegionDrawable(Assets.instance.mainScreenButtons.btnSoundOn),new TextureRegionDrawable(Assets.instance.mainScreenButtons.btnSoundOff));
+
+        // read the value from the setting maps (GamePreferences)
+        btnMuteSound.setChecked(GamePreferences.instance.soundMute);
+        // set listener to save settings when click on button and the sound settings changed
+        btnMuteSound.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                GamePreferences.instance.soundMute =btnMuteSound.isChecked();
+                GamePreferences.instance.save();
+            }
+        } );
+
+        thirdRow.add().width(510);
+        thirdRow.add(btnMuteSound).padRight(60);
+
         mainTable.add(thirdRow).expandX().left().bottom();
         // </editor-fold>
 
         stage.addActor(mainTable);
     }
-    
+
+
+
     @Override public void hide () { }
     
     @Override public void pause () { }
