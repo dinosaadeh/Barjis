@@ -118,7 +118,7 @@ public class UpdateServer {
                         currentHandMoveArray[i] = currentHandMoveServer.charAt(i) - '0';
                     }
 
-                   gameController.fillDiceButtonText(currentHandMoveArray, false);
+                   //gameController.fillDiceButtonText(currentHandMoveArray, false);
                     
                 } catch (JSONException e) {
                     Gdx.app.log(TAG, e.getMessage());
