@@ -21,6 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.smb215team.barjis.game.Assets;
+import com.smb215team.barjis.game.enums.GameModes;
 import com.smb215team.barjis.util.Constants;
 import com.smb215team.barjis.util.GamePreferences;
 
@@ -41,9 +42,10 @@ public class MenuScreen extends AbstractGameScreen {
     private Image poweredByLibgdx;
     private ImageButton btnMuteSound;
     private FitViewport fitViewport;// in case we need it or the camera GUI
+    
     public MenuScreen (Game game) {
         super(game);
-        fitViewport =new FitViewport(Constants.VIEWPORT_GUI_WIDTH,Constants.VIEWPORT_GUI_HEIGHT);
+        fitViewport = new FitViewport(Constants.VIEWPORT_GUI_WIDTH,Constants.VIEWPORT_GUI_HEIGHT);
         stage = new Stage(fitViewport);
         Gdx.input.setInputProcessor(stage);
     }
@@ -90,6 +92,8 @@ public class MenuScreen extends AbstractGameScreen {
         btnPlaySolo = new ImageButton(new TextureRegionDrawable(Assets.instance.mainScreenButtons.btnPlaySolo));
         btnPlaySolo.addListener(new ChangeListener() {
                 public void changed (ChangeEvent e, Actor actor) {
+                    GamePreferences.instance.gameMode = GameModes.pvpLocal;
+                    GamePreferences.instance.save();
                     game.setScreen(new GameScreen(game));
                 }
             });
@@ -99,6 +103,8 @@ public class MenuScreen extends AbstractGameScreen {
         btnPvp = new ImageButton(new TextureRegionDrawable(Assets.instance.mainScreenButtons.btnPvp));
         btnPvp.addListener(new ChangeListener() {
                 public void changed (ChangeEvent e, Actor actor) {
+                    GamePreferences.instance.gameMode = GameModes.pvpNetwork;
+                    GamePreferences.instance.save();
                     game.setScreen(new MultiplayerGameScreen(game));
                 }
             });
@@ -148,7 +154,7 @@ public class MenuScreen extends AbstractGameScreen {
         btnMuteSound.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                GamePreferences.instance.soundMute =btnMuteSound.isChecked();
+                GamePreferences.instance.soundMute = btnMuteSound.isChecked();
                 GamePreferences.instance.save();
             }
         } );
@@ -161,8 +167,6 @@ public class MenuScreen extends AbstractGameScreen {
 
         stage.addActor(mainTable);
     }
-
-
 
     @Override public void hide () { }
     
