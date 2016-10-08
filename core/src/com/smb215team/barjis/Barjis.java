@@ -19,4 +19,5 @@ public class Barjis extends Game {
         // Start game at menu screen
         setScreen(new MenuScreen(this));
     }
+
 }
