@@ -17,7 +17,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.smb215team.barjis.game.enums.GameModes;
 import com.smb215team.barjis.game.enums.GameState;
+import com.smb215team.barjis.game.handlers.LocalPlayerHandler;
+import com.smb215team.barjis.game.handlers.NetworkPlayerHandler;
+import com.smb215team.barjis.game.handlers.PlayerHandler;
 import com.smb215team.barjis.game.objects.Dice;
 import com.smb215team.barjis.game.objects.DiceContainer;
 import com.smb215team.barjis.game.objects.Dices;
@@ -25,6 +29,7 @@ import com.smb215team.barjis.game.objects.Pawn;
 import com.smb215team.barjis.game.objects.Player;
 import com.smb215team.barjis.screens.MenuScreen;
 import com.smb215team.barjis.util.Constants;
+import com.smb215team.barjis.util.GamePreferences;
 
 /**
  *
@@ -36,10 +41,11 @@ public class GameController extends InputAdapter {
     protected Game game;
     public OrthographicCamera camera;
     GameState state;
+    PlayerHandler playerHandler;
     Player[] players;
     public int currentPlayerIndex;
     DiceContainer diceContainer;
-    public int playerPawnUpdateIndex =0,pawnUpdateIndex=0;
+    public int playerPawnUpdateIndex = 0, pawnUpdateIndex = 0;
     // <editor-fold desc="Timers">
     public float timerForThrowingDicesAtGameStart = 0.0f;
     public float timerForThrowingDices = 0.0f;
@@ -52,19 +58,32 @@ public class GameController extends InputAdapter {
     protected Pawn currentSelectedPawnForPlay;
     protected int selectedIndexInTable;
 
-
-
     public Stage stage;
     protected Label winnerLabel;
-    protected Label.LabelStyle labelStyle =new Label.LabelStyle();
+    protected Label.LabelStyle labelStyle = new Label.LabelStyle();
 
     public HorizontalGroup hGroup;// put the button in it
+    
     public GameController (Game game) {
         this.game = game;
         init();
     }
 
     protected void init () {
+        // <editor-fold desc="WORK IN PROGRESS TAKING OUT LOGIC FROM GAME CONTROLLER TO HANDLERS">
+        switch(GamePreferences.instance.gameMode) {
+            case pvpLocal: {
+                playerHandler = new LocalPlayerHandler();
+                break;
+            }
+            case pvpNetwork: {
+                playerHandler = new NetworkPlayerHandler();
+                break;
+            }
+        }
+        
+        playerHandler.initiateGame();
+        // </editor-fold>
         state = GameState.gameStart;
         Dices.instance.init();
         timerForThrowingDices = 0.0f;
@@ -84,14 +103,9 @@ public class GameController extends InputAdapter {
             for(int i = 0; i < players.length; i++) {
                 players[i] = new Player(i, i, ConfigurationController.GetPawnInitialPlaceholder(i));
             }
-            
         }    
         // </editor-fold>
-
-
     }
-
-
 
     public void update (float deltaTime) {
         switch (state) {
@@ -503,15 +517,9 @@ public class GameController extends InputAdapter {
     }
     // </editor-fold>
 
-    public void initWinnerLabel(){
-        labelStyle.font= Assets.instance.fonts.defaultNormal;
-        winnerLabel=new Label("The Winner", labelStyle);
-        winnerLabel.setFontScale(0.8f);
-
-    }
-
+    // <editor-fold desc="STATE: game over">
     public void announceTheWinner(float deltaTime){
-        if(deltaTime<1) {
+        if(deltaTime < 1) {
             stage.clear();
 
             if (players[0].hasWonTheGame()) {
@@ -522,11 +530,10 @@ public class GameController extends InputAdapter {
                     winnerLabel.setPosition(675, 200);
                     stage.addActor(winnerLabel);
                 }
-
             }
-
         }
     }
+    // </editor-fold>
 
     // <editor-fold desc="Helper Methods">
     private void switchToNextPlayer() {
@@ -552,10 +559,7 @@ public class GameController extends InputAdapter {
         currentSelectedPawnForPlay = null;
         this.state = GameState.playerTurnThrowDice;
     }
-//    public void switchPlayerByServer (int switchPlayerToIndex) {
-//        currentPlayerIndexByServer =switchPlayerToIndex;
-//    }
-//
+
     /**
      * This method returns true of the position on a pawn's path is a shire. Shire positions are set 
      * in constants as path index and not as x, y addresses.
@@ -589,6 +593,12 @@ public class GameController extends InputAdapter {
         currentSelectedPawnForPlay = players[currentPlayerIndex].pawns[currentPlayerPawnIndex];
         playerPawnUpdateIndex = currentPlayerIndex ;
         pawnUpdateIndex = currentPlayerPawnIndex;
+    }
+
+    public void initWinnerLabel(){
+       labelStyle.font = Assets.instance.fonts.defaultNormal;
+        winnerLabel = new Label("The Winner", labelStyle);
+        winnerLabel.setFontScale(0.8f);
     }
     // </editor-fold>
 }
