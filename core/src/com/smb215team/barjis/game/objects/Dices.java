@@ -196,6 +196,7 @@ public class Dices {
             }
         }
     }
+    
     public void playSound(){
         if(!GamePreferences.instance.soundMute) {
             diceSound.play();

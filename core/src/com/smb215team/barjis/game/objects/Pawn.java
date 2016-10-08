@@ -40,9 +40,9 @@ public class Pawn extends AbstractGameObject {
     public boolean collisionOfPawn;
     private Vector2[] pathWithoutEdit;
     Sound jumpSound= Gdx.audio.newSound(Gdx.files.internal("jump.mp3"));
-    Sound killSound= Gdx.audio.newSound(Gdx.files.internal("glass-smash.wav"));
-    Sound baDaDumSound= Gdx.audio.newSound(Gdx.files.internal("ba-da-dum.wav"));
-    Sound cheeringSound =Gdx.audio.newSound(Gdx.files.internal("cheering.wav"));
+    Sound killSound = Gdx.audio.newSound(Gdx.files.internal("glass-smash.mp3"));
+    Sound baDaDumSound = Gdx.audio.newSound(Gdx.files.internal("ba-da-dum.mp3"));
+    Sound cheeringSound = Gdx.audio.newSound(Gdx.files.internal("cheering.mp3"));
     /**
      * Reflects the pawn's position index on the player's path
      * - value of -1 means the pawn is dead (out of the board)

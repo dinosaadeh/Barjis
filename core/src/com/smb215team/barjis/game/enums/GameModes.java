@@ -3,13 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.smb215team.barjis.game.handlers;
+package com.smb215team.barjis.game.enums;
 
 /**
  *
  * @author dinosaadeh
  */
-public interface PlayerHandler {
-    void initiateGame();
-    void execute();
+public enum GameModes {
+    solo, pvpLocal, pvpNetwork;
 }

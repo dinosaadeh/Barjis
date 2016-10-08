@@ -49,7 +49,7 @@ public class MenuScreen extends AbstractGameScreen {
         stage = new Stage(fitViewport);
         Gdx.input.setInputProcessor(stage);
     }
-    
+
     @Override
     public void render (float deltaTime) {
         // Sets the clear screen color to: Cornflower Blue

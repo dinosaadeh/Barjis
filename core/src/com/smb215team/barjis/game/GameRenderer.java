@@ -30,8 +30,7 @@ public class GameRenderer implements Disposable {
     private OrthographicCamera camera;
     private SpriteBatch batch;
     private GameController gameController;
-    ShapeRenderer shapeRenderer;
-    static private boolean projectionMatrixSet;
+
     private ShapeRenderer dummyShapeRenderer;
 
     BitmapFont returnTextFont = Assets.instance.fonts.defaultSmall;///used from wrapping the returnText

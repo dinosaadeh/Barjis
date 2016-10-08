@@ -20,7 +20,7 @@ android {
     buildTypes {
         defaultConfig {
             applicationId "com.smb215team.barjis"
-            minSdkVersion 8
+            minSdkVersion 16
             targetSdkVersion 23
         }
     }
