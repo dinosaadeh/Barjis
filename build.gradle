@@ -89,6 +89,7 @@ project(":android") {
     }
 }
 
+
 project(":core") {
     apply plugin: "java"
 
@@ -103,6 +104,8 @@ project(":core") {
         compile "com.badlogicgames.ashley:ashley:$ashleyVersion"
         compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
         compile "io.socket:socket.io-client:0.6.2"////added by ND 120916
+        compile fileTree(dir: 'libs', include: '*.jar')
+
     }
 }
 
