@@ -105,7 +105,7 @@ public class MenuScreen extends AbstractGameScreen {
                 public void changed (ChangeEvent e, Actor actor) {
                     GamePreferences.instance.gameMode = GameModes.pvpNetwork;
                     GamePreferences.instance.save();
-                    game.setScreen(new MultiplayerGameScreen(game));
+                    game.setScreen(new GameScreen(game));
                 }
             });
         buttonsTable.add(btnPvp).size(250,70);

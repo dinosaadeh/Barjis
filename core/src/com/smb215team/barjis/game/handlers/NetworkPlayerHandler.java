@@ -9,6 +9,7 @@ import com.badlogic.gdx.Gdx;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
+import com.netease.pomelo;
 
 /**
  *
@@ -31,7 +32,7 @@ public class NetworkPlayerHandler implements PlayerHandler {
     // <editor-fold desc="Helper Methods">
     public void connectSocket() {
         try {
-//            PomeloClient client=new PomeloClient("localhost",8081); an example
+            //PomeloClient client = new PomeloClient("localhost",8081); an example
 
             socket = IO.socket("http://localhost:8082");//("http://192.168.1.106:8082");
             socket.connect();
