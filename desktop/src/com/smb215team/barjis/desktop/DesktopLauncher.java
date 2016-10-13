@@ -10,6 +10,6 @@ public class DesktopLauncher {
                 config.width = 1024;
                 config.height = 600;
                 config.resizable = false;
-		new LwjglApplication(new Barjis(), config);
+		new LwjglApplication(new Barjis(new FacebookServiceDesktop()), config);
 	}
 }
