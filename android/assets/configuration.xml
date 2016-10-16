@@ -2,141 +2,142 @@
     <BoardMap>
         <!--Bottom Branch -->
         <!--Bottom Branch MIDDLE-->
-  <cell x="-0.2" y="-1.35" hintx="-0.1" hinty="-1.35" hintRotation="270"/>
-  <cell x="-0.2" y="-1.75" hintx="-0.1" hinty="-1.75" hintRotation="270"/>
-  <cell x="-0.2" y="-2.15" hintx="-0.1" hinty="-2.15" hintRotation="270"/>
-  <cell x="-0.2" y="-2.55" hintx="-0.1" hinty="-2.55" hintRotation="270"/>
-  <cell x="-0.2" y="-2.95" hintx="-0.1" hinty="-2.95" hintRotation="270"/>
-  <cell x="-0.2" y="-3.36" hintx="-0.1" hinty="-3.36" hintRotation="270"/>
-  <cell x="-0.2" y="-3.78" hintx="-0.1" hinty="-3.78" hintRotation="270"/>
-  <cell x="-0.2" y="-4.18" hintx="-0.1" hinty="-4.08" hintRotation="180"/>
+        <cell hintRotation="270" hintx="-0.1" hinty="-1.35" x="-0.2" y="-1.35" />
+        <cell hintRotation="270" hintx="-0.1" hinty="-1.75" x="-0.2" y="-1.75" />
+        <cell hintRotation="270" hintx="-0.1" hinty="-2.15" x="-0.2" y="-2.15" />
+        <cell hintRotation="270" hintx="-0.1" hinty="-2.55" x="-0.2" y="-2.55" />
+        <cell hintRotation="270" hintx="-0.1" hinty="-2.95" x="-0.2" y="-2.95" />
+        <cell hintRotation="270" hintx="-0.1" hinty="-3.36" x="-0.2" y="-3.36" />
+        <cell hintRotation="270" hintx="-0.1" hinty="-3.78" x="-0.2" y="-3.78" />
+        <cell hintRotation="180" hintx="-0.1" hinty="-4.08" x="-0.2" y="-4.18" />
 
 
         <!--Bottom Branch RIGHT-->
-  <cell x="0.7" y="-4.18"  hintx="0.8" hinty="-4.18" hintRotation="270"/>
-  <cell x="0.7" y="-3.78"  hintx="0.8" hinty="-3.78" hintRotation="270"/>
-  <cell x="0.7" y="-3.36"  hintx="0.8" hinty="-3.36" hintRotation="270"/>
-  <cell x="0.7" y="-2.95"  hintx="0.8" hinty="-2.95" hintRotation="270"/>
-  <cell x="0.7" y="-2.55"  hintx="0.8" hinty="-2.55" hintRotation="270"/>
-  <cell x="0.7" y="-2.15"  hintx="0.8" hinty="-2.15" hintRotation="270"/>
-  <cell x="0.7" y="-1.75"  hintx="0.8" hinty="-1.75" hintRotation="270"/>
-  <cell x="0.65" y="-1.35" hintx="0.7" hinty="-1.25" hintRotation="180"/>
+        <cell hintRotation="270" hintx="0.8" hinty="-4.18" x="0.7" y="-4.18" />
+        <cell hintRotation="270" hintx="0.8" hinty="-3.78" x="0.7" y="-3.78" />
+        <cell hintRotation="270" hintx="0.8" hinty="-3.36" x="0.7" y="-3.36" />
+        <cell hintRotation="270" hintx="0.8" hinty="-2.95" x="0.7" y="-2.95" />
+        <cell hintRotation="270" hintx="0.8" hinty="-2.55" x="0.7" y="-2.55" />
+        <cell hintRotation="270" hintx="0.8" hinty="-2.15" x="0.7" y="-2.15" />
+        <cell hintRotation="270" hintx="0.8" hinty="-1.75" x="0.7" y="-1.75" />
+        <cell hintRotation="180" hintx="0.7" hinty="-1.25" x="0.65" y="-1.35" />
 
         <!--Bottom Branch LEFT-->
-  <cell x="-0.9" y="-1.35" hintx="-0.9" hinty="-1.15" hintRotation="90"/>
-  <cell x="-1.1" y="-1.75" hintx="-1" hinty="-1.55" hintRotation="90"/>
-  <cell x="-1.1" y="-2.15" hintx="-1" hinty="-1.95" hintRotation="90"/>
-  <cell x="-1.1" y="-2.55" hintx="-1" hinty="-2.35" hintRotation="90"/>
-  <cell x="-1.1" y="-2.95" hintx="-1" hinty="-2.75" hintRotation="90"/>
-  <cell x="-1.1" y="-3.36" hintx="-1" hinty="-3.16" hintRotation="90"/>
-  <cell x="-1.1" y="-3.78" hintx="-1" hinty="-3.58" hintRotation="90"/>
-  <cell x="-1.1" y="-4.18" hintx="-1" hinty="-4.08" hintRotation="180"/>
+        <cell hintRotation="90" hintx="-0.9" hinty="-1.15" x="-0.9" y="-1.35" />
+        <cell hintRotation="90" hintx="-1" hinty="-1.55" x="-1.1" y="-1.75" />
+        <cell hintRotation="90" hintx="-1" hinty="-1.95" x="-1.1" y="-2.15" />
+        <cell hintRotation="90" hintx="-1" hinty="-2.35" x="-1.1" y="-2.55" />
+        <cell hintRotation="90" hintx="-1" hinty="-2.75" x="-1.1" y="-2.95" />
+        <cell hintRotation="90" hintx="-1" hinty="-3.16" x="-1.1" y="-3.36" />
+        <cell hintRotation="90" hintx="-1" hinty="-3.58" x="-1.1" y="-3.78" />
+        <cell hintRotation="180" hintx="-1" hinty="-4.08" x="-1.1" y="-4.18" />
 
         <!--Right Branch -->
         <!--Right Branch MIDDLE-->
-  <cell x="1"    y="-0.2" hintx="1"    hinty="-0.1" hintRotation="180"/>
-  <cell x="1.38" y="-0.2" hintx="1.38" hinty="-0.1" hintRotation="180"/>
-  <cell x="1.8"  y="-0.2" hintx="1.8"  hinty="-0.1" hintRotation="180"/>
-  <cell x="2.2"  y="-0.2" hintx="2.2"  hinty="-0.1" hintRotation="180"/>
-  <cell x="2.6"  y="-0.2" hintx="2.6"  hinty="-0.1" hintRotation="180"/>
-  <cell x="3.02" y="-0.2" hintx="3.02" hinty="-0.1" hintRotation="180"/>
-  <cell x="3.42" y="-0.2" hintx="3.42" hinty="-0.1" hintRotation="180"/>
-  <cell x="3.82" y="-0.2" hintx="3.92" hinty="-0.1" hintRotation="270"/>
-    <!--Right Branch RIGHT-->
-  <cell x="3.82" y="0.7"  hintx="4.02" hinty="0.8" hintRotation="0"/>
-  <cell x="3.42" y="0.7"  hintx="3.62" hinty="0.8" hintRotation="0"/>
-  <cell x="3.02" y="0.7"  hintx="3.22" hinty="0.8" hintRotation="0"/>
-  <cell x="2.6"  y="0.7"  hintx="2.8"  hinty="0.8" hintRotation="0"/>
-  <cell x="2.2"  y="0.7"  hintx="2.4"  hinty="0.8" hintRotation="0"/>
-  <cell x="1.8"  y="0.7"  hintx="2"  hinty="0.8" hintRotation="0"/>
-  <cell x="1.38" y="0.7"  hintx="1.58" hinty="0.8" hintRotation="0"/>
-  <cell x="1"    y="0.65" hintx="1.1"    hinty="0.75" hintRotation="270"/>
-     <!--Right Branch left-->
-  <cell x="1"    y="-1"   hintx="1"    hinty="-0.9" hintRotation="180"/>
-  <cell x="1.38" y="-1.1" hintx="1.38" hinty="-1" hintRotation="180" />
-  <cell x="1.8"  y="-1.1" hintx="1.8"  hinty="-1" hintRotation="180"/>
-  <cell x="2.2"  y="-1.1" hintx="2.2"  hinty="-1" hintRotation="180"/>
-  <cell x="2.6"  y="-1.1" hintx="2.6"  hinty="-1" hintRotation="180"/>
-  <cell x="3.02" y="-1.1" hintx="3.02" hinty="-1" hintRotation="180"/>
-  <cell x="3.42" y="-1.1" hintx="3.42" hinty="-1" hintRotation="180"/>
-  <cell x="3.82" y="-1.1" hintx="3.92" hinty="-1" hintRotation="270"/>
-     <!--Top Branch -->
+        <cell hintRotation="180" hintx="1" hinty="-0.1" x="1" y="-0.2" />
+        <cell hintRotation="180" hintx="1.38" hinty="-0.1" x="1.38" y="-0.2" />
+        <cell hintRotation="180" hintx="1.8" hinty="-0.1" x="1.8" y="-0.2" />
+        <cell hintRotation="180" hintx="2.2" hinty="-0.1" x="2.2" y="-0.2" />
+        <cell hintRotation="180" hintx="2.6" hinty="-0.1" x="2.6" y="-0.2" />
+        <cell hintRotation="180" hintx="3.02" hinty="-0.1" x="3.02" y="-0.2" />
+        <cell hintRotation="180" hintx="3.42" hinty="-0.1" x="3.42" y="-0.2" />
+        <cell hintRotation="270" hintx="3.92" hinty="-0.1" x="3.82" y="-0.2" />
+        <!--Right Branch RIGHT-->
+        <cell hintRotation="0" hintx="4.02" hinty="0.8" x="3.82" y="0.7" />
+        <cell hintRotation="0" hintx="3.62" hinty="0.8" x="3.42" y="0.7" />
+        <cell hintRotation="0" hintx="3.22" hinty="0.8" x="3.02" y="0.7" />
+        <cell hintRotation="0" hintx="2.8" hinty="0.8" x="2.6" y="0.7" />
+        <cell hintRotation="0" hintx="2.4" hinty="0.8" x="2.2" y="0.7" />
+        <cell hintRotation="0" hintx="2" hinty="0.8" x="1.8" y="0.7" />
+        <cell hintRotation="0" hintx="1.58" hinty="0.8" x="1.38" y="0.7" />
+        <cell hintRotation="270" hintx="1.1" hinty="0.75" x="1" y="0.65" />
+        <!--Right Branch left-->
+        <cell hintRotation="180" hintx="1" hinty="-0.9" x="1" y="-1" />
+        <cell hintRotation="180" hintx="1.38" hinty="-1" x="1.38" y="-1.1" />
+        <cell hintRotation="180" hintx="1.8" hinty="-1" x="1.8" y="-1.1" />
+        <cell hintRotation="180" hintx="2.2" hinty="-1" x="2.2" y="-1.1" />
+        <cell hintRotation="180" hintx="2.6" hinty="-1" x="2.6" y="-1.1" />
+        <cell hintRotation="180" hintx="3.02" hinty="-1" x="3.02" y="-1.1" />
+        <cell hintRotation="180" hintx="3.42" hinty="-1" x="3.42" y="-1.1" />
+        <cell hintRotation="270" hintx="3.92" hinty="-1" x="3.82" y="-1.1" />
+        <!--Top Branch -->
 
         <!--Top Branch Middle-->
-  <cell x="-0.2" y="1"    hintx="-0.1" hinty="1.2"  hintRotation="90"/>
-  <cell x="-0.2" y="1.38" hintx="-0.1" hinty="1.5" hintRotation="90"/>
-  <cell x="-0.2" y="1.77" hintx="-0.1" hinty="1.97" hintRotation="90"/>
-  <cell x="-0.2" y="2.18" hintx="-0.1" hinty="2.38" hintRotation="90"/>
-  <cell x="-0.2" y="2.58" hintx="-0.1" hinty="2.78" hintRotation="90"/>
-  <cell x="-0.2" y="3"    hintx="-0.1" hinty="3.2"  hintRotation="90"/>
-  <cell x="-0.2" y="3.4"  hintx="-0.1" hinty="3.6"  hintRotation="90"/>
-  <cell x="-0.2" y="3.8"  hintx="-0.1" hinty="3.9"  hintRotation="0"/>
-   <!--Top Branch Right-->
+        <cell hintRotation="90" hintx="-0.1" hinty="1.2" x="-0.2" y="1" />
+        <cell hintRotation="90" hintx="-0.1" hinty="1.5" x="-0.2" y="1.38" />
+        <cell hintRotation="90" hintx="-0.1" hinty="1.97" x="-0.2" y="1.77" />
+        <cell hintRotation="90" hintx="-0.1" hinty="2.38" x="-0.2" y="2.18" />
+        <cell hintRotation="90" hintx="-0.1" hinty="2.78" x="-0.2" y="2.58" />
+        <cell hintRotation="90" hintx="-0.1" hinty="3.2" x="-0.2" y="3" />
+        <cell hintRotation="90" hintx="-0.1" hinty="3.6" x="-0.2" y="3.4" />
+        <cell hintRotation="0" hintx="-0.1" hinty="3.9" x="-0.2" y="3.8" />
+        <!--Top Branch Right-->
 
-  <cell x="-1.1" y="3.8"  hintx="-1" hinty="4"  hintRotation="90"/>
-  <cell x="-1.1" y="3.4"  hintx="-1" hinty="3.6"  hintRotation="90"/>
-  <cell x="-1.1" y="3"    hintx="-1" hinty="3.2"    hintRotation="90"/>
-  <cell x="-1.1" y="2.58" hintx="-1" hinty="2.78" hintRotation="90"/>
-  <cell x="-1.1" y="2.18" hintx="-1" hinty="2.38" hintRotation="90"/>
-  <cell x="-1.1" y="1.77" hintx="-1" hinty="1.97" hintRotation="90"/>
-  <cell x="-1.1" y="1.38" hintx="-1" hinty="1.58" hintRotation="90"/>
-  <cell x="-0.9" y="1"    hintx="-1" hinty="1.1"    hintRotation="0"/>
-     <!--Top Branch Left-->
+        <cell hintRotation="90" hintx="-1" hinty="4" x="-1.1" y="3.8" />
+        <cell hintRotation="90" hintx="-1" hinty="3.6" x="-1.1" y="3.4" />
+        <cell hintRotation="90" hintx="-1" hinty="3.2" x="-1.1" y="3" />
+        <cell hintRotation="90" hintx="-1" hinty="2.78" x="-1.1" y="2.58" />
+        <cell hintRotation="90" hintx="-1" hinty="2.38" x="-1.1" y="2.18" />
+        <cell hintRotation="90" hintx="-1" hinty="1.97" x="-1.1" y="1.77" />
+        <cell hintRotation="90" hintx="-1" hinty="1.58" x="-1.1" y="1.38" />
+        <cell hintRotation="0" hintx="-1" hinty="1.1" x="-0.9" y="1" />
+        <!--Top Branch Left-->
 
-  <cell x="0.65" y="1"   hintx="0.75" hinty="1"   hintRotation="270"/>
-  <cell x="0.7" y="1.38" hintx="0.8"  hinty="1.38" hintRotation="270"/>
-  <cell x="0.7" y="1.77" hintx="0.8"  hinty="1.77" hintRotation="270"/>
-  <cell x="0.7" y="2.18" hintx="0.8"  hinty="2.18" hintRotation="270"/>
-  <cell x="0.7" y="2.58" hintx="0.8"  hinty="2.58" hintRotation="270"/>
-  <cell x="0.7" y="3"    hintx="0.8"  hinty="3"    hintRotation="270"/>
-  <cell x="0.7" y="3.4"  hintx="0.8"  hinty="3.4"  hintRotation="270"/>
-  <cell x="0.7" y="3.8"  hintx="0.8"  hinty="3.9"  hintRotation="0"/>
+        <cell hintRotation="270" hintx="0.75" hinty="1" x="0.65" y="1" />
+        <cell hintRotation="270" hintx="0.8" hinty="1.38" x="0.7" y="1.38" />
+        <cell hintRotation="270" hintx="0.8" hinty="1.77" x="0.7" y="1.77" />
+        <cell hintRotation="270" hintx="0.8" hinty="2.18" x="0.7" y="2.18" />
+        <cell hintRotation="270" hintx="0.8" hinty="2.58" x="0.7" y="2.58" />
+        <cell hintRotation="270" hintx="0.8" hinty="3" x="0.7" y="3" />
+        <cell hintRotation="270" hintx="0.8" hinty="3.4" x="0.7" y="3.4" />
+        <cell hintRotation="0" hintx="0.8" hinty="3.9" x="0.7" y="3.8" />
 
         <!--Left Branch -->
         <!--Left Branch MIDDLE-->
-  <cell x="-1.34" y="-0.2" hintx="-1.14" hinty="-0.1" hintRotation="0"/>
-  <cell x="-1.72" y="-0.2" hintx="-1.52" hinty="-0.1" hintRotation="0"/>
-  <cell x="-2.12" y="-0.2" hintx="-1.92" hinty="-0.1" hintRotation="0"/>
-  <cell x="-2.5" y="-0.2"  hintx="-2.3"  hinty="-0.1" hintRotation="0"/>
-  <cell x="-2.9" y="-0.2"  hintx="-2.7"  hinty="-0.1" hintRotation="0"/>
-  <cell x="-3.35" y="-0.2" hintx="-3.15" hinty="-0.1" hintRotation="0"/>
-  <cell x="-3.74" y="-0.2" hintx="-3.54" hinty="-0.1" hintRotation="0"/>
-  <cell x="-4.16" y="-0.2" hintx="-4.06" hinty="-0.1" hintRotation="90"/>
-    <!--Left Branch RIGHT-->
+        <cell hintRotation="0" hintx="-1.14" hinty="-0.1" x="-1.34" y="-0.2" />
+        <cell hintRotation="0" hintx="-1.52" hinty="-0.1" x="-1.72" y="-0.2" />
+        <cell hintRotation="0" hintx="-1.92" hinty="-0.1" x="-2.12" y="-0.2" />
+        <cell hintRotation="0" hintx="-2.3" hinty="-0.1" x="-2.5" y="-0.2" />
+        <cell hintRotation="0" hintx="-2.7" hinty="-0.1" x="-2.9" y="-0.2" />
+        <cell hintRotation="0" hintx="-3.15" hinty="-0.1" x="-3.35" y="-0.2" />
+        <cell hintRotation="0" hintx="-3.54" hinty="-0.1" x="-3.74" y="-0.2" />
+        <cell hintRotation="90" hintx="-4.06" hinty="-0.1" x="-4.16" y="-0.2" />
+        <!--Left Branch RIGHT-->
 
-  <cell x="-4.16" y="-1.1" hintx="-4.16" hinty="-1" hintRotation="180"/>
-  <cell x="-3.74" y="-1.1" hintx="-3.74" hinty="-1" hintRotation="180"/>
-  <cell x="-3.35" y="-1.1" hintx="-3.35" hinty="-1" hintRotation="180"/>
-  <cell x="-2.9" y="-1.1"  hintx="-2.9"  hinty="-1" hintRotation="180"/>
-  <cell x="-2.5" y="-1.1"  hintx="-2.5"  hinty="-1" hintRotation="180"/>
-  <cell x="-2.12" y="-1.1" hintx="-2.12" hinty="-1" hintRotation="180"/>
-  <cell x="-1.72" y="-1.1" hintx="-1.72" hinty="-1" hintRotation="180"/>
-  <cell x="-1.34" y="-1"   hintx="-1.24" hinty="-0.9"   hintRotation="90"/>
-    <!--Left Branch left-->
-  <cell x="-1.34" y="0.65" hintx="-1.14" hinty="0.75" hintRotation="0"/>
-  <cell x="-1.72" y="0.7"  hintx="-1.52" hinty="0.8"  hintRotation="0"/>
-  <cell x="-2.12" y="0.7"  hintx="-1.92" hinty="0.8"  hintRotation="0"/>
-  <cell x="-2.5"  y="0.7"  hintx="-2.3"  hinty="0.8"  hintRotation="0"/>
-  <cell x="-2.9"  y="0.7"  hintx="-2.7"  hinty="0.8"  hintRotation="0"/>
-  <cell x="-3.35" y="0.7"  hintx="-3.15" hinty="0.8"  hintRotation="0"/>
-  <cell x="-3.74" y="0.7"  hintx="-3.54" hinty="0.8"  hintRotation="0"/>
-  <cell x="-4.16" y="0.7"  hintx="-4.06" hinty="0.8"  hintRotation="90"/>
+        <cell hintRotation="180" hintx="-4.16" hinty="-1" x="-4.16" y="-1.1" />
+        <cell hintRotation="180" hintx="-3.74" hinty="-1" x="-3.74" y="-1.1" />
+        <cell hintRotation="180" hintx="-3.35" hinty="-1" x="-3.35" y="-1.1" />
+        <cell hintRotation="180" hintx="-2.9" hinty="-1" x="-2.9" y="-1.1" />
+        <cell hintRotation="180" hintx="-2.5" hinty="-1" x="-2.5" y="-1.1" />
+        <cell hintRotation="180" hintx="-2.12" hinty="-1" x="-2.12" y="-1.1" />
+        <cell hintRotation="180" hintx="-1.72" hinty="-1" x="-1.72" y="-1.1" />
+        <cell hintRotation="90" hintx="-1.24" hinty="-0.9" x="-1.34" y="-1" />
+        <!--Left Branch left-->
+        <cell hintRotation="0" hintx="-1.14" hinty="0.75" x="-1.34" y="0.65" />
+        <cell hintRotation="0" hintx="-1.52" hinty="0.8" x="-1.72" y="0.7" />
+        <cell hintRotation="0" hintx="-1.92" hinty="0.8" x="-2.12" y="0.7" />
+        <cell hintRotation="0" hintx="-2.3" hinty="0.8" x="-2.5" y="0.7" />
+        <cell hintRotation="0" hintx="-2.7" hinty="0.8" x="-2.9" y="0.7" />
+        <cell hintRotation="0" hintx="-3.15" hinty="0.8" x="-3.35" y="0.7" />
+        <cell hintRotation="0" hintx="-3.54" hinty="0.8" x="-3.74" y="0.7" />
+        <cell hintRotation="90" hintx="-4.06" hinty="0.8" x="-4.16" y="0.7" />
 
-      <finish3 x="-0.55" y="-0.2" />
-      <finish1 x="0.1" y="-0.2" />
+        <finish3 x="-0.55" y="-0.2" />
+        <finish1 x="0.1" y="-0.2" />
     </BoardMap>
     <PlayersPawnsPlaceholders>
         <Player>
-            <DeadPawnPlaceholder x="-7.35f" y="2.125f"/>
-            <DeadPawnPlaceholder x="-6.69f" y="2.125f"/>
-            <DeadPawnPlaceholder x="-6.04f" y="2.125f"/>
-            <DeadPawnPlaceholder x="-5.4f" y="2.125f"/>
+            <DeadPawnPlaceholder x="-7.35f" y="2.125f" />
+            <DeadPawnPlaceholder x="-6.69f" y="2.125f" />
+            <DeadPawnPlaceholder x="-6.04f" y="2.125f" />
+            <DeadPawnPlaceholder x="-5.4f" y="2.125f" />
         </Player>
         <Player>
-            <DeadPawnPlaceholder x="5.03f" y="2.125f"/>
-            <DeadPawnPlaceholder x="5.67f" y="2.125f"/>
-            <DeadPawnPlaceholder x="6.32f" y="2.125f"/>
-            <DeadPawnPlaceholder x="6.99f" y="2.125f"/>
+            <DeadPawnPlaceholder x="5.03f" y="2.125f" />
+            <DeadPawnPlaceholder x="5.67f" y="2.125f" />
+            <DeadPawnPlaceholder x="6.32f" y="2.125f" />
+            <DeadPawnPlaceholder x="6.99f" y="2.125f" />
         </Player>
     </PlayersPawnsPlaceholders>
+    <GameServer PomeloGateHost="127.0.0.1" PomeloGatePort="3001"/>
 </configuration>

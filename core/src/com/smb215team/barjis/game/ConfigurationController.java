@@ -66,4 +66,19 @@ public class ConfigurationController {
         }
         return resultToReturn;
     }
+
+    public static String getPomeloGameServerGateAddress(){
+        String resultToReturn = new String();
+        XmlReader xml = new XmlReader();
+        try {
+            XmlReader.Element element = xml.parse(Gdx.files.internal("configuration.xml"));
+
+            XmlReader.Element GameServer = element.getChildByName("GameServer");
+            resultToReturn = GameServer.getFloatAttribute("PomeloGateHost") + ":" + GameServer.getFloatAttribute("PomeloGatePort");
+        }
+        catch (Exception e){
+            Gdx.app.debug(TAG, e.getMessage());
+        }
+        return resultToReturn;
+    }
 }
