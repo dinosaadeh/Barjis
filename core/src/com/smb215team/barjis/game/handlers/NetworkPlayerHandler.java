@@ -9,6 +9,8 @@ import com.badlogic.gdx.Gdx;
 import com.smb215team.barjis.game.ConfigurationController;
 import com.netease.pomelo.PomeloClient;
 import com.netease.pomelo.DataCallBack;
+import com.smb215team.barjis.game.objects.Dices;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONArray;
@@ -22,8 +24,19 @@ import java.util.UUID;
  */
 public class NetworkPlayerHandler implements PlayerHandler {
     private static final String TAG = NetworkPlayerHandler.class.getName();
+    public int initialThreeDicesThrowValue;
     private PomeloClient client;
     private String playerId;
+    /**
+     * This index tells the local NetworkPlayerHandler if it is his turn, or the opponent's
+     */
+    private int playerIndex;
+
+    /**
+     * Create a user ID to send to the game server
+     * Game server returns the player index of this network player handler (is this player handler, player 1 or 2)
+     * Game server returns the initial 3 dices value to see who goes first.
+     */
     @Override
     public void initiateGame() {
         playerId = UUID.randomUUID().toString();
@@ -62,7 +75,9 @@ public class NetworkPlayerHandler implements PlayerHandler {
                             client.disconnect();
                             try {
                                 String ip = msg.getString("host");
-                                enter(ip, msg.getInt("port"));
+                                enter(ip, msg.getInt("port"), msg.getString("room"));
+                                playerIndex = Integer.parseInt(msg.getString("playerIndex"));
+                                initialThreeDicesThrowValue = Integer.parseInt(msg.getString("initialThreeDicesThrowValue"));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -78,11 +93,11 @@ public class NetworkPlayerHandler implements PlayerHandler {
      * @param host the connector IP (returned by the pomelo gate)
      * @param port the connector port (returned by the pomelo gate)
      */
-    private void enter(final String host, final int port) {
+    private void enter(final String host, final int port, String room) {
         JSONObject msg = new JSONObject();
         try {
             msg.put("username", playerId);
-            msg.put("rid", "smb215");//TODO: remove this.. The room name will be created and controlled by the server
+            msg.put("rid", room);
         } catch (JSONException e) {
             e.printStackTrace();
         }

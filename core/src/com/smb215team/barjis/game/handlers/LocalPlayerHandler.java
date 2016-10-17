@@ -11,6 +11,7 @@ package com.smb215team.barjis.game.handlers;
  */
 public class LocalPlayerHandler implements PlayerHandler {
     private static final String TAG = LocalPlayerHandler.class.getName();
+    public int initialThreeDicesThrowValue = -1;
 
     @Override
     public void initiateGame() {

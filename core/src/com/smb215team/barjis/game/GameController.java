@@ -70,6 +70,14 @@ public class GameController extends InputAdapter {
     }
 
     protected void init () {
+        // <editor-fold desc="Game initialisation (players' independent)">
+        state = GameState.gameStart;
+        Dices.instance.init();
+        timerForThrowingDices = 0.0f;
+        ConfigurationController.initCells();
+        initWinnerLabel();
+        // </editor-fold>
+
         // <editor-fold desc="WORK IN PROGRESS TAKING OUT LOGIC FROM GAME CONTROLLER TO HANDLERS">
         switch(GamePreferences.instance.gameMode) {
             case pvpLocal: {
@@ -84,12 +92,6 @@ public class GameController extends InputAdapter {
         
         playerHandler.initiateGame();
         // </editor-fold>
-        state = GameState.gameStart;
-        Dices.instance.init();
-        timerForThrowingDices = 0.0f;
-        ConfigurationController.initCells();
-
-        initWinnerLabel();
 
         // <editor-fold desc="Initialising players' pawns">
         players = new Player[2]; //TODO: account for variable number of players (1 (AI), 2, 4)
@@ -103,7 +105,9 @@ public class GameController extends InputAdapter {
             for(int i = 0; i < players.length; i++) {
                 players[i] = new Player(i, i, ConfigurationController.GetPawnInitialPlaceholder(i));
             }
-        }    
+        }
+
+        //TODO: change the labels player 1, player 2 to You/Opponent in case of network
         // </editor-fold>
     }
 
@@ -154,7 +158,7 @@ public class GameController extends InputAdapter {
         while(timerForThrowingDicesAtGameStart < Constants.TIMER_LIMIT_FOR_THROWING_DICES_AT_GAME_START)
             return;
         //After knowing who goes first, diceContainer needs to be re-initialised
-        diceContainer = new DiceContainer("SIDE0" + (currentPlayerIndex + 1));//TODO: this value is dummy till gameStart logic is full written
+        diceContainer = new DiceContainer("SIDE0" + (currentPlayerIndex + 1));
         //Once done knowing and setting who goes first, set the game state to playerTurnThrowDice
         this.state = GameState.playerTurnThrowDice;
     }
