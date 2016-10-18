@@ -139,5 +139,5 @@
             <DeadPawnPlaceholder x="6.99f" y="2.125f" />
         </Player>
     </PlayersPawnsPlaceholders>
-    <GameServer PomeloGateHost="127.0.0.1" PomeloGatePort="3001"/>
+    <GameServer PomeloGateHost="127.0.0.1" PomeloGatePort="3014" />
 </configuration>

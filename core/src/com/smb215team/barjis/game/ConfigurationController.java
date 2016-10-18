@@ -74,7 +74,7 @@ public class ConfigurationController {
             XmlReader.Element element = xml.parse(Gdx.files.internal("configuration.xml"));
 
             XmlReader.Element GameServer = element.getChildByName("GameServer");
-            resultToReturn = GameServer.getFloatAttribute("PomeloGateHost") + ":" + GameServer.getFloatAttribute("PomeloGatePort");
+            resultToReturn = GameServer.get("PomeloGateHost") + ":" + GameServer.get("PomeloGatePort");
         }
         catch (Exception e){
             Gdx.app.debug(TAG, e.getMessage());

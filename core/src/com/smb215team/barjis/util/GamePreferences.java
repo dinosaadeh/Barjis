@@ -22,7 +22,7 @@ public class GamePreferences {
 
     public void save() {
         prefs.putBoolean("soundMute", soundMute);
-        prefs.putString("gameMode", gameMode.name());
+//        prefs.putString("gameMode", gameMode.name());//TODO INITIALIZE THE GAME MODE
         prefs.flush();
     }
 }
