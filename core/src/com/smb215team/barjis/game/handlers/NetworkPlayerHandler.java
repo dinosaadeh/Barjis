@@ -6,15 +6,15 @@
 package com.smb215team.barjis.game.handlers;
 
 import com.badlogic.gdx.Gdx;
-import com.smb215team.barjis.game.ConfigurationController;
-import com.netease.pomelo.PomeloClient;
 import com.netease.pomelo.DataCallBack;
-import com.smb215team.barjis.game.objects.Dices;
+import com.netease.pomelo.DataEvent;
+import com.netease.pomelo.DataListener;
+import com.netease.pomelo.PomeloClient;
+import com.smb215team.barjis.game.ConfigurationController;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.UUID;
 
@@ -55,9 +55,47 @@ public class NetworkPlayerHandler implements PlayerHandler {
             client = new PomeloClient(PomeloGateAddress[0], Integer.parseInt(PomeloGateAddress[1]));
             client.init();
             queryEntry();
+
         } catch (Exception e) {
             Gdx.app.log(TAG, e.toString());
         }
+    }
+
+    private void initListeners() {
+        client.on("startGame", new DataListener() {// the player 0 should start the game and send the result
+            @Override
+            public void receiveData(DataEvent event) {
+                JSONObject msg = event.getMessage();
+                try {
+                    JSONArray result = msg.getJSONObject("body").getJSONArray("playerInfo");
+
+                    for (int i = 0; i < result.length(); i++) {
+
+                        if (playerId.equals(result.getJSONObject(i).getString("username"))) {
+
+                            playerIndex = Integer.parseInt(result.getJSONObject(i).getString("playerIndex"));
+
+                            initialThreeDicesThrowValue = Integer.parseInt(result.getJSONObject(i).getString("initialThreeDicesThrowValue"));
+
+                        }
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        });
+
+        client.on("wait", new DataListener() {// only one player , we should create loading text and do nothing
+            @Override
+            public void receiveData(DataEvent event) {
+                Gdx.app.log(TAG, "user should wait");
+            }
+
+        });
+
+
     }
 
     /**
@@ -75,9 +113,7 @@ public class NetworkPlayerHandler implements PlayerHandler {
                             client.disconnect();
                             try {
                                 String ip = msg.getString("host");
-                                enter(ip, msg.getInt("port"), msg.getString("room"));
-                                playerIndex = Integer.parseInt(msg.getString("playerIndex"));
-                                initialThreeDicesThrowValue = Integer.parseInt(msg.getString("initialThreeDicesThrowValue"));
+                                enter(ip, msg.getInt("port"));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -93,11 +129,10 @@ public class NetworkPlayerHandler implements PlayerHandler {
      * @param host the connector IP (returned by the pomelo gate)
      * @param port the connector port (returned by the pomelo gate)
      */
-    private void enter(final String host, final int port, String room) {
+    private void enter(final String host, final int port) {
         JSONObject msg = new JSONObject();
         try {
             msg.put("username", playerId);
-            msg.put("rid", room);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -106,20 +141,21 @@ public class NetworkPlayerHandler implements PlayerHandler {
         client.request("connector.entryHandler.enter", msg, new DataCallBack() {
             @Override
             public void responseData(JSONObject msg) {
-                if (msg.has("error")) {
-                    //TODO: after creating all your messaging logic, reconfirm you don't need to do anything here.
-                    client.disconnect();
-                    client = new PomeloClient(host, port);
-                    client.init();
-                    return;
-                }
-                try {
-                    JSONArray jr = msg.getJSONArray("users");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+//                if (msg.has("error")) {
+//                    //TODO: after creating all your messaging logic, reconfirm you don't need to do anything here.
+//                    client.disconnect();
+//                    client = new PomeloClient(host, port);
+//                    client.init();
+//                    return;
+//                }
+//                try {
+//                    JSONArray jr = msg.getJSONArray("users");
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
             }
         });
+        initListeners();
     }
     // </editor-fold>
 }
