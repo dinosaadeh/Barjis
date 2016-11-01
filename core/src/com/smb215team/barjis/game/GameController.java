@@ -70,6 +70,23 @@ public class GameController extends InputAdapter {
     }
 
     protected void init () {
+        // First of all, initialise the player handler
+        // <editor-fold desc="WORK IN PROGRESS TAKING OUT LOGIC FROM GAME CONTROLLER TO HANDLERS">
+        if(null == playerHandler) {
+            switch (GamePreferences.instance.gameMode) {
+                case pvpLocal: {
+                    playerHandler = new LocalPlayerHandler();
+                    break;
+                }
+                case pvpNetwork: {
+                    playerHandler = new NetworkPlayerHandler();
+                    break;
+                }
+            }
+            playerHandler.initiateGame();
+        }
+        // </editor-fold>
+
         // <editor-fold desc="Game initialisation (players' independent)">
         state = GameState.gameStart;
         Dices.instance.init();
@@ -78,20 +95,6 @@ public class GameController extends InputAdapter {
         initWinnerLabel();
         // </editor-fold>
 
-        // <editor-fold desc="WORK IN PROGRESS TAKING OUT LOGIC FROM GAME CONTROLLER TO HANDLERS">
-        switch(GamePreferences.instance.gameMode) {
-            case pvpLocal: {
-                playerHandler = new LocalPlayerHandler();
-                break;
-            }
-            case pvpNetwork: {
-                playerHandler = new NetworkPlayerHandler();
-                break;
-            }
-        }
-        
-        playerHandler.initiateGame();
-        // </editor-fold>
 
         // <editor-fold desc="Initialising players' pawns">
         players = new Player[2]; //TODO: account for variable number of players (1 (AI), 2, 4)

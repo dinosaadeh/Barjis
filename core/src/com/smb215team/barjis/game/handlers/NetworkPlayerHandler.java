@@ -24,6 +24,7 @@ import java.util.UUID;
  */
 public class NetworkPlayerHandler implements PlayerHandler {
     private static final String TAG = NetworkPlayerHandler.class.getName();
+    public boolean isReady;
     public int initialThreeDicesThrowValue;
     private PomeloClient client;
     private String playerId;
@@ -39,6 +40,7 @@ public class NetworkPlayerHandler implements PlayerHandler {
      */
     @Override
     public void initiateGame() {
+        isReady = false;
         playerId = UUID.randomUUID().toString();
         connectToGameServer();
     }
@@ -55,7 +57,6 @@ public class NetworkPlayerHandler implements PlayerHandler {
             client = new PomeloClient(PomeloGateAddress[0], Integer.parseInt(PomeloGateAddress[1]));
             client.init();
             queryEntry();
-
         } catch (Exception e) {
             Gdx.app.log(TAG, e.toString());
         }
@@ -68,23 +69,16 @@ public class NetworkPlayerHandler implements PlayerHandler {
                 JSONObject msg = event.getMessage();
                 try {
                     JSONArray result = msg.getJSONObject("body").getJSONArray("playerInfo");
-
                     for (int i = 0; i < result.length(); i++) {
-
                         if (playerId.equals(result.getJSONObject(i).getString("username"))) {
-
                             playerIndex = Integer.parseInt(result.getJSONObject(i).getString("playerIndex"));
-
                             initialThreeDicesThrowValue = Integer.parseInt(result.getJSONObject(i).getString("initialThreeDicesThrowValue"));
-
                         }
                     }
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
-
         });
 
         client.on("wait", new DataListener() {// only one player , we should create loading text and do nothing
@@ -94,8 +88,6 @@ public class NetworkPlayerHandler implements PlayerHandler {
             }
 
         });
-
-
     }
 
     /**
@@ -107,18 +99,18 @@ public class NetworkPlayerHandler implements PlayerHandler {
         try {
             msg.put("uid", playerId);
             client.request("gate.gateHandler.queryEntry", msg,
-                    new DataCallBack() {
-                        @Override
-                        public void responseData(JSONObject msg) {
-                            client.disconnect();
-                            try {
-                                String ip = msg.getString("host");
-                                enter(ip, msg.getInt("port"));
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
+                new DataCallBack() {
+                    @Override
+                    public void responseData(JSONObject msg) {
+                        client.disconnect();
+                        try {
+                            String ip = msg.getString("host");
+                            enter(ip, msg.getInt("port"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    });
+                    }
+                });
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -141,18 +133,14 @@ public class NetworkPlayerHandler implements PlayerHandler {
         client.request("connector.entryHandler.enter", msg, new DataCallBack() {
             @Override
             public void responseData(JSONObject msg) {
-//                if (msg.has("error")) {
-//                    //TODO: after creating all your messaging logic, reconfirm you don't need to do anything here.
-//                    client.disconnect();
-//                    client = new PomeloClient(host, port);
-//                    client.init();
-//                    return;
-//                }
-//                try {
-//                    JSONArray jr = msg.getJSONArray("users");
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
+                if (msg.has("error")) {
+                    //TODO: after creating all your messaging logic, reconfirm you don't need to do anything here.
+                    client.disconnect();
+                    client = new PomeloClient(host, port);
+                    client.init();
+                    return;
+                }
+                isReady = true;
             }
         });
         initListeners();
