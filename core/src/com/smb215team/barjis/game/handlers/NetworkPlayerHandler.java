@@ -24,7 +24,7 @@ import java.util.UUID;
  */
 public class NetworkPlayerHandler implements PlayerHandler {
     private static final String TAG = NetworkPlayerHandler.class.getName();
-    public boolean isReady;
+    private boolean isReady = false;
     public int initialThreeDicesThrowValue;
     private PomeloClient client;
     private String playerId;
@@ -40,7 +40,6 @@ public class NetworkPlayerHandler implements PlayerHandler {
      */
     @Override
     public void initiateGame() {
-        isReady = false;
         playerId = UUID.randomUUID().toString();
         connectToGameServer();
     }
@@ -49,7 +48,17 @@ public class NetworkPlayerHandler implements PlayerHandler {
     public void execute() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
+    @Override
+    public boolean getReadiness() {
+        return isReady;
+    }
+
+    @Override
+    public void setReadiness(boolean readiness) {
+        isReady = readiness;
+    }
+
     // <editor-fold desc="Helper Methods">
     public void connectToGameServer() {
         try {
@@ -140,7 +149,7 @@ public class NetworkPlayerHandler implements PlayerHandler {
                     client.init();
                     return;
                 }
-                isReady = true;
+                setReadiness(true);
             }
         });
         initListeners();

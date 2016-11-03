@@ -12,4 +12,6 @@ package com.smb215team.barjis.game.handlers;
 public interface PlayerHandler {
     void initiateGame();
     void execute();
+    public boolean getReadiness();
+    public void setReadiness(boolean readiness);
 }
