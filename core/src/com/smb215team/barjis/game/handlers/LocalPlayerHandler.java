@@ -16,12 +16,7 @@ public class LocalPlayerHandler implements PlayerHandler {
 
     @Override
     public void initiateGame() {
-        setReadiness(true);
-    }
-    
-    @Override
-    public void execute() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        setReadiness(true); //nothing to prepare.. player is ready :D
     }
 
     @Override
@@ -32,5 +27,10 @@ public class LocalPlayerHandler implements PlayerHandler {
     @Override
     public void setReadiness(boolean readiness) {
         isReady = readiness;
+    }
+
+    @Override
+    public int getCurrentPlayerIndexPreference() {
+        return -1;
     }
 }

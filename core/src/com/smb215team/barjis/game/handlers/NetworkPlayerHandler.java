@@ -24,14 +24,23 @@ import java.util.UUID;
  */
 public class NetworkPlayerHandler implements PlayerHandler {
     private static final String TAG = NetworkPlayerHandler.class.getName();
-    private boolean isReady = false;
-    public int initialThreeDicesThrowValue;
     private PomeloClient client;
-    private String playerId;
+    private boolean isReady = false;
+
+    // <editor-fold desc="localPlayerVariables">
+    private String localPlayerId;
+    private int localPlayerIndex;
+    public int localInitialThreeDicesThrowValue;
+    // </editor-fold>
+
+    // <editor-fold desc="networkPlayerVariables">
+    private String networkPlayerId;//might never been used, but we're getting it anyways.. might be useful later.
+    private int networkPlayerIndex;
+    public int networkInitialThreeDicesThrowValue;
+    // </editor-fold>
     /**
      * This index tells the local NetworkPlayerHandler if it is his turn, or the opponent's
      */
-    private int playerIndex;
 
     /**
      * Create a user ID to send to the game server
@@ -40,13 +49,8 @@ public class NetworkPlayerHandler implements PlayerHandler {
      */
     @Override
     public void initiateGame() {
-        playerId = UUID.randomUUID().toString();
+        localPlayerId = UUID.randomUUID().toString();
         connectToGameServer();
-    }
-    
-    @Override
-    public void execute() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -57,6 +61,11 @@ public class NetworkPlayerHandler implements PlayerHandler {
     @Override
     public void setReadiness(boolean readiness) {
         isReady = readiness;
+    }
+
+    @Override
+    public int getCurrentPlayerIndexPreference() {
+        return localInitialThreeDicesThrowValue > networkInitialThreeDicesThrowValue ? localPlayerIndex : networkPlayerIndex;//dummy
     }
 
     // <editor-fold desc="Helper Methods">
@@ -79,9 +88,14 @@ public class NetworkPlayerHandler implements PlayerHandler {
                 try {
                     JSONArray result = msg.getJSONObject("body").getJSONArray("playerInfo");
                     for (int i = 0; i < result.length(); i++) {
-                        if (playerId.equals(result.getJSONObject(i).getString("username"))) {
-                            playerIndex = Integer.parseInt(result.getJSONObject(i).getString("playerIndex"));
-                            initialThreeDicesThrowValue = Integer.parseInt(result.getJSONObject(i).getString("initialThreeDicesThrowValue"));
+                        if (localPlayerId.equals(result.getJSONObject(i).getString("username"))) {
+                            localPlayerIndex = Integer.parseInt(result.getJSONObject(i).getString("PlayerIndex"));
+                            localInitialThreeDicesThrowValue = Integer.parseInt(result.getJSONObject(i).getString("initialThreeDicesThrowValue"));
+                        }
+                        else {
+                            networkPlayerId = result.getJSONObject(i).getString("username");
+                            networkPlayerIndex = Integer.parseInt(result.getJSONObject(i).getString("PlayerIndex"));
+                            networkInitialThreeDicesThrowValue = Integer.parseInt(result.getJSONObject(i).getString("initialThreeDicesThrowValue"));
                         }
                     }
                 } catch (JSONException e) {
@@ -106,7 +120,7 @@ public class NetworkPlayerHandler implements PlayerHandler {
     private void queryEntry() {
         JSONObject msg = new JSONObject();
         try {
-            msg.put("uid", playerId);
+            msg.put("uid", localPlayerId);
             client.request("gate.gateHandler.queryEntry", msg,
                 new DataCallBack() {
                     @Override
@@ -133,7 +147,7 @@ public class NetworkPlayerHandler implements PlayerHandler {
     private void enter(final String host, final int port) {
         JSONObject msg = new JSONObject();
         try {
-            msg.put("username", playerId);
+            msg.put("username", localPlayerId);
         } catch (JSONException e) {
             e.printStackTrace();
         }

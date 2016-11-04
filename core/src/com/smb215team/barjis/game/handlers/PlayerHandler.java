@@ -11,7 +11,15 @@ package com.smb215team.barjis.game.handlers;
  */
 public interface PlayerHandler {
     void initiateGame();
-    void execute();
     public boolean getReadiness();
     public void setReadiness(boolean readiness);
+
+    /**
+     * This is created to get the index of the first player in the game.
+     * In case the first player index is set externally (at the time of this writing it is the case of
+     * the network player), this method returns the index of the player.. Any other case, it simply returns -1
+     * allowing the game to make the decision.
+     * @return
+     */
+    public int getCurrentPlayerIndexPreference();
 }

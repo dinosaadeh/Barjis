@@ -97,7 +97,7 @@ public class GameController extends InputAdapter {
 
             // <editor-fold desc="Initialising players' pawns">
             players = new Player[2]; //TODO: account for variable number of players (1 (AI), 2, 4)
-            currentPlayerIndex = -1;
+            currentPlayerIndex = playerHandler.getCurrentPlayerIndexPreference();
 
             //TODO: change the labels player 1, player 2 to You/Opponent in case of network
             if (2 == players.length) {
