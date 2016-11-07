@@ -86,34 +86,14 @@ public class GameController extends InputAdapter {
             playerHandler.initiateGame();
         }
         // </editor-fold>
-
-        // <editor-fold desc="Game initialisation when player handler is ready">
-        if(playerHandler.getReadiness()) {
-            state = GameState.gameStart;
-            Dices.instance.init();
-            timerForThrowingDices = 0.0f;
-            ConfigurationController.initCells();
-            initWinnerLabel();
-
-            // <editor-fold desc="Initialising players' pawns">
-            players = new Player[2]; //TODO: account for variable number of players (1 (AI), 2, 4)
-            currentPlayerIndex = playerHandler.getCurrentPlayerIndexPreference();
-
-            //TODO: change the labels player 1, player 2 to You/Opponent in case of network
-            if (2 == players.length) {
-                players[0] = new Player(Player.PLAYER_LEFT_BRANCH, 0, ConfigurationController.GetPawnInitialPlaceholder(0));
-                players[1] = new Player(Player.PLAYER_RIGHT_BRANCH, 1, ConfigurationController.GetPawnInitialPlaceholder(1));
-            } else {
-                for (int i = 0; i < players.length; i++) {
-                    players[i] = new Player(i, i, ConfigurationController.GetPawnInitialPlaceholder(i));
-                }
-            }
-        }
-        // </editor-fold>
+        state = GameState.gameInit;
     }
 
     public void update (float deltaTime) {
         switch (state) {
+            case gameInit:
+                gameInit(deltaTime);
+                break;
             case gameStart:
                 gameStart(deltaTime);
                 break;
@@ -139,7 +119,38 @@ public class GameController extends InputAdapter {
         // switch to menu screen
         game.setScreen(new MenuScreen(game));
     }
-    
+
+    // <editor-fold desc="STATE: game init">
+
+    /**
+     * Game initialisation when player handler is ready
+     * @param deltaTime
+     */
+    public void gameInit(float deltaTime) {
+        if(playerHandler.getReadiness()) {
+            state = GameState.gameStart;
+            Dices.instance.init();
+            timerForThrowingDices = 0.0f;
+            ConfigurationController.initCells();
+            initWinnerLabel();
+
+            // <editor-fold desc="Initialising players' pawns">
+            players = new Player[2]; //TODO: account for variable number of players (1 (AI), 2, 4)
+            currentPlayerIndex = playerHandler.getCurrentPlayerIndexPreference();
+
+            //TODO: change the labels player 1, player 2 to You/Opponent in case of network
+            if (2 == players.length) {
+                players[0] = new Player(Player.PLAYER_LEFT_BRANCH, 0, ConfigurationController.GetPawnInitialPlaceholder(0));
+                players[1] = new Player(Player.PLAYER_RIGHT_BRANCH, 1, ConfigurationController.GetPawnInitialPlaceholder(1));
+            } else {
+                for (int i = 0; i < players.length; i++) {
+                    players[i] = new Player(i, i, ConfigurationController.GetPawnInitialPlaceholder(i));
+                }
+            }
+        }
+    }
+    // </editor-fold>
+
     // <editor-fold desc="STATE: game starting">
     /**
      * play three dices on each side to decide who goes first. 
