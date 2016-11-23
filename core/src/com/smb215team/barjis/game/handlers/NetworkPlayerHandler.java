@@ -89,15 +89,16 @@ public class NetworkPlayerHandler implements PlayerHandler {
                     JSONArray result = msg.getJSONObject("body").getJSONArray("playerInfo");
                     for (int i = 0; i < result.length(); i++) {
                         if (localPlayerId.equals(result.getJSONObject(i).getString("username"))) {
-                            localPlayerIndex = Integer.parseInt(result.getJSONObject(i).getString("PlayerIndex"));
+                            localPlayerIndex = Integer.parseInt(result.getJSONObject(i).getString("playerIndex"));
                             localInitialThreeDicesThrowValue = Integer.parseInt(result.getJSONObject(i).getString("initialThreeDicesThrowValue"));
                         }
                         else {
                             networkPlayerId = result.getJSONObject(i).getString("username");
-                            networkPlayerIndex = Integer.parseInt(result.getJSONObject(i).getString("PlayerIndex"));
+                            networkPlayerIndex = Integer.parseInt(result.getJSONObject(i).getString("playerIndex"));
                             networkInitialThreeDicesThrowValue = Integer.parseInt(result.getJSONObject(i).getString("initialThreeDicesThrowValue"));
                         }
                     }
+                    setReadiness(true);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -163,7 +164,6 @@ public class NetworkPlayerHandler implements PlayerHandler {
                     client.init();
                     return;
                 }
-                setReadiness(true);
             }
         });
         initListeners();

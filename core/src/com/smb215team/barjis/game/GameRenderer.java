@@ -91,8 +91,10 @@ public class GameRenderer implements Disposable {
     private void renderPlayer (SpriteBatch batch) {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        for(Player player : gameController.players) {
-            player.render(batch);
+        if(null != gameController.players) {
+            for (Player player : gameController.players) {
+                player.render(batch);
+            }
         }
         batch.end();
     }
