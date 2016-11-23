@@ -153,6 +153,35 @@ public class Dices {
         return (currentThrowValueLeft > currentThrowValueRight) ? 0 : 1;
     }
 
+    /**
+     * Throws 3 dices on each side knowing the values already.
+     * This accounts only for 2 player mode (not 4)
+     */
+    public void throwDicesOnEachSide(DiceContainer diceContainerLeft, int leftInitialThreeDicesThrowValue, DiceContainer diceContainerRight, int rightInitialThreeDicesThrowValue) {
+        int currentThrowValueLeft = leftInitialThreeDicesThrowValue;
+        int currentThrowValueRight = rightInitialThreeDicesThrowValue;
+        float randomX = 0.0f, randomY = 0.0f;
+        for (int i = 0; i < dices.length; i++) {
+            // Create dices based on known value & position on the screen
+            if(i <= 2) {
+                dices[i] = new Dice(currentThrowValueLeft > 0);
+                currentThrowValueLeft--;
+                randomX = MathUtils.random(diceContainerLeft.diceMarginFromX, diceContainerLeft.diceMarginToX);
+                randomY = MathUtils.random(diceContainerLeft.diceMarginFromY, diceContainerLeft.diceMarginToY);
+            } else {
+                dices[i] = new Dice(currentThrowValueRight > 0);
+                currentThrowValueRight--;
+                randomX = MathUtils.random(diceContainerRight.diceMarginFromX, diceContainerRight.diceMarginToX);
+                randomY = MathUtils.random(diceContainerRight.diceMarginFromY, diceContainerRight.diceMarginToY);
+            }
+
+            dices[i].position.set(randomX, randomY);
+            dices[i].bounds.set(randomX, randomY, 0.45f, 0.45f);
+            dices[i].dimension.set(0.45f, 0.45f);
+        }
+        playSound();
+    }
+
     public boolean dicesReachedAFullStop() {
         for(Dice dice : dices) {
             if(dice.velocity.x != 0 || dice.velocity.y != 0)

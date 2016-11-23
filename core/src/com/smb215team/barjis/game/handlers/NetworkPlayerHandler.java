@@ -29,12 +29,12 @@ public class NetworkPlayerHandler implements PlayerHandler {
 
     // <editor-fold desc="localPlayerVariables">
     private String localPlayerId;
-    private int localPlayerIndex;
+    public int localPlayerIndex;
     public int localInitialThreeDicesThrowValue;
     // </editor-fold>
 
     // <editor-fold desc="networkPlayerVariables">
-    private String networkPlayerId;//might never been used, but we're getting it anyways.. might be useful later.
+    private String networkPlayerId;//might never be used, but we're getting it anyways.. might be useful later.
     private int networkPlayerIndex;
     public int networkInitialThreeDicesThrowValue;
     // </editor-fold>

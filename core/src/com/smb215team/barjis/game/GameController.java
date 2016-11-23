@@ -17,7 +17,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.smb215team.barjis.game.enums.GameModes;
 import com.smb215team.barjis.game.enums.GameState;
 import com.smb215team.barjis.game.handlers.LocalPlayerHandler;
 import com.smb215team.barjis.game.handlers.NetworkPlayerHandler;
@@ -46,6 +45,7 @@ public class GameController extends InputAdapter {
     public int currentPlayerIndex;
     DiceContainer diceContainer;
     public int playerPawnUpdateIndex = 0, pawnUpdateIndex = 0;
+    private int didNetworkHandlerThrowThreeDices = 0;
     // <editor-fold desc="Timers">
     public float timerForThrowingDicesAtGameStart = 0.0f;
     public float timerForThrowingDices = 0.0f;
@@ -163,16 +163,32 @@ public class GameController extends InputAdapter {
         DiceContainer diceContainerLeft = new DiceContainer("SIDE01");
         DiceContainer diceContainerRight = new DiceContainer("SIDE02");
         testDicesCollisionsInTwoContainers (diceContainerLeft, diceContainerRight);
-        while (-1 == currentPlayerIndex) {
-            currentPlayerIndex = Dices.instance.throwDicesOnEachSideToDecideFirstPlayer(diceContainerLeft, diceContainerRight);
+
+        // <editor-fold desc="If it is a pvpLocal, throw the dices to see who goes first">
+        if(playerHandler instanceof LocalPlayerHandler) {
+            while (-1 == currentPlayerIndex) {
+                currentPlayerIndex = Dices.instance.throwDicesOnEachSideToDecideFirstPlayer(diceContainerLeft, diceContainerRight);
+            }
         }
-        //wait for a moment for player to realise what happened
+        // </editor-fold>
+
+        // <editor-fold desc="If it is a pvpNetwork, throws are already known.. All that needs to be done is show players the values">
+        if(playerHandler instanceof NetworkPlayerHandler && didNetworkHandlerThrowThreeDices == 0) {
+            NetworkPlayerHandler temporaryHandler = (NetworkPlayerHandler) playerHandler;
+            int leftInitialThreeDicesThrowValue = (0 == temporaryHandler.localPlayerIndex) ? temporaryHandler.localInitialThreeDicesThrowValue : temporaryHandler.networkInitialThreeDicesThrowValue;
+            int rightInitialThreeDicesThrowValue = (1 == temporaryHandler.localPlayerIndex) ? temporaryHandler.localInitialThreeDicesThrowValue : temporaryHandler.networkInitialThreeDicesThrowValue;
+            Dices.instance.throwDicesOnEachSide(diceContainerLeft, leftInitialThreeDicesThrowValue, diceContainerRight, rightInitialThreeDicesThrowValue);
+            didNetworkHandlerThrowThreeDices = 1;
+        }
+        // </editor-fold>
+
+        // wait for a moment for player to realise what happened
         while(timerForThrowingDicesAtGameStart < Constants.TIMER_LIMIT_FOR_THROWING_DICES_AT_GAME_START)
             return;
         //After knowing who goes first, diceContainer needs to be re-initialised
         diceContainer = new DiceContainer("SIDE0" + (currentPlayerIndex + 1));
         //Once done knowing and setting who goes first, set the game state to playerTurnThrowDice
-        this.state = GameState.playerTurnThrowDice;
+        //this.state = GameState.playerTurnThrowDice;
     }
 
     private void testDicesCollisionsInTwoContainers (DiceContainer diceContainerLeft, DiceContainer diceContainerRight) {
