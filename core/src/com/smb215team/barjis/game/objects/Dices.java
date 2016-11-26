@@ -164,12 +164,12 @@ public class Dices {
         for (int i = 0; i < dices.length; i++) {
             // Create dices based on known value & position on the screen
             if(i <= 2) {
-                dices[i] = new Dice(currentThrowValueLeft > 0);
+                dices[i] = new Dice(!(currentThrowValueLeft > 0));
                 currentThrowValueLeft--;
                 randomX = MathUtils.random(diceContainerLeft.diceMarginFromX, diceContainerLeft.diceMarginToX);
                 randomY = MathUtils.random(diceContainerLeft.diceMarginFromY, diceContainerLeft.diceMarginToY);
             } else {
-                dices[i] = new Dice(currentThrowValueRight > 0);
+                dices[i] = new Dice(!(currentThrowValueRight > 0));
                 currentThrowValueRight--;
                 randomX = MathUtils.random(diceContainerRight.diceMarginFromX, diceContainerRight.diceMarginToX);
                 randomY = MathUtils.random(diceContainerRight.diceMarginFromY, diceContainerRight.diceMarginToY);

@@ -188,7 +188,7 @@ public class GameController extends InputAdapter {
         //After knowing who goes first, diceContainer needs to be re-initialised
         diceContainer = new DiceContainer("SIDE0" + (currentPlayerIndex + 1));
         //Once done knowing and setting who goes first, set the game state to playerTurnThrowDice
-        //this.state = GameState.playerTurnThrowDice;
+        this.state = GameState.playerTurnThrowDice;
     }
 
     private void testDicesCollisionsInTwoContainers (DiceContainer diceContainerLeft, DiceContainer diceContainerRight) {
@@ -286,6 +286,18 @@ public class GameController extends InputAdapter {
     // <editor-fold desc="STATE: dices rolling">
     public void playOneHand(float deltaTime) {
         testDicesCollisions();
+
+        // <editor-fold desc="If it is a pvpLocal, throw the dices with no account to anything">
+        if(playerHandler instanceof LocalPlayerHandler) {
+
+        }
+        // </editor-fold>
+        // <editor-fold desc="If it is a pvpNetwork, DINO DESCRIBE">
+        if(playerHandler instanceof NetworkPlayerHandler) {
+            NetworkPlayerHandler temporaryHandler = (NetworkPlayerHandler) playerHandler;
+        }
+        // </editor-fold>
+
         // Play the dice
         playDices(deltaTime);
 
@@ -297,12 +309,12 @@ public class GameController extends InputAdapter {
     }
  
     private void playDices(float deltaTime) {
-        Dices.instance.update(deltaTime); //commentToDelete: later on this will be called only when needed 
+        Dices.instance.update(deltaTime);
         timerForThrowingDices += deltaTime;
         if(timerForThrowingDices >= Constants.TIMER_LIMIT_FOR_THROWING_DICES && Dices.instance.canPlayerThrowDices) {
             //TODO: take the value from throw dices and pass it to handlers
             Dices.instance.throwDices(diceContainer.diceMarginFromX, diceContainer.diceMarginToX, diceContainer.diceMarginFromY, diceContainer.diceMarginToY);
-            timerForThrowingDices -= Constants.TIMER_LIMIT_FOR_THROWING_DICES; // If you reset it to 0 you will loose a few milliseconds every 2 seconds.
+            timerForThrowingDices -= Constants.TIMER_LIMIT_FOR_THROWING_DICES; // If you reset it to 0 you will lose a few milliseconds every 2 seconds.
 
             fillDiceButtonText();
         } 
