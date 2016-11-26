@@ -33,4 +33,19 @@ public class LocalPlayerHandler implements PlayerHandler {
     public int getCurrentPlayerIndexPreference() {
         return -1;
     }
+
+    @Override
+    public String getLeftLabel() {
+        return "Player a";
+    }
+
+    @Override
+    public String getRightLabel() {
+        return "Player b";
+    }
+
+    @Override
+    public void dispose() {
+
+    }
 }

@@ -54,6 +54,11 @@ public class NetworkPlayerHandler implements PlayerHandler {
     }
 
     @Override
+    public void dispose() {
+        client.disconnect();
+    }
+
+    @Override
     public boolean getReadiness() {
         return isReady;
     }
@@ -66,6 +71,16 @@ public class NetworkPlayerHandler implements PlayerHandler {
     @Override
     public int getCurrentPlayerIndexPreference() {
         return localInitialThreeDicesThrowValue > networkInitialThreeDicesThrowValue ? localPlayerIndex : networkPlayerIndex;//dummy
+    }
+
+    @Override
+    public String getLeftLabel() {
+        return (0 == localPlayerIndex) ? "You" : "Opponent";
+    }
+
+    @Override
+    public String getRightLabel() {
+        return (1 == localPlayerIndex) ? "You" : "Opponent";
     }
 
     // <editor-fold desc="Helper Methods">
@@ -168,5 +183,28 @@ public class NetworkPlayerHandler implements PlayerHandler {
         });
         initListeners();
     }
+
+    public void sendDicesValue(int value) {//TODO just for test
+        value = (int) (Math.random() % 6);
+        Gdx.app.log("Dice Value = ", value + "");
+        JSONObject msg = new JSONObject();
+        try {
+            msg.put("content", value);
+            msg.put("target", networkPlayerId);
+            msg.put("from", localPlayerId);
+            msg.put("type", "dice");
+
+            client.request("barjis.barjisHandler.send", msg, new DataCallBack() {
+                @Override
+                public void responseData(JSONObject msg) {
+
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     // </editor-fold>
 }

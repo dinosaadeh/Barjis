@@ -40,7 +40,7 @@ public class GameController extends InputAdapter {
     protected Game game;
     public OrthographicCamera camera;
     GameState state;
-    PlayerHandler playerHandler;
+    public PlayerHandler playerHandler;
     Player[] players;
     public int currentPlayerIndex;
     DiceContainer diceContainer;
@@ -112,6 +112,7 @@ public class GameController extends InputAdapter {
     }
 
     public void dispose() {
+        playerHandler.dispose();
         Dices.instance.dispose();
     }
 

@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -32,10 +33,10 @@ public class GameRenderer implements Disposable {
     private GameController gameController;
 
     private ShapeRenderer dummyShapeRenderer;
-
+    private Stage stage2;
     BitmapFont returnTextFont = Assets.instance.fonts.defaultSmall;///used from wrapping the returnText
     public  GlyphLayout layout = new GlyphLayout(); // Obviously stick this in a field to avoid allocation each frame.
-
+    private Label.LabelStyle labelStyle;
     public Viewport extendedViewPort;
 
     public GameRenderer (GameController gameController) {
@@ -46,6 +47,10 @@ public class GameRenderer implements Disposable {
     private void init () {
         batch = new SpriteBatch();
 
+        labelStyle = new Label.LabelStyle();
+        labelStyle.font = Assets.instance.fonts.defaultBig;
+
+
         camera = new OrthographicCamera(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT);
         camera.position.set(0, 0, 0);
         this.gameController.camera = camera;
@@ -53,6 +58,7 @@ public class GameRenderer implements Disposable {
 
         extendedViewPort =new ExtendViewport(Constants.VIEWPORT_GUI_WIDTH,Constants.VIEWPORT_GUI_HEIGHT);
         gameController.stage = new Stage(extendedViewPort);
+        stage2 = new Stage(extendedViewPort);
         Gdx.input.setInputProcessor(gameController.stage);
 
     }
@@ -62,6 +68,7 @@ public class GameRenderer implements Disposable {
         renderObjects();
         renderPlayer(batch);
         gameController.stage.draw();
+        stage2.draw();
     }
 
     public void resize (int width, int height) {
@@ -120,22 +127,30 @@ public class GameRenderer implements Disposable {
 
         // <editor-fold desc="Displaying players labels based on which player's turn it is">
         Sprite player0LabelPlaceholder = (0 == gameController.currentPlayerIndex) ? new Sprite(Assets.instance.playerLabels.lblPlaceholderPlayerOn0) : new Sprite(Assets.instance.playerLabels.lblPlaceholderPlayerOff0);
-        Sprite player0Label = (0 == gameController.currentPlayerIndex) ? new Sprite(Assets.instance.playerLabels.lblPlayerOn0) : new Sprite(Assets.instance.playerLabels.lblPlayerOff0);
+
+
         player0LabelPlaceholder.setSize(2.79f, 1.11f);
         player0LabelPlaceholder.setCenter(-6.09f, 3.495f);
         player0LabelPlaceholder.draw(batch);
-        player0Label.setSize(1.11f, 0.465f);
-        player0Label.setCenter(-5.69f, 3.52f);
-        player0Label.draw(batch);
+
 
         Sprite player1LabelPlaceholder = (1 == gameController.currentPlayerIndex) ? new Sprite(Assets.instance.playerLabels.lblPlaceholderPlayerOn1) : new Sprite(Assets.instance.playerLabels.lblPlaceholderPlayerOff1);
-        Sprite player1Label = (1 == gameController.currentPlayerIndex) ? new Sprite(Assets.instance.playerLabels.lblPlayerOn1) : new Sprite(Assets.instance.playerLabels.lblPlayerOff1);
         player1LabelPlaceholder.setSize(2.79f, 1.11f);
         player1LabelPlaceholder.setCenter(6.09f, 3.495f);
         player1LabelPlaceholder.draw(batch);
-        player1Label.setSize(1.11f, 0.465f);
-        player1Label.setCenter(6.49f, 3.52f);
-        player1Label.draw(batch);
+
+        stage2.clear();
+        Label player0Label = new Label(gameController.playerHandler.getLeftLabel(), labelStyle);
+        player0Label.setFontScale(0.45f);
+        player0Label.setPosition(71, 395);
+
+        Label player1Label = new Label(gameController.playerHandler.getRightLabel(), labelStyle);
+        player1Label.setFontScale(0.45f);
+        player1Label.setPosition(719, 395);
+
+        stage2.addActor(player0Label);
+        stage2.addActor(player1Label);
+
         // </editor-fold>
 
         batch.setProjectionMatrix(extendedViewPort.getCamera().combined);

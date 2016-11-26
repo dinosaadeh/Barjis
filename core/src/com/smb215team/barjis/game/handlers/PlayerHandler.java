@@ -14,6 +14,7 @@ public interface PlayerHandler {
     public boolean getReadiness();
     public void setReadiness(boolean readiness);
 
+    public void dispose();
     /**
      * This is created to get the index of the first player in the game.
      * In case the first player index is set externally (at the time of this writing it is the case of
@@ -22,4 +23,8 @@ public interface PlayerHandler {
      * @return
      */
     public int getCurrentPlayerIndexPreference();
+
+    public String getLeftLabel();
+
+    public String getRightLabel();
 }
