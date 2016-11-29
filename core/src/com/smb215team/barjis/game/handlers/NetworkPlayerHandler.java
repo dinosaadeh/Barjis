@@ -127,6 +127,24 @@ public class NetworkPlayerHandler implements PlayerHandler {
             }
 
         });
+
+        client.on("messageReceived", new DataListener() {// only one player , we should create loading text and do nothing
+            /**
+             * This method receives data from other player (dice roll, or opponent move)
+             * @param event
+             */
+            @Override
+            public void receiveData(DataEvent event) {
+                JSONObject msg = event.getMessage();
+                try {
+                    JSONArray result = msg.getJSONObject("body").getJSONArray("message");
+
+                    setReadiness(true);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**

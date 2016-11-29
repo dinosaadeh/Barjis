@@ -290,23 +290,23 @@ public class GameController extends InputAdapter {
 
         // <editor-fold desc="If it is a pvpLocal, throw the dices with no account to anything">
         if(playerHandler instanceof LocalPlayerHandler) {
+            // Play the dice
+            playDices(deltaTime);
 
+            // Once dices are fully rolled, let the player do his moves
+            if(!Dices.instance.canPlayerThrowDices && Dices.instance.dicesReachedAFullStop()) {
+                prepareForStatePlayerTurnPlayPawns();
+                this.state = state.playerTurnPlayPawns;
+            }
         }
         // </editor-fold>
         // <editor-fold desc="If it is a pvpNetwork, DINO DESCRIBE">
         if(playerHandler instanceof NetworkPlayerHandler) {
             NetworkPlayerHandler temporaryHandler = (NetworkPlayerHandler) playerHandler;
+            // If it is my turn, play the dices and send the value to opponent
+            // If it is the opponent turn, wait for dice values
         }
         // </editor-fold>
-
-        // Play the dice
-        playDices(deltaTime);
-
-        // Once dices are fully rolled, let the player do his moves
-        if(!Dices.instance.canPlayerThrowDices && Dices.instance.dicesReachedAFullStop()) {
-            prepareForStatePlayerTurnPlayPawns();
-            this.state = state.playerTurnPlayPawns; 
-        }
     }
  
     private void playDices(float deltaTime) {
