@@ -116,6 +116,47 @@ public class Dices {
     }
 
     /**
+     * This method throws the dices, counts the dices that showed the closed side and based on that
+     * increments the times a value showed in the table currentHandMoves
+     * @param diceMarginFromX: the dice will animate from diceMarginFromX
+     * @param diceMarginToX: -- to diceMarginToX
+     * @param diceMarginFromY: -- and from diceMarginFromY
+     * @param diceMarginToY: -- to diceMarginToY
+     * @return
+     */
+    public int throwDicesWithKnownValue(int value, float diceMarginFromX, float diceMarginToX, float diceMarginFromY, float diceMarginToY) {
+        bringDicesToFullStop();//I used this method to stop dices when by mistake a dice leaves the container. This bug should be solved and with that solved we no longer need this line.
+        int currentThrowValue = value;
+        for (int i = 0; i < dices.length; i++) {
+            dices[i] = new Dice(!(value > 0));
+            value--;
+
+            // Position on the screen
+            float randomX = MathUtils.random(diceMarginFromX, diceMarginToX);
+            float randomY = MathUtils.random(diceMarginFromY, diceMarginToY);
+            dices[i].position.set(randomX, randomY);
+            dices[i].bounds.set(randomX, randomY, 0.45f, 0.45f);
+            dices[i].dimension.set(0.45f, 0.45f);
+            dices[i].setSize(0.45f, 0.45f);
+        }
+
+        playSound();
+
+        // Setting the value of the current throw
+        currentHandMoves[currentThrowValue]++;
+        if (1 == currentThrowValue || 5 == currentThrowValue) // if dest or banj, add the bonus move
+        {
+            currentHandMoves[7]++;
+        }
+        // If a stopper combination (2, 3 or 4), do not allow the player to throw dices again
+        if (2 == currentThrowValue || 3 == currentThrowValue || 4 == currentThrowValue) {
+            canPlayerThrowDices = false;
+        }
+
+        return currentThrowValue;
+    }
+
+    /**
      * Throws 3 dices on each side to see which player starts.
      * This accounts only for 2 player mode (not 4)
      * @return 0 for left, 1 for right and -1 if both sides have the same value
