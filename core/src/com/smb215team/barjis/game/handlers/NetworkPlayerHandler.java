@@ -11,6 +11,7 @@ import com.netease.pomelo.DataEvent;
 import com.netease.pomelo.DataListener;
 import com.netease.pomelo.PomeloClient;
 import com.smb215team.barjis.game.ConfigurationController;
+import com.smb215team.barjis.game.GameController;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,6 +25,9 @@ import java.util.UUID;
  */
 public class NetworkPlayerHandler implements PlayerHandler {
     private static final String TAG = NetworkPlayerHandler.class.getName();
+
+    private GameController gameController;
+
     private PomeloClient client;
     private boolean isReady = false;
 
@@ -41,6 +45,12 @@ public class NetworkPlayerHandler implements PlayerHandler {
     /**
      * This index tells the local NetworkPlayerHandler if it is his turn, or the opponent's
      */
+
+
+    public NetworkPlayerHandler(GameController gameController) {
+        this.gameController = gameController;
+    }
+
 
     /**
      * Create a user ID to send to the game server
@@ -128,9 +138,30 @@ public class NetworkPlayerHandler implements PlayerHandler {
 
         });
 
-        client.on("messageReceived", new DataListener() {// only one player , we should create loading text and do nothing
+        client.on("messageMoveReceived", new DataListener() {
             /**
              * This method receives data from other player (dice roll, or opponent move)
+             * @param event
+             */
+            @Override
+            public void receiveData(DataEvent event) {
+                JSONObject msg = event.getMessage();
+                try {
+
+                    int playerIndex = msg.getInt("playerIndex");
+                    int pawnIndex = msg.getInt("pawnIndex");
+                    int selectedIndexFromTable = msg.getInt("selectedIndexFromTable");
+                    gameController.movePawn(playerIndex, pawnIndex, selectedIndexFromTable);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        client.on("messageDiceReceived", new DataListener() {
+            /**
+             * This method receives data from other player (dice roll, or opponent move)
+             *
              * @param event
              */
             @Override
@@ -200,14 +231,21 @@ public class NetworkPlayerHandler implements PlayerHandler {
             }
         });
         initListeners();
+
+
     }
 
+
+    /**
+     * This method To Send The Values to make another player to throw dices
+     * @param value the result of dices to send ( from 0->6 )
+     */
     public void sendDicesValue(int value) {//TODO just for test
         value = (int) (Math.random() % 6);
         Gdx.app.log("Dice Value = ", value + "");
         JSONObject msg = new JSONObject();
         try {
-            msg.put("content", value);
+            msg.put("value", value);
             msg.put("target", networkPlayerId);
             msg.put("from", localPlayerId);
             msg.put("type", "dice");
@@ -223,6 +261,33 @@ public class NetworkPlayerHandler implements PlayerHandler {
         }
     }
 
+    /**
+     * This method To Send The Values to make another player move his pawn
+     *
+     * @param currentPlayerIndex   the current player index ( 0 or 1 )
+     * @param pawnUpdateIndex      which  pawn  to move ? (1->4)
+     * @param selectedIndexInTable the value to move from table ( table initialize in Dice class 7 element all possibility)
+     */
+    public void sendMoveValue(int currentPlayerIndex, int pawnUpdateIndex, int selectedIndexInTable) {
+        JSONObject msg = new JSONObject();
+        try {
+            msg.put("currentPlayerIndex", currentPlayerIndex);
+            msg.put("pawnUpdateIndex", pawnUpdateIndex);
+            msg.put("selectedIndexInTable", selectedIndexInTable);
+            msg.put("target", networkPlayerId);
+            msg.put("from", localPlayerId);
+            msg.put("type", "move");
+
+            client.request("barjis.barjisHandler.send", msg, new DataCallBack() {
+                @Override
+                public void responseData(JSONObject msg) {
+
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 
     // </editor-fold>
 }

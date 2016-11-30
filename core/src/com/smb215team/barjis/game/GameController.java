@@ -67,6 +67,7 @@ public class GameController extends InputAdapter {
     public GameController (Game game) {
         this.game = game;
         init();
+
     }
 
     protected void init () {
@@ -79,7 +80,7 @@ public class GameController extends InputAdapter {
                     break;
                 }
                 case pvpNetwork: {
-                    playerHandler = new NetworkPlayerHandler();
+                    playerHandler = new NetworkPlayerHandler(this);
                     break;
                 }
             }
@@ -304,6 +305,7 @@ public class GameController extends InputAdapter {
         if(playerHandler instanceof NetworkPlayerHandler) {
             NetworkPlayerHandler temporaryHandler = (NetworkPlayerHandler) playerHandler;
             // If it is my turn, play the dices and send the value to opponent
+
             // If it is the opponent turn, wait for dice values
         }
         // </editor-fold>
@@ -487,9 +489,16 @@ public class GameController extends InputAdapter {
             selectedIndexInTable = ((Integer) actor.getUserObject());
 
             movePawn(currentPlayerIndex, pawnUpdateIndex, selectedIndexInTable);
+            if (playerHandler instanceof NetworkPlayerHandler) {
+                ((NetworkPlayerHandler) playerHandler).sendMoveValue(currentPlayerIndex, pawnUpdateIndex, selectedIndexInTable);
+            }
         }
     }
 
+
+    /**
+     * this method can be access from local and remotely from server using NetworkPlayerHandler listener
+     */
     public void movePawn(int playerIndex, int pawnIndex, int selectedIndexFromTable) {
         if (Dices.movesValues[selectedIndexFromTable] < 1) {
             return;
