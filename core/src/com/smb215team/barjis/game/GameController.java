@@ -21,6 +21,7 @@ import com.smb215team.barjis.game.enums.GameState;
 import com.smb215team.barjis.game.handlers.LocalPlayerHandler;
 import com.smb215team.barjis.game.handlers.NetworkPlayerHandler;
 import com.smb215team.barjis.game.handlers.PlayerHandler;
+import com.smb215team.barjis.game.interfaces.NetworkListener;
 import com.smb215team.barjis.game.objects.Dice;
 import com.smb215team.barjis.game.objects.DiceContainer;
 import com.smb215team.barjis.game.objects.Dices;
@@ -34,7 +35,7 @@ import com.smb215team.barjis.util.GamePreferences;
  *
  * @author dinosaadeh
  */
-public class GameController extends InputAdapter {
+public class GameController extends InputAdapter implements NetworkListener {
     private static final String TAG = GameController.class.getName();
 
     protected Game game;
@@ -80,7 +81,8 @@ public class GameController extends InputAdapter {
                     break;
                 }
                 case pvpNetwork: {
-                    playerHandler = new NetworkPlayerHandler(this);
+                    playerHandler = new NetworkPlayerHandler();
+                    ((NetworkPlayerHandler) playerHandler).addListener(this);
                     break;
                 }
             }
@@ -654,5 +656,18 @@ public class GameController extends InputAdapter {
         winnerLabel = new Label("The Winner", labelStyle);
         winnerLabel.setFontScale(0.8f);
     }
+
+
     // </editor-fold>
+
+    @Override
+    public void moveRemotePlayerPawn(int playerIndex, int pawnIndex, int selectedIndexFromTable) {
+        movePawn(playerIndex, pawnIndex, selectedIndexFromTable);
+    }
+
+    @Override
+    public void throwRemotePlayerDices(int value) {
+
+
+    }
 }

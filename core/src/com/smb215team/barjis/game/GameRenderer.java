@@ -156,7 +156,8 @@ public class GameRenderer implements Disposable {
         batch.setProjectionMatrix(extendedViewPort.getCamera().combined);
 //        renderGuiMovesToBePlayed(batch); removed by ammar
         // draw FPS text (anchored to bottom right edge)
-        renderGuiFpsCounter(batch);
+
+//        renderGuiFpsCounter(batch);
         batch.end();
     }
   

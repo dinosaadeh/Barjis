@@ -11,12 +11,14 @@ import com.netease.pomelo.DataEvent;
 import com.netease.pomelo.DataListener;
 import com.netease.pomelo.PomeloClient;
 import com.smb215team.barjis.game.ConfigurationController;
-import com.smb215team.barjis.game.GameController;
+import com.smb215team.barjis.game.interfaces.NetworkListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -26,7 +28,10 @@ import java.util.UUID;
 public class NetworkPlayerHandler implements PlayerHandler {
     private static final String TAG = NetworkPlayerHandler.class.getName();
 
-    private GameController gameController;
+    private List<NetworkListener> listeners = new ArrayList<NetworkListener>();
+
+
+
 
     private PomeloClient client;
     private boolean isReady = false;
@@ -47,8 +52,7 @@ public class NetworkPlayerHandler implements PlayerHandler {
      */
 
 
-    public NetworkPlayerHandler(GameController gameController) {
-        this.gameController = gameController;
+    public NetworkPlayerHandler() {
     }
 
 
@@ -151,7 +155,9 @@ public class NetworkPlayerHandler implements PlayerHandler {
                     int playerIndex = msg.getInt("playerIndex");
                     int pawnIndex = msg.getInt("pawnIndex");
                     int selectedIndexFromTable = msg.getInt("selectedIndexFromTable");
-                    gameController.movePawn(playerIndex, pawnIndex, selectedIndexFromTable);
+                    for (NetworkListener networkListener : listeners) {
+                        networkListener.moveRemotePlayerPawn(playerIndex, pawnIndex, selectedIndexFromTable);
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -168,9 +174,11 @@ public class NetworkPlayerHandler implements PlayerHandler {
             public void receiveData(DataEvent event) {
                 JSONObject msg = event.getMessage();
                 try {
-                    JSONArray result = msg.getJSONObject("body").getJSONArray("message");
+                    int value = msg.getInt("value");
+                    for (NetworkListener networkListener : listeners) {
+                        networkListener.throwRemotePlayerDices(value);
+                    }
 
-                    setReadiness(true);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -290,4 +298,7 @@ public class NetworkPlayerHandler implements PlayerHandler {
     }
 
     // </editor-fold>
+    public void addListener(NetworkListener toAdd) {
+        listeners.add(toAdd);
+    }
 }
