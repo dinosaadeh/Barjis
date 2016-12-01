@@ -12,6 +12,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -307,26 +309,49 @@ public class GameController extends InputAdapter implements NetworkListener {
         if(playerHandler instanceof NetworkPlayerHandler) {
             NetworkPlayerHandler temporaryHandler = (NetworkPlayerHandler) playerHandler;
             // If it is my turn, play the dices and send the value to opponent
+            if (temporaryHandler.localPlayerIndex == currentPlayerIndex) {
+                int valueToSend = playDices(deltaTime);
+                if (valueToSend != -1) {
+                    temporaryHandler.sendDicesValue(valueToSend);
 
+                    if (!Dices.instance.canPlayerThrowDices) {
+                        this.state = GameState.playerTurnPlayPawns;
+
+                    }
+                }
+            }
             // If it is the opponent turn, wait for dice values
         }
         // </editor-fold>
     }
- 
-    private void playDices(float deltaTime) {
+
+    private int playDices(float deltaTime) {
         Dices.instance.update(deltaTime);
         timerForThrowingDices += deltaTime;
+        int result = -1;
         if(timerForThrowingDices >= Constants.TIMER_LIMIT_FOR_THROWING_DICES && Dices.instance.canPlayerThrowDices) {
             //TODO: take the value from throw dices and pass it to handlers
-            Dices.instance.throwDices(diceContainer.diceMarginFromX, diceContainer.diceMarginToX, diceContainer.diceMarginFromY, diceContainer.diceMarginToY);
+            result = Dices.instance.throwDices(diceContainer.diceMarginFromX, diceContainer.diceMarginToX, diceContainer.diceMarginFromY, diceContainer.diceMarginToY);
             timerForThrowingDices -= Constants.TIMER_LIMIT_FOR_THROWING_DICES; // If you reset it to 0 you will lose a few milliseconds every 2 seconds.
 
             fillDiceButtonText();
-        } 
+        }
+        return result;
     }
 
+    InputListener screenClickListener = new InputListener() {
+
+        @Override
+        public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+
+            Dices.instance.bringDicesToFullStop();
+
+            return super.touchDown(event, x, y, pointer, button);
+        }
+    };
     public void fillDiceButtonText(){
         stage.clear();
+        stage.addListener(screenClickListener);
         hGroup = new HorizontalGroup();
         // create button style
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
@@ -592,28 +617,26 @@ public class GameController extends InputAdapter implements NetworkListener {
     // </editor-fold>
 
     // <editor-fold desc="Helper Methods">
-    private void switchToNextPlayer() {
-        if(currentPlayerIndex == players.length-1) {
-            currentPlayerIndex = 0;  
+    private void switchPlayer() {
+        if (currentPlayerIndex == players.length - 1) {
+            currentPlayerIndex = 0;
             diceContainer.init("SIDE01");
-        }
-        else {
-            currentPlayerIndex++;         
-            
+        } else {
+            currentPlayerIndex++;
+
             diceContainer.init("SIDE02");
-        }   
-//         if ( currentPlayerIndexByServer ==0)  ////currentPlayerIndexByServer should replace currentPlayerIndex later on
-//            {
-//            updateServer.switchPlayerServer(1);
-//            currentPlayerIndexByServer ++;
-//            }
-//            else   {
-//            updateServer.switchPlayerServer(0);
-//            currentPlayerIndexByServer --;
-//                    }
+        }
+
         Dices.instance.reset();
         currentSelectedPawnForPlay = null;
         this.state = GameState.playerTurnThrowDice;
+    }
+    private void switchToNextPlayer() {
+
+        switchPlayer();
+        if (playerHandler instanceof NetworkPlayerHandler) {
+            ((NetworkPlayerHandler) playerHandler).sendYourTurnMessage();
+        }
     }
 
     /**
@@ -667,7 +690,12 @@ public class GameController extends InputAdapter implements NetworkListener {
 
     @Override
     public void throwRemotePlayerDices(int value) {
+        Dices.instance.throwDicesWithKnownValue(value, diceContainer.diceMarginFromX, diceContainer.diceMarginToX, diceContainer.diceMarginFromY, diceContainer.diceMarginToY);
+        fillDiceButtonText();
+    }
 
-
+    @Override
+    public void play() {
+        switchPlayer();
     }
 }

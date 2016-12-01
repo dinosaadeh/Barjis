@@ -9,4 +9,6 @@ public interface NetworkListener {
 
     public void throwRemotePlayerDices(int value);
 
+    public void play();
+
 }

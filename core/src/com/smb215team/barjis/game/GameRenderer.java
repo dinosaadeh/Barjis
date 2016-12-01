@@ -58,7 +58,9 @@ public class GameRenderer implements Disposable {
 
         extendedViewPort =new ExtendViewport(Constants.VIEWPORT_GUI_WIDTH,Constants.VIEWPORT_GUI_HEIGHT);
         gameController.stage = new Stage(extendedViewPort);
+        gameController.stage.addListener(gameController.screenClickListener);
         stage2 = new Stage(extendedViewPort);
+
         Gdx.input.setInputProcessor(gameController.stage);
 
     }

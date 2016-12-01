@@ -174,6 +174,8 @@ public class NetworkPlayerHandler implements PlayerHandler {
             public void receiveData(DataEvent event) {
                 JSONObject msg = event.getMessage();
                 try {
+                    JSONObject msg = event.getMessage().getJSONObject("body");
+
                     int value = msg.getInt("value");
                     for (NetworkListener networkListener : listeners) {
                         networkListener.throwRemotePlayerDices(value);
@@ -182,6 +184,21 @@ public class NetworkPlayerHandler implements PlayerHandler {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            }
+        });
+        client.on("myTurn", new DataListener() {
+            /**
+             * This method receives notification to play
+             *
+             * @param event
+             */
+            @Override
+            public void receiveData(DataEvent event) {
+
+                for (NetworkListener networkListener : listeners) {
+                    networkListener.play();
+                }
+
             }
         });
     }
@@ -248,8 +265,7 @@ public class NetworkPlayerHandler implements PlayerHandler {
      * This method To Send The Values to make another player to throw dices
      * @param value the result of dices to send ( from 0->6 )
      */
-    public void sendDicesValue(int value) {//TODO just for test
-        value = (int) (Math.random() % 6);
+    public void sendDicesValue(int value) {
         Gdx.app.log("Dice Value = ", value + "");
         JSONObject msg = new JSONObject();
         try {
@@ -285,6 +301,24 @@ public class NetworkPlayerHandler implements PlayerHandler {
             msg.put("target", networkPlayerId);
             msg.put("from", localPlayerId);
             msg.put("type", "move");
+
+            client.request("barjis.barjisHandler.send", msg, new DataCallBack() {
+                @Override
+                public void responseData(JSONObject msg) {
+
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendYourTurnMessage() {
+        JSONObject msg = new JSONObject();
+        try {
+            msg.put("target", networkPlayerId);
+            msg.put("from", localPlayerId);
+            msg.put("type", "yourTurn");
 
             client.request("barjis.barjisHandler.send", msg, new DataCallBack() {
                 @Override
