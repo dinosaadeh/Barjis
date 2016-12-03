@@ -315,6 +315,7 @@ public class GameController extends InputAdapter implements NetworkListener {
                     temporaryHandler.sendDicesValue(valueToSend);
 
                     if (!Dices.instance.canPlayerThrowDices) {
+                        prepareForStatePlayerTurnPlayPawns();
                         this.state = GameState.playerTurnPlayPawns;
 
                     }
@@ -697,5 +698,6 @@ public class GameController extends InputAdapter implements NetworkListener {
     @Override
     public void play() {
         switchPlayer();
+
     }
 }

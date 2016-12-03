@@ -34,7 +34,6 @@ public class GameRenderer implements Disposable {
 
     private ShapeRenderer dummyShapeRenderer;
     private Stage stage2;
-    BitmapFont returnTextFont = Assets.instance.fonts.defaultSmall;///used from wrapping the returnText
     public  GlyphLayout layout = new GlyphLayout(); // Obviously stick this in a field to avoid allocation each frame.
     private Label.LabelStyle labelStyle;
     public Viewport extendedViewPort;
@@ -58,10 +57,9 @@ public class GameRenderer implements Disposable {
 
         extendedViewPort =new ExtendViewport(Constants.VIEWPORT_GUI_WIDTH,Constants.VIEWPORT_GUI_HEIGHT);
         gameController.stage = new Stage(extendedViewPort);
-        gameController.stage.addListener(gameController.screenClickListener);
         stage2 = new Stage(extendedViewPort);
-
         Gdx.input.setInputProcessor(gameController.stage);
+        gameController.stage.addListener(gameController.screenClickListener);
 
     }
 

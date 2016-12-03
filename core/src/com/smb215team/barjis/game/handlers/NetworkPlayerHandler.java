@@ -149,12 +149,11 @@ public class NetworkPlayerHandler implements PlayerHandler {
              */
             @Override
             public void receiveData(DataEvent event) {
-                JSONObject msg = event.getMessage();
                 try {
-
-                    int playerIndex = msg.getInt("playerIndex");
-                    int pawnIndex = msg.getInt("pawnIndex");
-                    int selectedIndexFromTable = msg.getInt("selectedIndexFromTable");
+                    JSONObject msg = event.getMessage().getJSONObject("body");
+                    int playerIndex = msg.getInt("currentPlayerIndex");
+                    int pawnIndex = msg.getInt("pawnUpdateIndex");
+                    int selectedIndexFromTable = msg.getInt("selectedIndexInTable");
                     for (NetworkListener networkListener : listeners) {
                         networkListener.moveRemotePlayerPawn(playerIndex, pawnIndex, selectedIndexFromTable);
                     }
@@ -172,7 +171,6 @@ public class NetworkPlayerHandler implements PlayerHandler {
              */
             @Override
             public void receiveData(DataEvent event) {
-                JSONObject msg = event.getMessage();
                 try {
                     JSONObject msg = event.getMessage().getJSONObject("body");
 
