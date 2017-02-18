@@ -137,7 +137,7 @@ public class Pawn extends AbstractGameObject {
     }
     public void updateAvailableMoves(Array<Integer> inaccessibleShireIndexes) {
         currentPossibleMoves.clear();
-        Gdx.app.log(TAG,currentPossibleMoves.toString());
+        //Gdx.app.log(TAG,currentPossibleMoves.toString());
         //Don't bother if the pawn is dead and no Bonus showed up in the combination
         if(this.position == this.deadPosition && Dices.instance.currentHandMoves[7] == 0 )
             return;

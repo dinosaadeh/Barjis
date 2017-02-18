@@ -92,18 +92,19 @@ public class MenuScreen extends AbstractGameScreen {
         btnPlaySolo = new ImageButton(new TextureRegionDrawable(Assets.instance.mainScreenButtons.btnPlaySolo));
         btnPlaySolo.addListener(new ChangeListener() {
                 public void changed (ChangeEvent e, Actor actor) {
-                    GamePreferences.instance.gameMode = GameModes.pvpLocal;
+                    GamePreferences.instance.gameMode = GameModes.solo;
                     GamePreferences.instance.save();
                     game.setScreen(new GameScreen(game));
                 }
             });
-        buttonsTable.add(btnPlaySolo).size(250,70);
-        buttonsTable.row();
+//        buttonsTable.add(btnPlaySolo).size(250,70);
+//        buttonsTable.row();
         
         btnPvp = new ImageButton(new TextureRegionDrawable(Assets.instance.mainScreenButtons.btnPvp));
         btnPvp.addListener(new ChangeListener() {
                 public void changed (ChangeEvent e, Actor actor) {
-                    GamePreferences.instance.gameMode = GameModes.pvpNetwork;
+                    GamePreferences.instance.gameMode = GameModes.pvpLocal;
+                    //TODO when I launch the networking feature, this mode should be restored to pvpNetwork.. Graphics are ready to have PVP local and PVP Network
                     GamePreferences.instance.save();
                     game.setScreen(new GameScreen(game));
                 }
